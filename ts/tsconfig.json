@@ -1,33 +1,33 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "strict": true,
-    "esModuleInterop": true,
+    "target": "ESNext", // Use the latest ECMAScript version
+    "module": "ESNext", // Use the latest module system
+    "strict": true, // Enable all strict type-checking options
+    "esModuleInterop": true, // Better compatibility with CommonJS modules
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "outDir": "../js", // Adjusted output directory
-    "rootDir": "./src", // Adjusted root directory
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "strictPropertyInitialization": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
+    "outDir": "../js", // Output directory for compiled files
+    "rootDir": "./", // Root directory of source files
+    "moduleResolution": "node", // Use Node.js module resolution
+    "resolveJsonModule": true, // Allow importing JSON files
+    "isolatedModules": true, // Ensure each file can be safely transpiled without relying on other imports
+    "noImplicitAny": true, // Raise error on expressions and declarations with an implied 'any' type
+    "strictNullChecks": true, // Enable strict null checks
+    "strictFunctionTypes": true, // Ensure function parameters are checked for assignment compatibility
+    "strictBindCallApply": true, // Check that 'bind', 'call', and 'apply' methods are invoked with correct argument types
+    "strictPropertyInitialization": true, // Ensure class properties are initialized correctly
+    "noImplicitThis": true, // Raise error on 'this' expressions with an implied 'any' type
+    "alwaysStrict": true, // Ensure 'use strict' is always emitted
+    "noUnusedLocals": true, // Report errors on unused local variables
+    "noUnusedParameters": true, // Report errors on unused parameters
+    "noFallthroughCasesInSwitch": true, // Report errors for fallthrough cases in switch statements
+    "noImplicitReturns": true, // Ensure all code paths in a function return a value
     "lib": [
       "ESNext",
       "DOM"
-    ]
+    ] // Specify the latest library files
   },
   "include": [
-    "./src/**/*"
+    "./*.ts"
   ]
 }
