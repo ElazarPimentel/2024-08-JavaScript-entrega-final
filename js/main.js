@@ -67,62 +67,107 @@ class TurnoClass {
         return `${prefix}_` + Math.random().toString(36).slice(2, 11);
     }
 }
-// Al cargar el contenido del DOM
-document.addEventListener('DOMContentLoaded', () => {
-    const checkbox = document.getElementById('checkbox');
-    const body = document.body;
-    if (checkbox) {
-        checkbox.addEventListener('change', () => {
-            if (checkbox.checked) {
-                body.classList.remove('light');
-                body.classList.add('dark');
-            }
-            else {
-                body.classList.remove('dark');
-                body.classList.add('light');
-            }
-            gestionarLocalStorage("guardar", "theme", checkbox.checked ? 'dark' : 'light');
-        });
-        // Inicializar tema basado en la preferencia guardada o preferencia del sistema
-        const savedTheme = gestionarLocalStorage("cargar", "theme");
-        if (savedTheme) {
-            body.classList.add(savedTheme);
-            checkbox.checked = savedTheme === 'dark';
-        }
-        else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            body.classList.add('dark');
-            checkbox.checked = true;
-        }
-        else {
-            body.classList.add('light');
-            checkbox.checked = false;
+// Definir funciones antes de usarlas
+// Aplicar tema
+const aplicarTema = () => {
+    try {
+        const temaAlmacenado = gestionarLocalStorage("cargar", "theme");
+        if (temaAlmacenado) {
+            document.body.dataset.theme = temaAlmacenado;
         }
     }
-    actualizarServiciosList(servicios);
-    actualizarHorariosList(horarios);
-    document.body.addEventListener("click", (event) => {
-        const target = event.target;
-        if (target && target.id) {
-            switch (target.id) {
-                case "guardar-cliente":
-                    guardarCliente();
-                    break;
-                case "siguiente-mascota":
-                    mostrarFormulariosMascotas();
-                    break;
-                case "borrar-datos":
-                    comenzarDeNuevo();
-                    break;
-                case "guardar-mascotas-turnos":
-                    guardarMascotasYTurnos();
-                    break;
-            }
+    catch (error) {
+        console.error('Error al aplicar el tema', error); // Elaborar en versiones futuras 
+    }
+};
+// Controlar botón guardar
+const controlarBotonGuardar = () => {
+    const guardarBtn = document.getElementById("guardar-mascotas-turnos");
+    if (guardarBtn) {
+        guardarBtn.style.display = 'none'; // Ocultar botón
+    }
+};
+// Borrar todos los datos
+const borrarTodosDatos = () => {
+    try {
+        gestionarLocalStorage("borrarTodo");
+        cliente = null;
+        mascotas = [];
+        turnos = [];
+        actualizarDOM(cliente, mascotas, turnos, servicios);
+        document.getElementById("formulario-cliente").reset();
+        document.getElementById("formulario-mascotas-info").style.display = "none";
+        document.getElementById("mascotas-formulario").style.display = "none";
+        document.getElementById("guardar-mascotas-turnos").style.display = "none";
+        document.getElementById("borrar-datos").style.display = "none";
+        document.getElementById("seccion-salida-datos-dos").style.display = "none";
+    }
+    catch (error) {
+        console.error('Error al borrar todos los datos', error); // Elaborar en versiones futuras
+    }
+};
+// Comenzar de nuevo
+const comenzarDeNuevo = () => {
+    borrarTodosDatos();
+    const guardarBtn = document.getElementById("guardar-mascotas-turnos");
+    if (guardarBtn) {
+        guardarBtn.style.display = "inline-block"; // Mostrar el botón
+    }
+};
+// Inicialización
+const checkbox = document.getElementById('checkbox');
+const body = document.body;
+if (checkbox) {
+    checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+            body.classList.remove('light');
+            body.classList.add('dark');
         }
+        else {
+            body.classList.remove('dark');
+            body.classList.add('light');
+        }
+        gestionarLocalStorage("guardar", "theme", checkbox.checked ? 'dark' : 'light');
     });
-    actualizarDOM(cliente, mascotas, turnos, servicios);
-    aplicarTema();
-    controlarBotonGuardar();
+    // Inicializar tema basado en la preferencia guardada o preferencia del sistema
+    const savedTheme = gestionarLocalStorage("cargar", "theme");
+    if (savedTheme) {
+        body.classList.add(savedTheme);
+        checkbox.checked = savedTheme === 'dark';
+    }
+    else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        body.classList.add('dark');
+        checkbox.checked = true;
+    }
+    else {
+        body.classList.add('light');
+        checkbox.checked = false;
+    }
+}
+actualizarServiciosList(servicios);
+actualizarHorariosList(horarios);
+document.body.addEventListener("click", (event) => {
+    const target = event.target;
+    if (target && target.id) {
+        switch (target.id) {
+            case "guardar-cliente":
+                guardarCliente();
+                break;
+            case "siguiente-mascota":
+                mostrarFormulariosMascotas();
+                break;
+            case "borrar-datos":
+                comenzarDeNuevo();
+                break;
+            case "guardar-mascotas-turnos":
+                guardarMascotasYTurnos();
+                break;
+        }
+    }
 });
+actualizarDOM(cliente, mascotas, turnos, servicios);
+aplicarTema();
+controlarBotonGuardar();
 // Guardar cliente
 const guardarCliente = () => {
     const nombre = document.getElementById("cliente-nombre");
@@ -226,51 +271,5 @@ const guardarMascotasYTurnos = () => {
     }
     catch (error) {
         console.error('Error al guardar mascotas y turnos', error); // Elaborar en versiones futuras
-    }
-};
-// Borrar todos los datos
-const borrarTodosDatos = () => {
-    try {
-        gestionarLocalStorage("borrarTodo");
-        cliente = null;
-        mascotas = [];
-        turnos = [];
-        actualizarDOM(cliente, mascotas, turnos, servicios);
-        document.getElementById("formulario-cliente").reset();
-        document.getElementById("formulario-mascotas-info").style.display = "none";
-        document.getElementById("mascotas-formulario").style.display = "none";
-        document.getElementById("guardar-mascotas-turnos").style.display = "none";
-        document.getElementById("borrar-datos").style.display = "none";
-        document.getElementById("seccion-salida-datos-dos").style.display = "none";
-    }
-    catch (error) {
-        console.error('Error al borrar todos los datos', error); // Elaborar en versiones futuras
-    }
-};
-// Comenzar de nuevo
-const comenzarDeNuevo = () => {
-    borrarTodosDatos();
-    const guardarBtn = document.getElementById("guardar-mascotas-turnos");
-    if (guardarBtn) {
-        guardarBtn.style.display = "inline-block"; // Mostrar el botón
-    }
-};
-// Aplicar tema
-const aplicarTema = () => {
-    try {
-        const temaAlmacenado = gestionarLocalStorage("cargar", "theme");
-        if (temaAlmacenado) {
-            document.body.dataset.theme = temaAlmacenado;
-        }
-    }
-    catch (error) {
-        console.error('Error al aplicar el tema', error); // Elaborar en versiones futuras 
-    }
-};
-// Controlar botón guardar
-const controlarBotonGuardar = () => {
-    const guardarBtn = document.getElementById("guardar-mascotas-turnos");
-    if (guardarBtn) {
-        guardarBtn.style.display = 'none'; // Ocultar botón
     }
 };
