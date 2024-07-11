@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /* Nombre del archivo: scss/style.scss
  Autor: Alessio Aguirre Pimentel
-Versión: 02 */
+ Versión: 02 */
 body.light {
   color: black;
   background-color: white;
@@ -71,6 +71,7 @@ body {
   font-size: 16px;
   padding: 0;
   margin: 0;
+  transition: background-color 0.4s, color 0.4s;
 }
 body[data-theme=light] {
   color: black;

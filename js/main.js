@@ -67,19 +67,17 @@ class TurnoClass {
         return `${prefix}_` + Math.random().toString(36).slice(2, 11);
     }
 }
+// Al cargar el contenido del DOM
 document.addEventListener('DOMContentLoaded', () => {
     const checkbox = document.getElementById('checkbox');
     const body = document.body;
     if (checkbox) {
-        console.log('DOM completamente cargado - Inicializando el interruptor de tema.');
         checkbox.addEventListener('change', () => {
             if (checkbox.checked) {
-                console.log('Cambiando al tema oscuro.');
                 body.classList.remove('light');
                 body.classList.add('dark');
             }
             else {
-                console.log('Cambiando al tema claro.');
                 body.classList.remove('dark');
                 body.classList.add('light');
             }
@@ -88,23 +86,17 @@ document.addEventListener('DOMContentLoaded', () => {
         // Inicializar tema basado en la preferencia guardada o preferencia del sistema
         const savedTheme = gestionarLocalStorage("cargar", "theme");
         if (savedTheme) {
-            console.log(`Tema guardado encontrado: ${savedTheme}`);
             body.classList.add(savedTheme);
             checkbox.checked = savedTheme === 'dark';
         }
         else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            console.log('Tema oscuro preferido por el sistema.');
             body.classList.add('dark');
             checkbox.checked = true;
         }
         else {
-            console.log('Tema claro preferido por el sistema.');
             body.classList.add('light');
             checkbox.checked = false;
         }
-    }
-    else {
-        console.log('No se encontró el interruptor de tema.');
     }
     actualizarServiciosList(servicios);
     actualizarHorariosList(horarios);
@@ -113,19 +105,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (target && target.id) {
             switch (target.id) {
                 case "guardar-cliente":
-                    console.log('Botón guardar cliente presionado.');
                     guardarCliente();
                     break;
                 case "siguiente-mascota":
-                    console.log('Botón siguiente mascota presionado.');
                     mostrarFormulariosMascotas();
                     break;
                 case "borrar-datos":
-                    console.log('Botón borrar datos presionado.');
                     comenzarDeNuevo();
                     break;
                 case "guardar-mascotas-turnos":
-                    console.log('Botón guardar mascotas y turnos presionado.');
                     guardarMascotasYTurnos();
                     break;
             }
@@ -135,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
     aplicarTema();
     controlarBotonGuardar();
 });
+// Guardar cliente
 const guardarCliente = () => {
     const nombre = document.getElementById("cliente-nombre");
     const telefono = document.getElementById("cliente-telefono");
@@ -151,8 +140,8 @@ const guardarCliente = () => {
     cliente = new ClienteClass(null, nombre.value, telefono.value);
     gestionarLocalStorage("guardar", "cliente", cliente);
     document.getElementById("formulario-mascotas-info").style.display = "block";
-    console.log('Cliente guardado:', cliente);
 };
+// Mostrar formularios para mascotas
 const mostrarFormulariosMascotas = () => {
     const numMascotas = document.getElementById("numero-mascotas");
     const fecha = document.getElementById("turno-fecha");
@@ -199,8 +188,8 @@ const mostrarFormulariosMascotas = () => {
     mascotasForm.style.display = "block";
     document.getElementById("guardar-mascotas-turnos").style.display = "inline-block";
     document.getElementById("borrar-datos").style.display = "inline-block";
-    console.log('Formularios de mascotas mostrados.');
 };
+// Guardar mascotas y turnos
 const guardarMascotasYTurnos = () => {
     try {
         if (!cliente) {
@@ -211,12 +200,10 @@ const guardarMascotasYTurnos = () => {
         const fecha = document.getElementById("turno-fecha").value;
         const hora = document.getElementById("turno-hora").value;
         let turnoHora = new Date(`${fecha}T${hora}`);
-        console.log(`numMascotas: ${numMascotas}, fecha: ${fecha}, hora: ${hora}`);
         for (let i = 0; i < numMascotas; i++) {
             const mascotaNombre = document.getElementById(`mascota-nombre-${i}`).value;
             const mascotaEdad = parseInt(document.getElementById(`mascota-edad-${i}`).value);
             const servicioId = parseInt(document.getElementById(`servicio-${i}`).value);
-            console.log(`Mascota ${i}: nombre=${mascotaNombre}, edad=${mascotaEdad}, servicioId=${servicioId}`);
             if (!validarNombre(mascotaNombre)) {
                 mostrarError(document.getElementById(`mascota-nombre-${i}`), "El nombre de la mascota debe contener entre 2 y 25 letras del alfabeto latino.");
                 return;
@@ -236,12 +223,12 @@ const guardarMascotasYTurnos = () => {
         actualizarDOM(cliente, mascotas, turnos, servicios);
         document.getElementById("seccion-salida-datos-dos").style.display = "block";
         document.getElementById("guardar-mascotas-turnos").style.display = "none"; // Ocultar el botón
-        console.log('Mascotas y turnos guardados.');
     }
     catch (error) {
         console.error('Error al guardar mascotas y turnos', error); // Elaborar en versiones futuras
     }
 };
+// Borrar todos los datos
 const borrarTodosDatos = () => {
     try {
         gestionarLocalStorage("borrarTodo");
@@ -255,36 +242,35 @@ const borrarTodosDatos = () => {
         document.getElementById("guardar-mascotas-turnos").style.display = "none";
         document.getElementById("borrar-datos").style.display = "none";
         document.getElementById("seccion-salida-datos-dos").style.display = "none";
-        console.log('Todos los datos borrados.');
     }
     catch (error) {
         console.error('Error al borrar todos los datos', error); // Elaborar en versiones futuras
     }
 };
+// Comenzar de nuevo
 const comenzarDeNuevo = () => {
     borrarTodosDatos();
     const guardarBtn = document.getElementById("guardar-mascotas-turnos");
     if (guardarBtn) {
         guardarBtn.style.display = "inline-block"; // Mostrar el botón
     }
-    console.log('Comenzar de nuevo.');
 };
+// Aplicar tema
 const aplicarTema = () => {
     try {
         const temaAlmacenado = gestionarLocalStorage("cargar", "theme");
         if (temaAlmacenado) {
             document.body.dataset.theme = temaAlmacenado;
-            console.log(`Tema aplicado: ${temaAlmacenado}`);
         }
     }
     catch (error) {
         console.error('Error al aplicar el tema', error); // Elaborar en versiones futuras 
     }
 };
+// Controlar botón guardar
 const controlarBotonGuardar = () => {
     const guardarBtn = document.getElementById("guardar-mascotas-turnos");
     if (guardarBtn) {
         guardarBtn.style.display = 'none'; // Ocultar botón
     }
-    console.log('Controlar botón guardar.');
 };

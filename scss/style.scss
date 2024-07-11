@@ -1,6 +1,6 @@
 /* Nombre del archivo: scss/style.scss
  Autor: Alessio Aguirre Pimentel
-Versión: 02 */
+ Versión: 02 */
 
 // Variables
 $font-color-light: black;
@@ -8,8 +8,8 @@ $background-color-light: white;
 $font-color-dark: white;
 $background-color-dark: black;
 
-$border-color-light: #ccc; // Color de borde para el tema claro
-$border-color-dark: #444; // Color de borde para el tema oscuro
+$border-color-light: #ccc;
+$border-color-dark: #444;
 
 // Mixins
 @mixin theme($font-color, $background-color, $border-color) {
@@ -87,6 +87,7 @@ body {
     font-size: 16px;
     padding: 0;
     margin: 0;
+    transition: background-color 0.4s, color 0.4s; // Smooth transition for theme switch
 
     &[data-theme="light"] {
         color: black;
