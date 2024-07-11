@@ -1,6 +1,6 @@
 /* Nombre del archivo: ts/src/main.ts
-Autor: Alessio Aguirre Pimentel
-Versión: 03 */
+   Autor: Alessio Aguirre Pimentel
+   Versión: 04 */
 
 import { gestionarLocalStorage } from './localStorage.js';
 import { mostrarError, limpiarError, validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js';
@@ -110,27 +110,66 @@ class TurnoClass implements Turno {
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
+    const checkbox = document.getElementById('checkbox') as HTMLInputElement;
+    const body = document.body;
+
+    if (checkbox) {
+        console.log('DOM completamente cargado - Inicializando el interruptor de tema.');
+        checkbox.addEventListener('change', () => {
+            if (checkbox.checked) {
+                console.log('Cambiando al tema oscuro.');
+                body.classList.remove('light');
+                body.classList.add('dark');
+            } else {
+                console.log('Cambiando al tema claro.');
+                body.classList.remove('dark');
+                body.classList.add('light');
+            }
+            gestionarLocalStorage("guardar", "theme", checkbox.checked ? 'dark' : 'light');
+        });
+
+        // Inicializar tema basado en la preferencia guardada o preferencia del sistema
+        const savedTheme = gestionarLocalStorage("cargar", "theme") as string | null;
+        if (savedTheme) {
+            console.log(`Tema guardado encontrado: ${savedTheme}`);
+            body.classList.add(savedTheme);
+            checkbox.checked = savedTheme === 'dark';
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            console.log('Tema oscuro preferido por el sistema.');
+            body.classList.add('dark');
+            checkbox.checked = true;
+        } else {
+            console.log('Tema claro preferido por el sistema.');
+            body.classList.add('light');
+            checkbox.checked = false;
+        }
+    } else {
+        console.log('No se encontró el interruptor de tema.');
+    }
+
     actualizarServiciosList(servicios);
     actualizarHorariosList(horarios);
 
     document.body.addEventListener("click", (event: MouseEvent) => {
-        // Usando aserción de tipo para especificar que el event.target es un HTMLElement
         const target = event.target as HTMLElement;
 
-        // Ahora puedes acceder de manera segura a la propiedad 'id' porque HTMLElement la incluye
         if (target && target.id) {
             switch (target.id) {
                 case "guardar-cliente":
+                    console.log('Botón guardar cliente presionado.');
                     guardarCliente();
                     break;
                 case "siguiente-mascota":
+                    console.log('Botón siguiente mascota presionado.');
                     mostrarFormulariosMascotas();
                     break;
                 case "borrar-datos":
+                    console.log('Botón borrar datos presionado.');
                     comenzarDeNuevo();
                     break;
                 case "guardar-mascotas-turnos":
+                    console.log('Botón guardar mascotas y turnos presionado.');
                     guardarMascotasYTurnos();
                     break;
             }
@@ -162,6 +201,7 @@ const guardarCliente = () => {
     cliente = new ClienteClass(null, nombre.value, telefono.value);
     gestionarLocalStorage("guardar", "cliente", cliente);
     document.getElementById("formulario-mascotas-info")!.style.display = "block";
+    console.log('Cliente guardado:', cliente);
 };
 
 const mostrarFormulariosMascotas = () => {
@@ -218,6 +258,7 @@ const mostrarFormulariosMascotas = () => {
     mascotasForm.style.display = "block";
     document.getElementById("guardar-mascotas-turnos")!.style.display = "inline-block";
     document.getElementById("borrar-datos")!.style.display = "inline-block";
+    console.log('Formularios de mascotas mostrados.');
 };
 
 const guardarMascotasYTurnos = () => {
@@ -264,6 +305,7 @@ const guardarMascotasYTurnos = () => {
         actualizarDOM(cliente, mascotas, turnos, servicios);
         document.getElementById("seccion-salida-datos-dos")!.style.display = "block";
         document.getElementById("guardar-mascotas-turnos")!.style.display = "none"; // Ocultar el botón
+        console.log('Mascotas y turnos guardados.');
     } catch (error) {
         console.error('Error al guardar mascotas y turnos', error); // Elaborar en versiones futuras
     }
@@ -282,6 +324,7 @@ const borrarTodosDatos = () => {
         document.getElementById("guardar-mascotas-turnos")!.style.display = "none";
         document.getElementById("borrar-datos")!.style.display = "none";
         document.getElementById("seccion-salida-datos-dos")!.style.display = "none";
+        console.log('Todos los datos borrados.');
     } catch (error) {
         console.error('Error al borrar todos los datos', error); // Elaborar en versiones futuras
     }
@@ -293,12 +336,16 @@ const comenzarDeNuevo = () => {
     if (guardarBtn) {
         guardarBtn.style.display = "inline-block"; // Mostrar el botón
     }
+    console.log('Comenzar de nuevo.');
 };
 
 const aplicarTema = () => {
     try {
-        const temaAlmacenado = gestionarLocalStorage("cargar", "theme") || 'dark';
-        document.body.dataset.theme = temaAlmacenado as string;
+        const temaAlmacenado = gestionarLocalStorage("cargar", "theme") as string | null;
+        if (temaAlmacenado) {
+            document.body.dataset.theme = temaAlmacenado;
+            console.log(`Tema aplicado: ${temaAlmacenado}`);
+        }
     } catch (error) {
         console.error('Error al aplicar el tema', error); // Elaborar en versiones futuras 
     }
@@ -309,4 +356,5 @@ const controlarBotonGuardar = () => {
     if (guardarBtn) {
         guardarBtn.style.display = 'none'; // Ocultar botón
     }
+    console.log('Controlar botón guardar.');
 };

@@ -1,22 +1,88 @@
 /* Nombre del archivo: scss/style.scss
  Autor: Alessio Aguirre Pimentel
-Version: 48 */
-
+Versión: 02 */
 
 // Variables
-// Light para futuras versiones
-$fuente-color-dark: rgb(180, 178, 178);
+$font-color-light: black;
+$background-color-light: white;
+$font-color-dark: white;
 $background-color-dark: black;
-$fuente-color-dark-title: white;
-$borde-color-dark-brillante: white;
-$borde-color-dark-medio: gray;
-$input-fondo-color-dark: #333;
-$input-texto-color-dark: white;
-$input-borde-color-dark: #555;
 
+$border-color-light: #ccc; // Color de borde para el tema claro
+$border-color-dark: #444; // Color de borde para el tema oscuro
+
+// Mixins
+@mixin theme($font-color, $background-color, $border-color) {
+    color: $font-color;
+    background-color: $background-color;
+    border-color: $border-color;
+}
+
+// Body styles for light and dark themes
+body.light {
+    @include theme($font-color-light, $background-color-light, $border-color-light);
+}
+
+body.dark {
+    @include theme($font-color-dark, $background-color-dark, $border-color-dark);
+}
+
+// Theme switcher styles
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #2196F3;
+}
+
+input:checked+.slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+// Estilos existentes...
 
 body {
-    color: $fuente-color-dark;
+    color: $font-color-dark;
     background-color: $background-color-dark;
     font-size: 16px;
     padding: 0;
@@ -75,7 +141,7 @@ header {
 .sitio-titulo {
     font-weight: bold;
     font-size: 1.5rem;
-    color: $fuente-color-dark;
+    color: $font-color-dark;
 }
 
 h1 {
@@ -84,7 +150,7 @@ h1 {
 }
 
 h2 {
-    color: $fuente-color-dark-title;
+    color: $font-color-dark;
     font-size: 1.15rem;
     margin-top: 1rem;
 }
@@ -108,7 +174,7 @@ ul {
     padding: 0 0.75rem;
     margin: 1rem auto;
     box-sizing: border-box;
-    border: 2px solid $borde-color-dark-brillante;
+    border: 2px solid $border-color-dark;
     border-radius: 10px;
 }
 
@@ -128,7 +194,7 @@ ul {
 
 /* Error para validación de formulario */
 .error {
-    color: $fuente-color-dark-title;
+    color: $font-color-dark;
 }
 
 .contenedor-02 {
@@ -137,13 +203,13 @@ ul {
 }
 
 .borde-01 {
-    border: 2px solid $borde-color-dark-medio;
+    border: 2px solid $border-color-dark;
     border-radius: 10px;
     padding: .5rem;
 }
 
 legend {
-    border: 1px solid $borde-color-dark-medio;
+    border: 1px solid $border-color-dark;
     border-radius: 10px;
     padding: 5px 10px;
 }
@@ -154,7 +220,7 @@ section {
 
 #información-general {
     grid-column: 1 / 2;
-    grid-row: 1 / 3; // Adjust based on layout
+    grid-row: 1 / 3; // Ajustar según el diseño
 }
 
 #seccion-turnos {
@@ -163,7 +229,7 @@ section {
 }
 
 #seccion-salida-datos-dos {
-    border: 2px solid $borde-color-dark-medio;
+    border: 2px solid $border-color-dark;
     border-radius: 10px;
     padding: .5rem;
     margin-top: 1rem;
@@ -176,9 +242,9 @@ form {
     input[type="tel"],
     select,
     option {
-        background-color: $input-fondo-color-dark;
-        color: $input-texto-color-dark;
-        border: 1px solid $input-borde-color-dark;
+        background-color: $background-color-dark;
+        color: $font-color-dark;
+        border: 1px solid $border-color-dark;
         padding: 0.15rem;
         margin-bottom: 0.5rem;
 
@@ -194,14 +260,14 @@ form {
     }
 
     input[type="submit"] {
-        background-color: $fuente-color-dark;
+        background-color: $font-color-dark;
         color: $background-color-dark;
         border: none;
         padding: 0.5rem 0.5rem;
         cursor: pointer;
 
         &:hover {
-            background-color: darken($fuente-color-dark, 25%);
+            background-color: darken($font-color-dark, 25%);
         }
     }
 
@@ -271,7 +337,7 @@ select[id^="servicio"] {
     }
 }
 
-@media (min-width: 1200px) and (max-width: 1439px) {
+@media (min-width: 1200px) and (max-width: 0px) {
 
     .contenedor-01,
     .contenedor-02,

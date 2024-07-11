@@ -1,9 +1,72 @@
 @charset "UTF-8";
 /* Nombre del archivo: scss/style.scss
  Autor: Alessio Aguirre Pimentel
-Version: 48 */
+Versión: 02 */
+body.light {
+  color: black;
+  background-color: white;
+  border-color: #ccc;
+}
+
+body.dark {
+  color: white;
+  background-color: black;
+  border-color: #444;
+}
+
+.theme-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
 body {
-  color: rgb(180, 178, 178);
+  color: white;
   background-color: black;
   font-size: 16px;
   padding: 0;
@@ -55,7 +118,7 @@ header h1 {
 .sitio-titulo {
   font-weight: bold;
   font-size: 1.5rem;
-  color: rgb(180, 178, 178);
+  color: white;
 }
 
 h1 {
@@ -88,7 +151,7 @@ ul {
   padding: 0 0.75rem;
   margin: 1rem auto;
   box-sizing: border-box;
-  border: 2px solid white;
+  border: 2px solid #444;
   border-radius: 10px;
 }
 
@@ -116,13 +179,13 @@ ul {
 }
 
 .borde-01 {
-  border: 2px solid gray;
+  border: 2px solid #444;
   border-radius: 10px;
   padding: 0.5rem;
 }
 
 legend {
-  border: 1px solid gray;
+  border: 1px solid #444;
   border-radius: 10px;
   padding: 5px 10px;
 }
@@ -142,7 +205,7 @@ section {
 }
 
 #seccion-salida-datos-dos {
-  border: 2px solid gray;
+  border: 2px solid #444;
   border-radius: 10px;
   padding: 0.5rem;
   margin-top: 1rem;
@@ -155,9 +218,9 @@ form input[type=text],
 form input[type=tel],
 form select,
 form option {
-  background-color: #333;
+  background-color: black;
   color: white;
-  border: 1px solid #555;
+  border: 1px solid #444;
   padding: 0.15rem;
   margin-bottom: 0.5rem;
   box-sizing: border-box;
@@ -175,14 +238,14 @@ form option[id^=mascota-edad] {
   width: 3ch;
 }
 form input[type=submit] {
-  background-color: rgb(180, 178, 178);
+  background-color: white;
   color: black;
   border: none;
   padding: 0.5rem 0.5rem;
   cursor: pointer;
 }
 form input[type=submit]:hover {
-  background-color: #757272;
+  background-color: #bfbfbf;
 }
 form button {
   display: inline-block;
@@ -241,7 +304,7 @@ select[id^=servicio] {
     max-width: 970px;
   }
 }
-@media (min-width: 1200px) and (max-width: 1439px) {
+@media (min-width: 1200px) and (max-width: 0px) {
   .contenedor-01,
   .contenedor-02,
   .contenedor {
