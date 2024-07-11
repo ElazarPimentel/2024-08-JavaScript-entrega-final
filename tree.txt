@@ -18,12 +18,11 @@
 │   └── style.scss
 ├── tree.txt
 ├── ts
-│   ├── src
-│   │   ├── domUpdates.ts
-│   │   ├── localStorage.ts
-│   │   ├── main.ts
-│   │   └── validaciones.ts
-│   └── tsconfig.json
+│   ├── domUpdates.ts
+│   ├── localStorage.ts
+│   ├── main.ts
+│   ├── tsconfig.json
+│   └── validaciones.ts
 └── tsc.txt
 
-7 directories, 20 files
+6 directories, 20 files

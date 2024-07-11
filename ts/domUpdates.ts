@@ -104,3 +104,22 @@ export const actualizarDOM = (cliente: Cliente | null, mascotas: Mascota[], turn
         console.error('Error al actualizar el DOM', error);
     }
 };
+
+// Populate appointment data from local storage
+export function populateAppointmentData(data: any) {
+    (document.getElementById('cliente-nombre') as HTMLInputElement).value = data.clienteNombre || '';
+    (document.getElementById('cliente-telefono') as HTMLInputElement).value = data.clienteTelefono || '';
+    (document.getElementById('numero-mascotas') as HTMLInputElement).value = data.numeroMascotas || '';
+    (document.getElementById('turno-fecha') as HTMLInputElement).value = data.turnoFecha || '';
+    (document.getElementById('turno-hora') as HTMLInputElement).value = data.turnoHora || '';
+
+    // Show the sections if they have data
+    if (data.clienteNombre && data.clienteTelefono) {
+        (document.getElementById('formulario-mascotas-info') as HTMLElement).style.display = 'block';
+    }
+    if (data.numeroMascotas && data.turnoFecha && data.turnoHora) {
+        (document.getElementById('mascotas-formulario') as HTMLElement).style.display = 'block';
+        (document.getElementById('botones-gardar-borrar') as HTMLElement).style.display = 'block';
+        (document.getElementById('seccion-salida-datos-dos') as HTMLElement).style.display = 'block';
+    }
+}

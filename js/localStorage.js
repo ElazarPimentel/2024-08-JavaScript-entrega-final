@@ -1,6 +1,6 @@
 /* Nombre del archivo: ts/src/localStorage.ts
 Autor: Alessio Aguirre Pimentel
-Versión: 02 */
+Versión: 2024-07-11-1646 */
 export const gestionarLocalStorage = (accion, clave, valor) => {
     try {
         switch (accion) {
@@ -44,3 +44,7 @@ export const gestionarLocalStorage = (accion, clave, valor) => {
         return null;
     }
 };
+export function getDataFromLocalStorage(key) {
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : null;
+}

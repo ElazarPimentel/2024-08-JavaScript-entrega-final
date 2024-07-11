@@ -69,3 +69,20 @@ export const actualizarDOM = (cliente, mascotas, turnos, servicios) => {
         console.error('Error al actualizar el DOM', error);
     }
 };
+// Populate appointment data from local storage
+export function populateAppointmentData(data) {
+    document.getElementById('cliente-nombre').value = data.clienteNombre || '';
+    document.getElementById('cliente-telefono').value = data.clienteTelefono || '';
+    document.getElementById('numero-mascotas').value = data.numeroMascotas || '';
+    document.getElementById('turno-fecha').value = data.turnoFecha || '';
+    document.getElementById('turno-hora').value = data.turnoHora || '';
+    // Show the sections if they have data
+    if (data.clienteNombre && data.clienteTelefono) {
+        document.getElementById('formulario-mascotas-info').style.display = 'block';
+    }
+    if (data.numeroMascotas && data.turnoFecha && data.turnoHora) {
+        document.getElementById('mascotas-formulario').style.display = 'block';
+        document.getElementById('botones-gardar-borrar').style.display = 'block';
+        document.getElementById('seccion-salida-datos-dos').style.display = 'block';
+    }
+}

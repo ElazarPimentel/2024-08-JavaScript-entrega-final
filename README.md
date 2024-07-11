@@ -15,3 +15,10 @@ Este proyecto es la entrega final para el curso de JavaScript en CoderHouse. Es 
 - *HTML*
 - *SCSS*
 - *JavaScript*
+
+## Autor
+- Elazar (Alessio) Pimentel 
+- Correo: Elazar.Pimentel@gmail.com 
+- Comentarios: //I love chocolate
+
+## Cambios 

@@ -1,10 +1,11 @@
-/* Nombre del archivo: ts/src/main.ts
-   Autor: Alessio Aguirre Pimentel
-   Versión: 04 */
+/*  Nombre del archivo fuente: ts/src/main.ts
+    Nombre del archivo destino: js/main.js
+    Autor: Alessio Aguirre Pimentel
+    Versión: 04 */
 
-import { gestionarLocalStorage } from './localStorage.js';
+import { gestionarLocalStorage, getDataFromLocalStorage } from './localStorage.js';
 import { mostrarError, limpiarError, validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js';
-import { actualizarServiciosList, actualizarHorariosList, actualizarDOM } from './domUpdates.js';
+import { actualizarServiciosList, actualizarHorariosList, actualizarDOM, populateAppointmentData } from './domUpdates.js';
 
 interface Servicio {
     [key: number]: string;
@@ -109,6 +110,19 @@ class TurnoClass implements Turno {
         return `${prefix}_` + Math.random().toString(36).slice(2, 11);
     }
 }
+
+// Event listener to run when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Retrieve stored appointment data from local storage
+    const storedData = getDataFromLocalStorage('appointmentData');
+    // If data exists, populate the form with this data
+    if (storedData) {
+        populateAppointmentData(storedData);
+    }
+
+    // Attach event listener to the "Siguiente" button
+    document.getElementById('siguiente-mascota')!.addEventListener('click', mostrarFormulariosMascotas);
+});
 
 // Definir funciones antes de usarlas
 
@@ -263,11 +277,6 @@ const mostrarFormulariosMascotas = () => {
 
     if (!validarDiaAbierto(fecha.value)) {
         mostrarError(fecha, "La veterinaria está cerrada ese día. Por favor elija otro día.");
-        return;
-    }
-
-    if (!validarHora(fecha.value, hora.value, horarios, numMascotas.value)) {
-        mostrarError(hora, "La hora del turno debe estar dentro del horario de atención y al menos una hora después de la hora actual.");
         return;
     }
 

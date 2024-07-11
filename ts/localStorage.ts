@@ -1,6 +1,6 @@
 /* Nombre del archivo: ts/src/localStorage.ts
 Autor: Alessio Aguirre Pimentel
-Versión: 02 */
+Versión: 2024-07-11-1646 */
 
 type Accion = "guardar" | "cargar" | "borrar" | "borrarTodo";
 
@@ -42,3 +42,8 @@ export const gestionarLocalStorage = <T>(accion: Accion, clave?: string, valor?:
         return null;
     }
 };
+
+export function getDataFromLocalStorage(key: string) {
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : null;
+}
