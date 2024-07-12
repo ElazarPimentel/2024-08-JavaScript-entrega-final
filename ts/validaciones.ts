@@ -1,8 +1,8 @@
 /* Nombre del archivo: ts/src/validaciones.ts
  Autor: Alessio Aguirre Pimentel
- Versión: 01 */
+ Versión: 100 */
 
-interface Horario {
+ interface Horario {
     [day: string]: string;
 }
 
@@ -78,7 +78,7 @@ export const validarHora = (fecha: string, hora: string, horarios: Horario, nume
 
     const turnoHoraFinal = new Date(turnoHora.getTime() + 45 * 60000 * numeroDeMascotasParsed);
 
-    return turnoHora >= new Date(Date.now() + 3600000) && turnoHora >= inicio && turnoHoraFinal <= fin;
+    return turnoHora >= inicio && turnoHoraFinal <= fin && turnoHora >= new Date(Date.now() + 3600000);
 };
 
 // Validar la edad de la mascota

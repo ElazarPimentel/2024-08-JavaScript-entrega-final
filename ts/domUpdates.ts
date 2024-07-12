@@ -1,6 +1,6 @@
 /* Nombre del archivo: ts/src/domUpdates.ts
 Autor: Alessio Aguirre Pimentel
-Versión: 02 */
+Versión: 100 */
 
 interface Servicio {
     [id: number]: string;

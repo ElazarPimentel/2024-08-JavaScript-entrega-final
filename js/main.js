@@ -1,9 +1,9 @@
 /*  Nombre del archivo fuente: ts/src/main.ts
     Nombre del archivo destino: js/main.js
     Autor: Alessio Aguirre Pimentel
-    Versión: 04 */
+    Versión: 100 */
 import { gestionarLocalStorage, getDataFromLocalStorage } from './localStorage.js';
-import { mostrarError, limpiarError, validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarEdadMascota } from './validaciones.js';
+import { mostrarError, limpiarError, validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js';
 import { actualizarServiciosList, actualizarHorariosList, actualizarDOM, populateAppointmentData } from './domUpdates.js';
 const servicios = {
     1: "Bañado y Peinado",
@@ -218,24 +218,28 @@ const mostrarFormulariosMascotas = () => {
         mostrarError(fecha, "La veterinaria está cerrada ese día. Por favor elija otro día.");
         return;
     }
+    if (!validarHora(fecha.value, hora.value, horarios, numMascotas.value)) {
+        mostrarError(hora, "La hora del turno debe estar dentro del horario de atención y al menos una hora después de la hora actual.");
+        return;
+    }
     const mascotasForm = document.getElementById("mascotas-formulario");
     mascotasForm.innerHTML = '';
     for (let i = 0; i < parseInt(numMascotas.value); i++) {
         const petForm = document.createElement("form");
         petForm.setAttribute("id", `form-mascota-${i}`);
         petForm.innerHTML = `
-            <fieldset>
-                <legend>Datos de la Mascota ${i + 1}</legend>
-                <label for="mascota-nombre-${i}">Nombre de mascota:</label>
-                <input type="text" id="mascota-nombre-${i}" name="mascota-nombre-${i}" required aria-label="Nombre de la Mascota ${i + 1}">
-                <label for="mascota-edad-${i}">Edad (años):</label>
-                <input type="text" id="mascota-edad-${i}" name="mascota-edad-${i}" required aria-label="Edad de la Mascota ${i + 1}">
-                <label for="servicio-${i}">Servicio</label>
-                <select id="servicio-${i}" required aria-label="Servicio para la Mascota ${i + 1}">
-                    ${Object.entries(servicios).map(([id, nombre]) => `<option value="${id}">${nombre}</option>`).join('')}
-                </select>
-            </fieldset>
-        `;
+                <fieldset>
+                    <legend>Datos de la Mascota ${i + 1}</legend>
+                    <label for="mascota-nombre-${i}">Nombre de mascota:</label>
+                    <input type="text" id="mascota-nombre-${i}" name="mascota-nombre-${i}" required aria-label="Nombre de la Mascota ${i + 1}">
+                    <label for="mascota-edad-${i}">Edad (años):</label>
+                    <input type="text" id="mascota-edad-${i}" name="mascota-edad-${i}" required aria-label="Edad de la Mascota ${i + 1}">
+                    <label for="servicio-${i}">Servicio</label>
+                    <select id="servicio-${i}" required aria-label="Servicio para la Mascota ${i + 1}">
+                        ${Object.entries(servicios).map(([id, nombre]) => `<option value="${id}">${nombre}</option>`).join('')}
+                    </select>
+                </fieldset>
+            `;
         mascotasForm.appendChild(petForm);
     }
     mascotasForm.style.display = "block";

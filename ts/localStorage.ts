@@ -1,6 +1,6 @@
 /* Nombre del archivo: ts/src/localStorage.ts
 Autor: Alessio Aguirre Pimentel
-Versión: 2024-07-11-1646 */
+Versión: 100 */
 
 type Accion = "guardar" | "cargar" | "borrar" | "borrarTodo";
 

@@ -1,6 +1,6 @@
 /* Nombre del archivo: ts/src/domUpdates.ts
 Autor: Alessio Aguirre Pimentel
-Versión: 02 */
+Versión: 100 */
 // Actualiza la lista de servicios en el DOM
 export const actualizarServiciosList = (servicios) => {
     try {
