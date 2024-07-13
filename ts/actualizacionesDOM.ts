@@ -1,6 +1,9 @@
-/* Nombre del archivo: ts/src/domUpdates.ts
+/* Nombre del archivo: ts/actualizacionesDOM.ts
 Autor: Alessio Aguirre Pimentel
-Versión: 100 */
+Versión: 113
+Descripción: Funciones para actualizar el DOM con los datos de la aplicación. */
+
+import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 
 interface Servicio {
     [id: number]: string;
@@ -32,7 +35,7 @@ interface Turno {
 }
 
 // Actualiza la lista de servicios en el DOM
-export const actualizarServiciosList = (servicios: Servicio): void => {
+export const actualizarListaDeServicios = (servicios: Servicio): void => {
     try {
         const serviciosList = document.getElementById("servicios-listado");
         if (!serviciosList) {
@@ -50,7 +53,7 @@ export const actualizarServiciosList = (servicios: Servicio): void => {
 };
 
 // Actualiza la lista de horarios en el DOM
-export const actualizarHorariosList = (horarios: Horario): void => {
+export const actualizarListaDeHorarios = (horarios: Horario): void => {
     try {
         const horariosList = document.getElementById("horarios-listado");
         if (!horariosList) {
@@ -72,6 +75,10 @@ export const actualizarDOM = (cliente: Cliente | null, mascotas: Mascota[], turn
     try {
         const clienteDetalles = document.getElementById('cliente-detalles');
         const mascotaDetalles = document.getElementById('mascota-detalles');
+        const guardarClienteBtn = document.getElementById("guardar-cliente") as HTMLButtonElement;
+        const siguienteMascotaBtn = document.getElementById("siguiente-mascota") as HTMLButtonElement;
+        const guardarMascotasTurnosBtn = document.getElementById("guardar-mascotas-turnos") as HTMLButtonElement;
+        const borrarDatosBtn = document.getElementById("borrar-datos") as HTMLButtonElement;
 
         if (!clienteDetalles || !mascotaDetalles) {
             throw new Error("Elementos requeridos faltantes en el DOM.");
@@ -100,26 +107,55 @@ export const actualizarDOM = (cliente: Cliente | null, mascotas: Mascota[], turn
             turnoInfo.innerHTML = `${index === 0 ? fechaPrimeraVezTexto : ""}<p><strong>Hora</strong>: ${turno.turnoHora} <strong>Mascota</strong>: ${mascota.mascotaNombre} (${mascota.mascotaEdad} año/s) <strong>Servicio</strong>: ${servicio}</p>`;
             mascotaDetalles.appendChild(turnoInfo);
         });
+
+        // Mostrar u ocultar los botones según corresponda
+        if (cliente || turnos.length > 0) {
+            guardarClienteBtn.style.display = "none";
+            siguienteMascotaBtn.style.display = "none";
+            guardarMascotasTurnosBtn.style.display = "none";
+            borrarDatosBtn.style.display = "inline-block";
+        } else {
+            guardarClienteBtn.style.display = "inline-block";
+            siguienteMascotaBtn.style.display = "inline-block";
+            guardarMascotasTurnosBtn.style.display = "inline-block";
+            borrarDatosBtn.style.display = "none";
+        }
     } catch (error) {
         console.error('Error al actualizar el DOM', error);
     }
 };
 
-// Populate appointment data from local storage
-export function populateAppointmentData(data: any) {
-    (document.getElementById('cliente-nombre') as HTMLInputElement).value = data.clienteNombre || '';
-    (document.getElementById('cliente-telefono') as HTMLInputElement).value = data.clienteTelefono || '';
-    (document.getElementById('numero-mascotas') as HTMLInputElement).value = data.numeroMascotas || '';
-    (document.getElementById('turno-fecha') as HTMLInputElement).value = data.turnoFecha || '';
-    (document.getElementById('turno-hora') as HTMLInputElement).value = data.turnoHora || '';
+// Poblamos los datos de la cita desde el almacenamiento local
+export function poblarDatosDeCita(data: any) {
+    const appointmentData = data.valor || data;
 
-    // Show the sections if they have data
-    if (data.clienteNombre && data.clienteTelefono) {
+    (document.getElementById('cliente-nombre') as HTMLInputElement).value = appointmentData.clienteNombre || '';
+    (document.getElementById('cliente-telefono') as HTMLInputElement).value = appointmentData.clienteTelefono || '';
+    (document.getElementById('numero-mascotas') as HTMLInputElement).value = appointmentData.numeroMascotas || '';
+    (document.getElementById('turno-fecha') as HTMLInputElement).value = appointmentData.turnoFecha || '';
+    (document.getElementById('turno-hora') as HTMLInputElement).value = appointmentData.turnoHora || '';
+
+    // Mostrar las secciones si tienen datos
+    if (appointmentData.clienteNombre && appointmentData.clienteTelefono) {
         (document.getElementById('formulario-mascotas-info') as HTMLElement).style.display = 'block';
     }
-    if (data.numeroMascotas && data.turnoFecha && data.turnoHora) {
+    if (appointmentData.numeroMascotas && appointmentData.turnoFecha && appointmentData.turnoHora) {
         (document.getElementById('mascotas-formulario') as HTMLElement).style.display = 'block';
         (document.getElementById('botones-gardar-borrar') as HTMLElement).style.display = 'block';
         (document.getElementById('seccion-salida-datos-dos') as HTMLElement).style.display = 'block';
     }
 }
+
+// Guardar datos de la cita en el almacenamiento local
+export const guardarDatosDeCita = (cliente: Cliente, mascotas: Mascota[], turnos: Turno[]): void => {
+    const appointmentData = {
+        clienteNombre: cliente.clienteNombre,
+        clienteTelefono: cliente.clienteTelefono,
+        numeroMascotas: mascotas.length,
+        turnoFecha: turnos.length > 0 ? turnos[0].turnoFecha : '',
+        turnoHora: turnos.length > 0 ? turnos[0].turnoHora : '',
+        mascotas,
+        turnos
+    };
+    gestionarAlmacenamientoLocal("guardar", "appointmentData", appointmentData);
+};

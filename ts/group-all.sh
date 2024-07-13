@@ -8,6 +8,11 @@ echo -e "\n-------------------\n" >> "$temp_file"
 cat "../index.html" >> "$temp_file"
 echo -e "\n-------------------\n" >> "$temp_file"
 
+# Insert ../scss/style.scss with separator lines
+echo -e "\n-------------------\n" >> "$temp_file"
+cat "../scss/style.scss" >> "$temp_file"
+echo -e "\n-------------------\n" >> "$temp_file"
+
 # Concatenate all *.ts files into the temporary file with separator lines
 for file in *.ts; do
   cat "$file" >> "$temp_file"

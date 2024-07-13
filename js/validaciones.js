@@ -1,6 +1,7 @@
-/* Nombre del archivo: ts/src/validaciones.ts
- Autor: Alessio Aguirre Pimentel
- Versión: 100 */
+/* Nombre del archivo: ts/validaciones.ts
+Autor: Alessio Aguirre Pimentel
+Versión: 113
+Descripción: Funciones para la validación de datos del formulario. */
 // Mostrar un mensaje de error al lado del elemento especificado
 export const mostrarError = (elemento, mensaje) => {
     let error = elemento.nextElementSibling;

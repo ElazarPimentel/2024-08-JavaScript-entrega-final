@@ -1,6 +1,6 @@
 /* Nombre del archivo: scss/style.scss
    Autor: Alessio Aguirre Pimentel
-   Versión: 02 */
+   Versión: 113 */
 
 // Variables
 $font-color-light: black;
@@ -195,7 +195,7 @@ ul {
 
 /* Error para validación de formulario */
 .error {
-    color: $font-color-dark;
+    color: red;
 }
 
 .contenedor-02 {

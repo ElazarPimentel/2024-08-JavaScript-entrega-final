@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /* Nombre del archivo: scss/style.scss
    Autor: Alessio Aguirre Pimentel
-   Versión: 02 */
+   Versión: 113 */
 body.light {
   color: black;
   background-color: white;
@@ -172,7 +172,7 @@ ul {
 
 /* Error para validación de formulario */
 .error {
-  color: white;
+  color: red;
 }
 
 .contenedor-02 {
