@@ -1,6 +1,6 @@
 <!-- File name: index.html 
 Alumno: Alessio Aguirre Pimentel
-Version 02 -->
+Version 113 -->
 
 <!DOCTYPE html>
 <html lang="es">
@@ -16,7 +16,7 @@ Version 02 -->
 <body>
     <header class="contenedor">
         <div id="header-izquierda">
-            <img src="img/logo01.png.bak" alt="Logo de la Veterinaria Pata-Pata-Gonia"
+            <img src="img/logo01.png" alt="Logo de la Veterinaria Pata-Pata-Gonia"
                 title="Logo de la Veterinaria Pata-Pata-Gonia">
         </div>
         <div id="header-centro">
@@ -24,7 +24,7 @@ Version 02 -->
         </div>
         <div id="header-derecha">
             <label class="theme-switch" for="checkbox">
-                <input type="checkbox" id="checkbox">
+                <input type="checkbox" id="checkbox" aria-label="Toggle dark/light theme" checked>
                 <span class="slider round"></span>
             </label>
         </div>
@@ -33,11 +33,11 @@ Version 02 -->
     <main class="contenedor-01">
         <section class="borde-01" id="información-general">
             <h2>Nuestros servicios</h2>
-            <ul id="servicios-listado">
+            <ul id="servicios-listado" aria-describedby="lista de servicios disponibles">
                 <!-- servicios llenar con JS -->
             </ul>
             <h2>Nuestros horarios de atención</h2>
-            <ul id="horarios-listado">
+            <ul id="horarios-listado" aria-describedby="lista de horarios disponibles">
                 <!-- horarios llenar con JS -->
             </ul>
         </section>
@@ -48,11 +48,9 @@ Version 02 -->
                 <fieldset>
                     <legend>Datos del Cliente</legend>
                     <label for="cliente-nombre">Tu nombre:</label>
-                    <input type="text" id="cliente-nombre" name="cliente-nombre" required
-                        aria-label="Nombre del Cliente">
+                    <input type="text" id="cliente-nombre" name="cliente-nombre" required aria-label="Nombre del Cliente">
                     <label for="cliente-telefono">Teléfono:</label>
-                    <input type="tel" id="cliente-telefono" name="cliente-telefono" required
-                        aria-label="Teléfono del Cliente">
+                    <input type="tel" id="cliente-telefono" name="cliente-telefono" required aria-label="Teléfono del Cliente">
                     <button type="button" id="guardar-cliente">Guardar</button>
                 </fieldset>
             </form>
@@ -60,7 +58,7 @@ Version 02 -->
                 <fieldset>
                     <legend>Información de las Mascotas y Turnos</legend>
                     <label for="numero-mascotas">Número de mascotas:</label>
-                    <input type="text" id="numero-mascotas" name="numero-mascotas" required>
+                    <input type="number" id="numero-mascotas" name="numero-mascotas" required min="1" max="3">
                     <label for="turno-fecha">Fecha:</label>
                     <input type="date" id="turno-fecha" name="turno-fecha" required>
                     <label for="turno-hora">Hora:</label>

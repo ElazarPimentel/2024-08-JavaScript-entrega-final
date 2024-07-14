@@ -1,6 +1,7 @@
-/* Nombre del archivo: ts/src/validaciones.ts
- Autor: Alessio Aguirre Pimentel
- Versión: 01 */
+/* Nombre del archivo: ts/validaciones.ts
+Autor: Alessio Aguirre Pimentel
+Versión: 113
+Descripción: Funciones para la validación de datos del formulario. */
 // Mostrar un mensaje de error al lado del elemento especificado
 export const mostrarError = (elemento, mensaje) => {
     let error = elemento.nextElementSibling;
@@ -61,7 +62,7 @@ export const validarHora = (fecha, hora, horarios, numeroDeMascotas) => {
         return false;
     }
     const turnoHoraFinal = new Date(turnoHora.getTime() + 45 * 60000 * numeroDeMascotasParsed);
-    return turnoHora >= new Date(Date.now() + 3600000) && turnoHora >= inicio && turnoHoraFinal <= fin;
+    return turnoHora >= inicio && turnoHoraFinal <= fin && turnoHora >= new Date(Date.now() + 3600000);
 };
 // Validar la edad de la mascota
 export const validarEdadMascota = (edad) => {
