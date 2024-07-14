@@ -26,9 +26,9 @@ export const configurarOyentesDeEventos = () => {
             }
         }
     });
-    const switchTema = document.getElementById('checkbox');
-    switchTema.addEventListener('change', () => {
-        const theme = switchTema.checked ? 'dark' : 'light';
+    const themeToggle = document.getElementById('checkbox');
+    themeToggle.addEventListener('change', () => {
+        const theme = themeToggle.checked ? 'dark' : 'light';
         document.body.dataset.theme = theme;
         gestionarAlmacenamientoLocal('guardar', 'theme', theme);
     });

@@ -31,9 +31,9 @@ export const configurarOyentesDeEventos = () => {
         }
     });
 
-    const switchTema = document.getElementById('checkbox') as HTMLInputElement;
-    switchTema.addEventListener('change', () => {
-        const theme = switchTema.checked ? 'dark' : 'light';
+    const themeToggle = document.getElementById('checkbox') as HTMLInputElement;
+    themeToggle.addEventListener('change', () => {
+        const theme = themeToggle.checked ? 'dark' : 'light';
         document.body.dataset.theme = theme;
         gestionarAlmacenamientoLocal('guardar', 'theme', theme);
     });
