@@ -1,8 +1,13 @@
 /* Nombre del archivo: ts/manejoErrores.ts
 Autor: Alessio Aguirre Pimentel
-Versión: 200
+Versión: 201
 Descripción: Funciones para manejar y mostrar mensajes de error al usuario. */
 export const mostrarError = (mensaje) => {
-    alert(`Error: ${mensaje}`);
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: mensaje,
+        confirmButtonText: 'Cerrar'
+    });
     console.error(mensaje);
 };

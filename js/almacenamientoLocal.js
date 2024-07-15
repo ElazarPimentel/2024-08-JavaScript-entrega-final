@@ -1,7 +1,8 @@
 /* Nombre del archivo: ts/almacenamientoLocal.ts
 Autor: Alessio Aguirre Pimentel
-Versión: 200
+Versión: 202
 Descripción: Funciones para gestionar el almacenamiento local. */
+import { mostrarError as mostrarErrorGlobal } from './manejoErrores.js';
 // Función para gestionar el almacenamiento local
 export const gestionarAlmacenamientoLocal = (accion, clave, valor) => {
     try {
@@ -47,7 +48,8 @@ export const gestionarAlmacenamientoLocal = (accion, clave, valor) => {
         }
     }
     catch (error) {
-        console.error(`Error al ${accion} en almacenamiento local`, error);
+        const err = error;
+        mostrarErrorGlobal(`Error al ${accion} en almacenamiento local: ${err.message}`);
         return null;
     }
 };

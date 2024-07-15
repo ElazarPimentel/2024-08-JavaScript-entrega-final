@@ -1,6 +1,6 @@
 /* Nombre del archivo: ts/inicializacionApp.ts
 Autor: Alessio Aguirre Pimentel
-Versión: 200
+Versión: 202
 Descripción: Lógica de inicialización de la aplicación, incluyendo la obtención de datos de feriados. */
 
 // luxon variable global
@@ -9,8 +9,9 @@ declare const luxon: any;
 const DateTime = luxon.DateTime; // Usar el objeto global luxon
 
 import { gestionarAlmacenamientoLocal, obtenerDatosDeAlmacenamientoLocal } from './almacenamientoLocal.js';
-import { mostrarError, limpiarError, validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js';
+import { limpiarError, validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js';
 import { actualizarListaDeServicios, actualizarListaDeHorarios, actualizarDOM, poblarDatosDeCita, guardarDatosDeCita } from './actualizacionesDOM.js';
+import { mostrarError as mostrarErrorGlobal } from './manejoErrores.js';
 
 // Interfaces para los datos de la aplicación
 interface Servicio {
@@ -131,7 +132,7 @@ async function traerFeriados(anio: number): Promise<any> {
         const data = await response.json();
         return data;
     } catch (error) {
-        mostrarError(document.body, 'No se pudieron obtener los feriados. Por favor verificá no sacar un turno en un feriado dado que estamos cerrados');
+        mostrarErrorGlobal('No se pudieron obtener los feriados. Por favor verificá no sacar un turno en un feriado dado que estamos cerrados');
         return null;
     }
 }
@@ -180,12 +181,12 @@ export const guardarCliente = () => {
     limpiarError(telefono);
 
     if (!validarNombre(nombre.value)) {
-        mostrarError(nombre, "El nombre debe contener entre 2 y 25 letras del alfabeto latino.");
+        mostrarErrorGlobal("El nombre debe contener entre 2 y 25 letras del alfabeto latino.");
         return;
     }
 
     if (!validarTelefono(telefono.value)) {
-        mostrarError(telefono, "El teléfono debe contener solo números, signos +, -, (, ), y espacios, con un máximo de 20 caracteres.");
+        mostrarErrorGlobal("El teléfono debe contener solo números, signos +, -, (, ), y espacios, con un máximo de 20 caracteres.");
         return;
     }
 
@@ -205,22 +206,22 @@ export const mostrarFormulariosMascotas = () => {
     limpiarError(hora);
 
     if (!validarNumeroMascotas(numMascotas.value)) {
-        mostrarError(numMascotas, "El número de mascotas debe estar entre 1 y 3. Si tiene más de tres mascotas, por favor haga otro turno para las otras mascotas.");
+        mostrarErrorGlobal("El número de mascotas debe estar entre 1 y 3. Si tiene más de tres mascotas, por favor haga otro turno para las otras mascotas.");
         return;
     }
 
     if (!validarFecha(fecha.value)) {
-        mostrarError(fecha, "La fecha del turno debe ser un día que la veterinaria esté abierta y dentro de los próximos 45 días.");
+        mostrarErrorGlobal("La fecha del turno debe ser un día que la veterinaria esté abierta y dentro de los próximos 45 días.");
         return;
     }
 
     if (!validarDiaAbierto(fecha.value)) {
-        mostrarError(fecha, "La veterinaria está cerrada ese día. Por favor elija otro día.");
+        mostrarErrorGlobal("La veterinaria está cerrada ese día. Por favor elija otro día.");
         return;
     }
 
     if (!validarHora(fecha.value, hora.value, horarios, numMascotas.value)) {
-        mostrarError(hora, "La hora del turno debe estar dentro del horario de atención y al menos una hora después de la hora actual.");
+        mostrarErrorGlobal("La hora del turno debe estar dentro del horario de atención y al menos una hora después de la hora actual.");
         return;
     }
 
@@ -255,7 +256,7 @@ ${Object.entries(servicios).map(([id, nombre]: [string, string]) => `<option val
 export const guardarMascotasYTurnos = async () => {
     try {
         if (!cliente) {
-            console.error('Cliente no está inicializado');
+            mostrarErrorGlobal('Cliente no está inicializado');
             return;
         }
 
@@ -270,12 +271,12 @@ export const guardarMascotasYTurnos = async () => {
             const servicioId = parseInt((document.getElementById(`servicio-${i}`) as HTMLSelectElement).value);
 
             if (!validarNombre(mascotaNombre)) {
-                mostrarError(document.getElementById(`mascota-nombre-${i}`)!, "El nombre de la mascota debe contener entre 2 y 25 letras del alfabeto latino.");
+                mostrarErrorGlobal("El nombre de la mascota debe contener entre 2 y 25 letras del alfabeto latino.");
                 return;
             }
 
             if (!validarEdadMascota(mascotaEdad.toString())) {
-                mostrarError(document.getElementById(`mascota-edad-${i}`)!, "La edad de la mascota debe ser un número entre 0 y 40 años.");
+                mostrarErrorGlobal("La edad de la mascota debe ser un número entre 0 y 40 años.");
                 return;
             }
 
@@ -294,7 +295,7 @@ export const guardarMascotasYTurnos = async () => {
         document.getElementById("seccion-salida-datos-dos")!.style.display = "block";
         document.getElementById("guardar-mascotas-turnos")!.style.display = "none"; // Ocultar el botón
     } catch (error) {
-        console.error('Error al guardar mascotas y turnos', error); // Elaborar en versiones futuras
+        mostrarErrorGlobal('Error al guardar mascotas y turnos');
     }
 };
 
@@ -319,7 +320,7 @@ export const aplicarTema = () => {
             (document.getElementById('checkbox') as HTMLInputElement).checked = temaAlmacenado === 'dark';
         }
     } catch (error) {
-        console.error('Error al aplicar el tema', error); // Elaborar en versiones futuras 
+        mostrarErrorGlobal('Error al aplicar el tema');
     }
 };
 
@@ -346,7 +347,7 @@ export const borrarTodosDatos = async () => {
         document.getElementById("borrar-datos")!.style.display = "none";
         document.getElementById("seccion-salida-datos-dos")!.style.display = "none";
     } catch (error) {
-        console.error('Error al borrar todos los datos', error); // Elaborar en versiones futuras
+        mostrarErrorGlobal('Error al borrar todos los datos');
     }
 };
 

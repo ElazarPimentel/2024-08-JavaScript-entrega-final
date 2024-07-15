@@ -1,9 +1,10 @@
 /* Nombre del archivo: ts/actualizacionesDOM.ts
 Autor: Alessio Aguirre Pimentel
-Versión: 200
+Versión: 201
 Descripción: Funciones para actualizar el DOM con los datos de la aplicación. */
 
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
+import { mostrarError as mostrarErrorGlobal } from './manejoErrores.js';
 
 interface Servicio {
     [id: number]: string;
@@ -48,7 +49,7 @@ export const actualizarListaDeServicios = (servicios: Servicio): void => {
             serviciosList.appendChild(li);
         });
     } catch (error) {
-        console.error('Error al actualizar la lista de servicios', error);
+        mostrarErrorGlobal('Error al actualizar la lista de servicios');
     }
 };
 
@@ -66,7 +67,7 @@ export const actualizarListaDeHorarios = (horarios: Horario): void => {
             horariosList.appendChild(li);
         });
     } catch (error) {
-        console.error('Error al actualizar la lista de horarios', error);
+        mostrarErrorGlobal('Error al actualizar la lista de horarios');
     }
 };
 
@@ -121,7 +122,7 @@ export const actualizarDOM = (cliente: Cliente | null, mascotas: Mascota[], turn
             borrarDatosBtn.style.display = "none";
         }
     } catch (error) {
-        console.error('Error al actualizar el DOM', error);
+        mostrarErrorGlobal('Error al actualizar el DOM');
     }
 };
 

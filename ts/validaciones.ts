@@ -1,24 +1,13 @@
 /* Nombre del archivo: ts/validaciones.ts
 Autor: Alessio Aguirre Pimentel
-Versión: 200
+Versión: 202
 Descripción: Funciones para la validación de datos del formulario. */
 
-// Declaración para SweetAlert2
-declare var Swal: any;
+import { mostrarError } from './manejoErrores.js';
 
 interface Horario {
     [day: string]: string;
 }
-
-// Mostrar un mensaje de error al lado del elemento especificado usando SweetAlert2
-export const mostrarError = (elemento: HTMLElement, mensaje: string): void => {
-    Swal.fire({
-        icon: 'info',
-        title: 'Ups :)',
-        text: mensaje,
-        confirmButtonText: 'Cerrar'
-    });
-};
 
 // Limpiar el mensaje de error mostrado (No es necesario modificar el DOM directamente)
 export const limpiarError = (elemento: HTMLElement): void => {
@@ -70,7 +59,7 @@ export const validarHora = (fecha: string, hora: string, horarios: Horario, nume
 
     const numeroDeMascotasParsed = parseInt(numeroDeMascotas, 10);
     if (isNaN(numeroDeMascotasParsed)) {
-        console.error("Número de mascotas inválido:", numeroDeMascotas);
+        mostrarError("Número de mascotas inválido"); // Updated to use mostrarError with a single argument
         return false;
     }
 
