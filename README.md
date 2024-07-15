@@ -48,6 +48,7 @@ Este proyecto es la entrega final para el curso de JavaScript en CoderHouse. Es 
 - El botón Borrar Datos aparece cuando se re-carga la página. 
 - Input número mascotas: aclarar que sea de type="number"
 - Cambiar errores de console.log a cuandros de diálogos con arcoiris y unicornios desde validaciones.js
+- Agregado luxon
 
 # ToDo
 - Crear fetch a API de feriados. 

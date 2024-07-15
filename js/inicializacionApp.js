@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const DateTime = luxon.DateTime; // Use the global luxon object
+const DateTime = luxon.DateTime; // Usar el objeto global luxon
 import { gestionarAlmacenamientoLocal, obtenerDatosDeAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { mostrarError, limpiarError, validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js';
 import { actualizarListaDeServicios, actualizarListaDeHorarios, actualizarDOM, poblarDatosDeCita, guardarDatosDeCita } from './actualizacionesDOM.js';
@@ -40,8 +40,8 @@ class ClienteClass {
         this.clienteNombre = clienteNombre;
         this.clienteTelefono = clienteTelefono;
     }
-    static generarId(prefix) {
-        return `${prefix}_` + Math.random().toString(36).slice(2, 11);
+    static generarId(prefijo) {
+        return `${prefijo}_` + Math.random().toString(36).slice(2, 11);
     }
 }
 // Clase para manejar los datos de la mascota
@@ -52,8 +52,8 @@ class MascotaClass {
         this.mascotaNombre = mascotaNombre;
         this.mascotaEdad = mascotaEdad;
     }
-    static generarId(prefix) {
-        return `${prefix}_` + Math.random().toString(36).slice(2, 11);
+    static generarId(prefijo) {
+        return `${prefijo}_` + Math.random().toString(36).slice(2, 11);
     }
 }
 // Clase para manejar los datos del turno
@@ -65,18 +65,18 @@ class TurnoClass {
         this.turnoHora = turnoHora;
         this.turnoForeignServicioId = turnoForeignServicioId;
     }
-    static generarId(prefix) {
-        return `${prefix}_` + Math.random().toString(36).slice(2, 11);
+    static generarId(prefijo) {
+        return `${prefijo}_` + Math.random().toString(36).slice(2, 11);
     }
 }
 // Función para obtener los feriados de Argentina
-function fetchHolidays(year) {
+function traerFeriados(anio) {
     return __awaiter(this, void 0, void 0, function* () {
-        const url = `https://api.argentinadatos.com/v1/feriados/${year}`;
+        const url = `https://api.argentinadatos.com/v1/feriados/${anio}`;
         try {
             const response = yield fetch(url);
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error('No se pudieron obtener los feriados');
             }
             const data = yield response.json();
             return data;
@@ -88,34 +88,36 @@ function fetchHolidays(year) {
     });
 }
 // Función para verificar si los datos almacenados están desactualizados
-function isDataOutdated(dateString) {
-    const storedDate = DateTime.fromISO(dateString);
-    const currentDate = DateTime.now();
-    const diff = currentDate.diff(storedDate, 'days').days;
-    return diff > 7;
+function datosDesactualizados(fechaString) {
+    const fechaAlmacenada = DateTime.fromISO(fechaString);
+    const fechaActual = DateTime.now();
+    const diferencia = fechaActual.diff(fechaAlmacenada, 'days').days;
+    return diferencia > 7;
 }
 // Función para obtener el año actual
-function getCurrentYear() {
+function obtenerAnioActual() {
     return DateTime.now().year;
 }
 // Inicializar datos de feriados
-function initializeHolidayData() {
+function inicializarDatosFeriados() {
     return __awaiter(this, void 0, void 0, function* () {
-        const storedHolidays = localStorage.getItem('feriadosArgentina');
-        if (storedHolidays) {
-            const { dateFetched, holidays } = JSON.parse(storedHolidays);
-            if (!isDataOutdated(dateFetched)) {
+        const feriadosAlmacenados = localStorage.getItem('feriadosArgentina');
+        if (feriadosAlmacenados) {
+            const { dateFetched, holidays } = JSON.parse(feriadosAlmacenados);
+            if (!datosDesactualizados(dateFetched)) {
+                console.log('Feriados almacenados:', holidays); // Mostrar feriados almacenados en la consola
                 return holidays;
             }
         }
-        const currentYear = getCurrentYear();
-        const holidays = yield fetchHolidays(currentYear);
-        if (holidays) {
-            const dataToStore = {
+        const anioActual = obtenerAnioActual();
+        const feriados = yield traerFeriados(anioActual);
+        if (feriados) {
+            const datosParaAlmacenar = {
                 dateFetched: DateTime.now().toISO(),
-                holidays
+                holidays: feriados
             };
-            localStorage.setItem('feriadosArgentina', JSON.stringify(dataToStore));
+            localStorage.setItem('feriadosArgentina', JSON.stringify(datosParaAlmacenar));
+            console.log('Feriados actualizados:', feriados); // Mostrar feriados actualizados en la consola
         }
     });
 }
@@ -285,7 +287,7 @@ export const comenzarDeNuevo = () => __awaiter(void 0, void 0, void 0, function*
 });
 // Inicializar la aplicación
 export const inicializarApp = () => __awaiter(void 0, void 0, void 0, function* () {
-    yield initializeHolidayData();
+    yield inicializarDatosFeriados();
     recuperarYPoblarDatos();
     aplicarTema();
     controlarBotonGuardar();
