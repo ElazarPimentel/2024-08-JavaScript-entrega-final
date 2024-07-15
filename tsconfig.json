@@ -1,34 +1,20 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "lib": ["ESNext", "DOM"],
-    "declaration": false,
-    "outDir": "./js",
-    "rootDir": "./ts",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "strictPropertyInitialization": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true
+    "target": "es6",                   // Compile to ES6
+    "module": "es2020",                // Use ECMAScript 2020 modules, suitable for web browsers
+    "outDir": "./js",                  // Output directory for compiled files
+    "rootDir": "./ts",                 // Root directory of TypeScript files
+    "strict": true,                    // Enable all strict type-checking options
+    "noImplicitAny": true,             // Raise error on expressions and declarations with an implied 'any' type
+    "strictNullChecks": true,          // Enable strict null checking
+    "esModuleInterop": true,           // Enhances compatibility for non-ES module spec compliant imports
+    "forceConsistentCasingInFileNames": true  // Disallow inconsistently-cased references to the same file
   },
   "include": [
-    "ts/**/*.ts"
+    "ts/**/*"                          // Include all TypeScript files in the ts folder
   ],
   "exclude": [
-    "js"  // Adjusted if necessary, assuming you want to exclude compiled JS in your project structure
+    "node_modules",                    // Exclude the node_modules folder
+    "**/*.spec.ts"                     // Exclude test files
   ]
 }

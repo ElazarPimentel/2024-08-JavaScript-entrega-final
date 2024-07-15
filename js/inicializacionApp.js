@@ -2,6 +2,15 @@
 Autor: Alessio Aguirre Pimentel
 Versión: 113
 Descripción: Lógica de inicialización de la aplicación. */
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import { gestionarAlmacenamientoLocal, obtenerDatosDeAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { mostrarError, limpiarError, validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js';
 import { actualizarListaDeServicios, actualizarListaDeHorarios, actualizarDOM, poblarDatosDeCita, guardarDatosDeCita } from './actualizacionesDOM.js';
@@ -24,9 +33,6 @@ let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null;
 let mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
 let turnos = gestionarAlmacenamientoLocal("cargar", "turnos") || [];
 class ClienteClass {
-    clienteId;
-    clienteNombre;
-    clienteTelefono;
     constructor(clienteId, clienteNombre, clienteTelefono) {
         this.clienteId = clienteId || ClienteClass.generarId('cliente');
         this.clienteNombre = clienteNombre;
@@ -37,10 +43,6 @@ class ClienteClass {
     }
 }
 class MascotaClass {
-    mascotaId;
-    mascotaForeignClienteId;
-    mascotaNombre;
-    mascotaEdad;
     constructor(mascotaId, mascotaForeignClienteId, mascotaNombre, mascotaEdad) {
         this.mascotaId = mascotaId || MascotaClass.generarId('mascota');
         this.mascotaForeignClienteId = mascotaForeignClienteId;
@@ -52,11 +54,6 @@ class MascotaClass {
     }
 }
 class TurnoClass {
-    turnoId;
-    turnoForeignMascotaId;
-    turnoFecha;
-    turnoHora;
-    turnoForeignServicioId;
     constructor(turnoId, turnoForeignMascotaId, turnoFecha, turnoHora, turnoForeignServicioId) {
         this.turnoId = turnoId || TurnoClass.generarId('turno');
         this.turnoForeignMascotaId = turnoForeignMascotaId;
@@ -135,7 +132,7 @@ ${Object.entries(servicios).map(([id, nombre]) => `<option value="${id}">${nombr
     document.getElementById("borrar-datos").style.display = "inline-block";
 };
 // Guardar mascotas y turnos
-export const guardarMascotasYTurnos = async () => {
+export const guardarMascotasYTurnos = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (!cliente) {
             console.error('Cliente no está inicializado');
@@ -173,7 +170,7 @@ export const guardarMascotasYTurnos = async () => {
     catch (error) {
         console.error('Error al guardar mascotas y turnos', error); // Elaborar en versiones futuras
     }
-};
+});
 // Recuperar y poblar datos almacenados
 const recuperarYPoblarDatos = () => {
     const storedData = obtenerDatosDeAlmacenamientoLocal('appointmentData');
@@ -206,7 +203,7 @@ const controlarBotonGuardar = () => {
     }
 };
 // Borrar todos los datos
-export const borrarTodosDatos = async () => {
+export const borrarTodosDatos = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         gestionarAlmacenamientoLocal("borrarTodo");
         cliente = null;
@@ -223,21 +220,21 @@ export const borrarTodosDatos = async () => {
     catch (error) {
         console.error('Error al borrar todos los datos', error); // Elaborar en versiones futuras
     }
-};
+});
 // Comenzar de nuevo
-export const comenzarDeNuevo = async () => {
+export const comenzarDeNuevo = () => __awaiter(void 0, void 0, void 0, function* () {
     borrarTodosDatos();
     const guardarBtn = document.getElementById("guardar-mascotas-turnos");
     if (guardarBtn) {
         guardarBtn.style.display = "inline-block"; // Mostrar el botón
     }
-};
+});
 // Initialize the app
-export const inicializarApp = async () => {
+export const inicializarApp = () => __awaiter(void 0, void 0, void 0, function* () {
     recuperarYPoblarDatos();
     aplicarTema();
     controlarBotonGuardar();
     actualizarListaDeServicios(servicios);
     actualizarListaDeHorarios(horarios);
     actualizarDOM(cliente, mascotas, turnos, servicios);
-};
+});

@@ -37,7 +37,7 @@ Este proyecto es la entrega final para el curso de JavaScript en CoderHouse. Es 
 - Redistribución de código en nuevos archivos:
 -  Encapsulación.
 -  Sacudida de Árbol (Tree Shaking).
--  Separación de Responsabilidades.
+-  Separación de Responsabilidades (Separation of Concerns)
 - Se almacenan datos y se traen nuevamente cuando se carga el formulario.
 - Al refrescar la página se visualizan los datos recuperándolos del storage. 
 - Mover algunas cosas a const
@@ -45,11 +45,11 @@ Este proyecto es la entrega final para el curso de JavaScript en CoderHouse. Es 
 - Comentar el código
 - Uniformar nombres de archivos, funciones, elementos a Castellano
 - Sacar todoss los console.log de debbuging 
+- El botón Borrar Datos aparece cuando se re-carga la página. 
+- Input número mascotas: aclarar que sea de type="number"
+- Cambiar errores de console.log a cuandros de diálogos con arcoiris y unicornios desde validaciones.js
 
 # ToDo
-- El botón Borrar Datos no aparece cuando se re-carga la página. 
-- Input número mascotas: aclarar que sea de type="number"
-- Cambiar errores de console.log a cuandros de diálogos con arcoiris y unicornios desde manejoErrores.js
 - Crear fetch a API de feriados. 
 - Usar el array horario para vlidar entrada de hora y fechas
 

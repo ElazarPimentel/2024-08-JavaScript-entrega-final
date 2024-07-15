@@ -3,29 +3,26 @@ Autor: Alessio Aguirre Pimentel
 Versión: 113
 Descripción: Funciones para la validación de datos del formulario. */
 
+// Declaration for SweetAlert2
+declare var Swal: any;
+
 interface Horario {
     [day: string]: string;
 }
 
-// Mostrar un mensaje de error al lado del elemento especificado
+// Mostrar un mensaje de error al lado del elemento especificado usando SweetAlert2
 export const mostrarError = (elemento: HTMLElement, mensaje: string): void => {
-    let error = elemento.nextElementSibling as HTMLElement | null;
-    if (!error || !error.classList.contains('error')) {
-        error = document.createElement('div');
-        error.classList.add('error');
-        elemento.parentNode?.insertBefore(error, elemento.nextSibling);
-    }
-    if (error) {
-        error.textContent = mensaje;
-    }
+    Swal.fire({
+        icon: 'info',
+        title: 'Ups :)',
+        text: mensaje,
+        confirmButtonText: 'Cerrar'
+    });
 };
 
-// Limpiar el mensaje de error mostrado
+// Limpiar el mensaje de error mostrado (No longer modifying the DOM directly)
 export const limpiarError = (elemento: HTMLElement): void => {
-    let error = elemento.nextElementSibling as HTMLElement | null;
-    if (error && error.classList.contains('error')) {
-        error.remove();
-    }
+    // Function body can remain empty if SweetAlert2 handles all error dialogs
 };
 
 // Validar nombre: solo permite de 2 a 25 caracteres alfabéticos y espacios
