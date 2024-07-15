@@ -1,6 +1,6 @@
 /* Nombre del archivo: ts/actualizacionesDOM.ts
 Autor: Alessio Aguirre Pimentel
-Versión: 113
+Versión: 200
 Descripción: Funciones para actualizar el DOM con los datos de la aplicación. */
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 // Actualiza la lista de servicios en el DOM

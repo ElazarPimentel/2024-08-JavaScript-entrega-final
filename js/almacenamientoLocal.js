@@ -1,6 +1,6 @@
 /* Nombre del archivo: ts/almacenamientoLocal.ts
 Autor: Alessio Aguirre Pimentel
-Versión: 113
+Versión: 200
 Descripción: Funciones para gestionar el almacenamiento local. */
 // Función para gestionar el almacenamiento local
 export const gestionarAlmacenamientoLocal = (accion, clave, valor) => {

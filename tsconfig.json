@@ -8,7 +8,9 @@
     "noImplicitAny": true,             // Raise error on expressions and declarations with an implied 'any' type
     "strictNullChecks": true,          // Enable strict null checking
     "esModuleInterop": true,           // Enhances compatibility for non-ES module spec compliant imports
-    "forceConsistentCasingInFileNames": true  // Disallow inconsistently-cased references to the same file
+    "forceConsistentCasingInFileNames": true,  // Disallow inconsistently-cased references to the same file
+    "lib": ["es2017", "dom"],          // Add library for modern JS features and DOM
+    "moduleResolution": "node"         // Ensure modules are properly resolved
   },
   "include": [
     "ts/**/*"                          // Include all TypeScript files in the ts folder

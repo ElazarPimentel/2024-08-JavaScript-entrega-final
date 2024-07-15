@@ -1,6 +1,6 @@
 /* Nombre del archivo: ts/almacenamientoLocal.ts
 Autor: Alessio Aguirre Pimentel
-Versión: 113
+Versión: 200
 Descripción: Funciones para gestionar el almacenamiento local. */
 
 // Tipo de acción que se puede realizar en el almacenamiento local

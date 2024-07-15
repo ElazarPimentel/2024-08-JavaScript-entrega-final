@@ -1,6 +1,6 @@
 /* Nombre del archivo: ts/eventos.ts
 Autor: Alessio Aguirre Pimentel
-Versión: 113
+Versión: 200
 Descripción: Configuración de los oyentes de eventos. */
 import { guardarCliente, mostrarFormulariosMascotas, guardarMascotasYTurnos, comenzarDeNuevo, aplicarTema } from './inicializacionApp.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';

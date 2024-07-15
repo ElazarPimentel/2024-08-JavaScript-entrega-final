@@ -1,6 +1,6 @@
 /* Nombre del archivo: ts/validaciones.ts
 Autor: Alessio Aguirre Pimentel
-Versión: 113
+Versión: 200
 Descripción: Funciones para la validación de datos del formulario. */
 // Mostrar un mensaje de error al lado del elemento especificado usando SweetAlert2
 export const mostrarError = (elemento, mensaje) => {
@@ -11,9 +11,9 @@ export const mostrarError = (elemento, mensaje) => {
         confirmButtonText: 'Cerrar'
     });
 };
-// Limpiar el mensaje de error mostrado (No longer modifying the DOM directly)
+// Limpiar el mensaje de error mostrado (No es necesario modificar el DOM directamente)
 export const limpiarError = (elemento) => {
-    // Function body can remain empty if SweetAlert2 handles all error dialogs
+    // La función puede permanecer vacía si SweetAlert2 maneja todos los cuadros de diálogo de error
 };
 // Validar nombre: solo permite de 2 a 25 caracteres alfabéticos y espacios
 export const validarNombre = (nombre) => /^[a-zA-Z\s]{2,25}$/.test(nombre);

@@ -1,7 +1,7 @@
 /* Nombre del archivo: ts/inicializacionApp.ts
 Autor: Alessio Aguirre Pimentel
-Versión: 113
-Descripción: Lógica de inicialización de la aplicación. */
+Versión: 200
+Descripción: Lógica de inicialización de la aplicación, incluyendo la obtención de datos de feriados. */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+const DateTime = luxon.DateTime; // Use the global luxon object
 import { gestionarAlmacenamientoLocal, obtenerDatosDeAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { mostrarError, limpiarError, validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js';
 import { actualizarListaDeServicios, actualizarListaDeHorarios, actualizarDOM, poblarDatosDeCita, guardarDatosDeCita } from './actualizacionesDOM.js';
@@ -32,6 +33,7 @@ const horarios = {
 let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null;
 let mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
 let turnos = gestionarAlmacenamientoLocal("cargar", "turnos") || [];
+// Clase para manejar los datos del cliente
 class ClienteClass {
     constructor(clienteId, clienteNombre, clienteTelefono) {
         this.clienteId = clienteId || ClienteClass.generarId('cliente');
@@ -42,6 +44,7 @@ class ClienteClass {
         return `${prefix}_` + Math.random().toString(36).slice(2, 11);
     }
 }
+// Clase para manejar los datos de la mascota
 class MascotaClass {
     constructor(mascotaId, mascotaForeignClienteId, mascotaNombre, mascotaEdad) {
         this.mascotaId = mascotaId || MascotaClass.generarId('mascota');
@@ -53,6 +56,7 @@ class MascotaClass {
         return `${prefix}_` + Math.random().toString(36).slice(2, 11);
     }
 }
+// Clase para manejar los datos del turno
 class TurnoClass {
     constructor(turnoId, turnoForeignMascotaId, turnoFecha, turnoHora, turnoForeignServicioId) {
         this.turnoId = turnoId || TurnoClass.generarId('turno');
@@ -64,6 +68,56 @@ class TurnoClass {
     static generarId(prefix) {
         return `${prefix}_` + Math.random().toString(36).slice(2, 11);
     }
+}
+// Función para obtener los feriados de Argentina
+function fetchHolidays(year) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const url = `https://api.argentinadatos.com/v1/feriados/${year}`;
+        try {
+            const response = yield fetch(url);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = yield response.json();
+            return data;
+        }
+        catch (error) {
+            mostrarError(document.body, 'No se pudieron obtener los feriados. Por favor verificá no sacar un turno en un feriado dado que estamos cerrados');
+            return null;
+        }
+    });
+}
+// Función para verificar si los datos almacenados están desactualizados
+function isDataOutdated(dateString) {
+    const storedDate = DateTime.fromISO(dateString);
+    const currentDate = DateTime.now();
+    const diff = currentDate.diff(storedDate, 'days').days;
+    return diff > 7;
+}
+// Función para obtener el año actual
+function getCurrentYear() {
+    return DateTime.now().year;
+}
+// Inicializar datos de feriados
+function initializeHolidayData() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const storedHolidays = localStorage.getItem('feriadosArgentina');
+        if (storedHolidays) {
+            const { dateFetched, holidays } = JSON.parse(storedHolidays);
+            if (!isDataOutdated(dateFetched)) {
+                return holidays;
+            }
+        }
+        const currentYear = getCurrentYear();
+        const holidays = yield fetchHolidays(currentYear);
+        if (holidays) {
+            const dataToStore = {
+                dateFetched: DateTime.now().toISO(),
+                holidays
+            };
+            localStorage.setItem('feriadosArgentina', JSON.stringify(dataToStore));
+        }
+    });
 }
 // Guardar cliente
 export const guardarCliente = () => {
@@ -229,8 +283,9 @@ export const comenzarDeNuevo = () => __awaiter(void 0, void 0, void 0, function*
         guardarBtn.style.display = "inline-block"; // Mostrar el botón
     }
 });
-// Initialize the app
+// Inicializar la aplicación
 export const inicializarApp = () => __awaiter(void 0, void 0, void 0, function* () {
+    yield initializeHolidayData();
     recuperarYPoblarDatos();
     aplicarTema();
     controlarBotonGuardar();
