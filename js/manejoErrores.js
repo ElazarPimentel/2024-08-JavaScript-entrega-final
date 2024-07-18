@@ -4,8 +4,8 @@ Versión: 201
 Descripción: Funciones para manejar y mostrar mensajes de error al usuario. */
 export const mostrarError = (mensaje) => {
     Swal.fire({
-        icon: 'error',
-        title: 'Error',
+        icon: 'info',
+        title: 'Ups :)',
         text: mensaje,
         confirmButtonText: 'Cerrar'
     });

@@ -7,8 +7,8 @@ declare var Swal: any;
 
 export const mostrarError = (mensaje: string) => {
     Swal.fire({
-        icon: 'error',
-        title: 'Error',
+        icon: 'info',
+        title: 'Ups :)',
         text: mensaje,
         confirmButtonText: 'Cerrar'
     });

@@ -49,8 +49,19 @@ Este proyecto es la entrega final para el curso de JavaScript en CoderHouse. Es 
 - Input número mascotas: aclarar que sea de type="number"
 - Cambiar errores de console.log a cuandros de diálogos con arcoiris y unicornios desde validaciones.js
 - Agregado luxon
+- Crear fetch a API de feriados. 
 
 # ToDo
-- Crear fetch a API de feriados. 
 - Usar el array horario para vlidar entrada de hora y fechas
+- Sacar botón "sacar turno" cuando no presionó siguiente
+- usar feriados tomados de api para no dejar hacer turno en feriado
+- Poner mensajes de error descriptivos y agradables
+- avisar turnos que no pueden pasar horario de cierre
+- avisar turno si feriado
+- ver horario máximo para N mascotas que no sea superior
+- borrar mascota
+- editar mascota
+- agregar mascota
+
+
 
