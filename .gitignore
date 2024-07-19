@@ -3,4 +3,5 @@
 
 # Exclude all .sh files
 *.sh
+.gitignore
 
