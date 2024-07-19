@@ -1,0 +1,6 @@
+# Exclude the .sass-cache directory
+.sass-cache/
+
+# Exclude all .sh files
+*.sh
+
