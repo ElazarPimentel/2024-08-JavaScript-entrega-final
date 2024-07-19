@@ -4,12 +4,12 @@
    Versión: 322 */
 body.light {
   color: black;
-  background-color: white;
+  background-color: rgb(145, 144, 144);
   border-color: #ccc;
 }
 
 body.dark {
-  color: white;
+  color: rgba(255, 255, 255, 0.795);
   background-color: black;
   border-color: #444;
 }
@@ -45,12 +45,12 @@ body.dark {
   width: 26px;
   left: 4px;
   bottom: 4px;
-  background-color: white;
+  background-color: rgb(145, 144, 144);
   transition: 0.4s;
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #77797a;
 }
 
 input:checked + .slider:before {
@@ -66,7 +66,7 @@ input:checked + .slider:before {
 }
 
 body {
-  color: white;
+  color: rgba(255, 255, 255, 0.795);
   background-color: black;
   font-size: 16px;
   padding: 0;
@@ -75,19 +75,19 @@ body {
 }
 body[data-theme=light] {
   color: black;
-  background-color: white;
+  background-color: rgb(145, 144, 144);
 }
 body[data-theme=light] input[type=text],
 body[data-theme=light] input[type=tel],
 body[data-theme=light] select,
 body[data-theme=light] option {
-  background-color: white;
+  background-color: rgb(145, 144, 144);
   color: black;
   border: 1px solid #ccc;
 }
 body[data-theme=light] input[type=submit] {
   background-color: black;
-  color: white;
+  color: rgb(145, 144, 144);
 }
 body[data-theme=light] input[type=submit]:hover {
   background-color: black;
@@ -119,7 +119,7 @@ header h1 {
 .sitio-titulo {
   font-weight: bold;
   font-size: 1.5rem;
-  color: white;
+  color: rgba(255, 255, 255, 0.795);
 }
 
 h1 {
@@ -128,7 +128,7 @@ h1 {
 }
 
 h2 {
-  color: white;
+  color: rgba(255, 255, 255, 0.795);
   font-size: 1.15rem;
   margin-top: 1rem;
 }
@@ -172,7 +172,7 @@ ul {
 
 /* Error para validación de formulario */
 .error {
-  color: red;
+  color: tomato;
 }
 
 .contenedor-02 {
@@ -220,7 +220,7 @@ form input[type=tel],
 form select,
 form option {
   background-color: black;
-  color: white;
+  color: rgba(255, 255, 255, 0.795);
   border: 1px solid #444;
   padding: 0.15rem;
   margin-bottom: 0.5rem;
@@ -239,14 +239,14 @@ form option[id^=mascota-edad] {
   width: 3ch;
 }
 form input[type=submit] {
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.795);
   color: black;
   border: none;
   padding: 0.5rem 0.5rem;
   cursor: pointer;
 }
 form input[type=submit]:hover {
-  background-color: #bfbfbf;
+  background-color: rgba(191, 191, 191, 0.795);
 }
 form button {
   display: inline-block;

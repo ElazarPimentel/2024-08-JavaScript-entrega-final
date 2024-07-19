@@ -4,12 +4,16 @@
 
 // Variables
 $font-color-light: black;
-$background-color-light: white;
-$font-color-dark: white;
+$background-color-light:rgb(145, 144, 144);
+$font-color-dark: rgba(255, 255, 255, 0.795);
 $background-color-dark: black;
 
 $border-color-light: #ccc;
 $border-color-dark: #444;
+
+$primary-color: #77797a; 
+
+$error-color: tomato;
 
 // Mixins
 @mixin theme($font-color, $background-color, $border-color) {
@@ -48,7 +52,7 @@ body.dark {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: $border-color-light;
     transition: .4s;
 }
 
@@ -59,12 +63,12 @@ body.dark {
     width: 26px;
     left: 4px;
     bottom: 4px;
-    background-color: white;
+    background-color: $background-color-light;
     transition: .4s;
 }
 
 input:checked + .slider {
-    background-color: #2196F3;
+    background-color: $primary-color;
 }
 
 input:checked + .slider:before {
@@ -87,27 +91,27 @@ body {
     font-size: 16px;
     padding: 0;
     margin: 0;
-    transition: background-color 0.4s, color 0.4s; // Smooth transition for theme switch
+    transition: background-color 0.4s, color 0.4s; 
 
     &[data-theme="light"] {
-        color: black;
-        background-color: white;
+        color: $font-color-light;
+        background-color: $background-color-light;
 
         input[type="text"],
         input[type="tel"],
         select,
         option {
-            background-color: white;
-            color: black;
-            border: 1px solid #ccc;
+            background-color: $background-color-light;
+            color: $font-color-light;
+            border: 1px solid $border-color-light;
         }
 
         input[type="submit"] {
-            background-color: black;
-            color: white;
+            background-color: $font-color-light;
+            color: $background-color-light;
 
             &:hover {
-                background-color: darken(black, 25%);
+                background-color: darken($font-color-light, 25%);
             }
         }
     }
@@ -195,7 +199,7 @@ ul {
 
 /* Error para validación de formulario */
 .error {
-    color: red;
+    color: $error-color;
 }
 
 .contenedor-02 {
