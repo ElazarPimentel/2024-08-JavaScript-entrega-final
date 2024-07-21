@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/validaciones.js
 Autor: Alessio Aguirre Pimentel
-Versión: 322 */
+Versión: 348 */
 
 // Validar nombre: solo permite de 2 a 25 caracteres alfabéticos y espacios
 export const validarNombre = (nombre) => {
@@ -25,18 +25,17 @@ export const validarNumeroMascotas = (num) => {
 
 // Validar la fecha del turno: debe ser dentro de los próximos 45 días
 export const validarFecha = (fecha) => {
-    const now = luxon.DateTime.now();
-    const fechaTurno = luxon.DateTime.fromISO(fecha);
-    const diffInDays = fechaTurno.diff(now, 'days').days;
-    const isValid = fechaTurno >= now && diffInDays <= 45;
-    console.log(`validarFecha(${fecha}): ${isValid}, diffInDays: ${diffInDays}`);
+    const now = luxon.DateTime.now();  
+    const fechaTurno = luxon.DateTime.fromISO(fecha);  
+    const diffInDays = fechaTurno.startOf('day').diff(now.startOf('day'), 'days').days;  
+    const isValid = diffInDays >= 0 && diffInDays <= 45;  
     return isValid;
 };
 
 // Validar si la fecha es un día laborable (de lunes a viernes)
 export const validarDiaAbierto = (fecha) => {
     const dia = luxon.DateTime.fromISO(fecha).weekday;
-    const isValid = dia >= 1 && dia <= 5;  // Monday to Friday
+    const isValid = dia >= 1 && dia <= 5;  // Lunes a Viernes
     console.log(`validarDiaAbierto(${fecha}): ${isValid}, dia: ${dia}`);
     return isValid;
 };

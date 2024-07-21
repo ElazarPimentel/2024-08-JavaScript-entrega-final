@@ -1,10 +1,8 @@
 /* Nombre del archivo: js/inicializacionApp.js
 Autor: Alessio Aguirre Pimentel
-Versión: 322 */
+Versión: 350 */
 
-import { ClienteClass, MascotaClass, TurnoClass } from './modelos.js';
 import { actualizarListaDeServicios, actualizarListaDeHorarios, actualizarDOM, poblarDatosDeCita } from './actualizacionesDOM.js';
-import { aplicarTema as aplicarTemaGlobal } from './tema.js';
 import { gestionarAlmacenamientoLocal, obtenerDatosDeAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { mostrarError as mostrarErrorGlobal } from './manejoErrores.js';
 
@@ -52,7 +50,10 @@ async function traerFeriados(anio) {
         const data = await response.json();
         return data;
     } catch (error) {
-        mostrarErrorGlobal('No se pudieron obtener los feriados. Por favor verificá no sacar un turno en un feriado dado que estamos cerrados');
+        if (anio === obtenerAnioActual()) {
+            mostrarErrorGlobal('No se pudieron obtener los feriados del año actual.');
+        }
+        console.log(`Failed to fetch holidays for the year ${anio}`);
         return null;
     }
 }
@@ -67,14 +68,44 @@ async function inicializarDatosFeriados() {
         }
     }
     const anioActual = obtenerAnioActual();
-    const feriados = await traerFeriados(anioActual);
-    if (feriados) {
+    const feriadosAnioActual = await traerFeriados(anioActual);
+
+    if (!feriadosAnioActual) {
+        return null;
+    }
+
+    let feriadosAnioSiguiente = [];
+    try {
+        feriadosAnioSiguiente = await traerFeriados(anioActual + 1);
+    } catch (error) {
+        console.warn('No se pudieron obtener los feriados del próximo año aún. Intenta nuevamente más tarde.');
+    }
+
+    const feriados = [...feriadosAnioActual, ...(feriadosAnioSiguiente || [])];
+    if (feriados.length) {
         const datosParaAlmacenar = {
             dateFetched: DateTime.now().toISO(),
             holidays: feriados
         };
         localStorage.setItem('feriadosArgentina', JSON.stringify(datosParaAlmacenar));
         console.log('Feriados actualizados:', feriados);
+    } else {
+        console.warn('No se pudieron obtener los feriados del próximo año.');
+    }
+}
+
+export async function obtenerHoraActualArgentina() {
+    const url = 'http://worldtimeapi.org/api/timezone/America/Argentina/Buenos_Aires';
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('No se pudo obtener la hora actual');
+        }
+        const data = await response.json();
+        return DateTime.fromISO(data.datetime);
+    } catch (error) {
+        mostrarErrorGlobal('No se pudo obtener la hora actual. Usando la hora local de la PC.');
+        return DateTime.now().setZone('America/Argentina/Buenos_Aires');
     }
 }
 
@@ -89,13 +120,18 @@ export const inicializarApp = async () => {
 };
 
 const recuperarYPoblarDatos = () => {
-    const storedData = obtenerDatosDeAlmacenamientoLocal('appointmentData');
-    if (storedData) {
-        poblarDatosDeCita(storedData);
-        cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null;
-        mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
-        turnos = gestionarAlmacenamientoLocal("cargar", "turnos") || [];
+    const storedData = {
+        cliente: gestionarAlmacenamientoLocal("cargar", "cliente"),
+        mascotas: gestionarAlmacenamientoLocal("cargar", "mascotas"),
+        turnos: gestionarAlmacenamientoLocal("cargar", "turnos")
+    };
+    if (storedData.cliente && storedData.mascotas.length && storedData.turnos.length) {
+        cliente = storedData.cliente;
+        mascotas = storedData.mascotas;
+        turnos = storedData.turnos;
         actualizarDOM(cliente, mascotas, turnos, servicios, horarios);
+        document.getElementById("formulario-mascotas-info").style.display = "block";
+        document.getElementById("seccion-salida-datos-dos").style.display = "block";
     }
 };
 
@@ -117,4 +153,3 @@ const controlarBotonGuardar = () => {
         guardarBtn.style.display = 'none';
     }
 };
-

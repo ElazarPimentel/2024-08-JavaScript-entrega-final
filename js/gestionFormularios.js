@@ -1,12 +1,15 @@
 /* Nombre del archivo: js/gestionFormularios.js
 Autor: Alessio Aguirre Pimentel
-Versión: 324 */
+Versión: 349 */
 
 import { ClienteClass, MascotaClass, TurnoClass } from './modelos.js';
-import { actualizarDOM, poblarDatosDeCita } from './actualizacionesDOM.js';
+import { actualizarDOM } from './actualizacionesDOM.js';
 import { mostrarError, limpiarError } from './manejoErrores.js';
 import { validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
+import { obtenerHoraActualArgentina } from './inicializacionApp.js';
+
+const duracionDeTurno = 45;
 
 const servicios = {
     1: "Bañado y Peinado",
@@ -36,7 +39,7 @@ const showError = (element, message) => {
     setTimeout(() => limpiarError(element), 3000);
 };
 
-export const mostrarFormulariosMascotas = () => {
+export const mostrarFormulariosMascotas = async () => {
     const numMascotas = document.getElementById("numero-mascotas");
     const fecha = document.getElementById("turno-fecha");
     const hora = document.getElementById("turno-hora");
@@ -46,6 +49,12 @@ export const mostrarFormulariosMascotas = () => {
 
     if (!validarNumeroMascotas(numMascotas.value)) {
         showError(numMascotas, "El número de mascotas debe estar entre 1 y 3. Si tiene más de tres mascotas, por favor haga otro turno para las otras mascotas.");
+        Swal.fire({
+            icon: 'info',
+            title: 'Límite de Mascotas',
+            text: 'Por motivos de bienestar de todas las mascotas aceptamos turnos de hasta tres mascotas. Para ver el resto de tus mascotas por favor hacé otro turno otro día.',
+            confirmButtonText: 'Aceptar'
+        });
         return;
     }
     if (!validarFecha(fecha.value)) {
@@ -53,11 +62,12 @@ export const mostrarFormulariosMascotas = () => {
         return;
     }
     if (!validarDiaAbierto(fecha.value)) {
-        showError(fecha, "La veterinaria está cerrada ese día. Por favor elija otro día.");
+        showError(fecha, "Por favor seleccionar un día en el que la veterinaria esté abierta. Ver días y horarios a la izquierda.");
         return;
     }
-    if (!validarHora(fecha.value, hora.value, horarios, numMascotas.value)) {
-        showError(hora, "La hora del turno debe estar dentro del horario de atención y al menos una hora después de la hora actual.");
+    const ahoraArgentina = await obtenerHoraActualArgentina();
+    if (!validarHora(fecha.value, hora.value, horarios)) {
+        showError(hora, "El turno que estás tratando de tomar no está dentro del horario habil de la veterinaria, por favor mirá nuestros horarios a la izquierda.");
         return;
     }
 
@@ -105,7 +115,7 @@ export const guardarCliente = () => {
     document.getElementById("formulario-mascotas-info").style.display = "block";
 };
 
-export const guardarMascotasYTurnos = () => {
+export const guardarMascotasYTurnos = async () => {
     try {
         if (!cliente) {
             mostrarError('Cliente no está inicializado');
@@ -115,6 +125,7 @@ export const guardarMascotasYTurnos = () => {
         const fecha = document.getElementById("turno-fecha").value;
         const hora = document.getElementById("turno-hora").value;
         let turnoHora = new Date(`${fecha}T${hora}`);
+        const ahoraArgentina = await obtenerHoraActualArgentina();
         for (let i = 0; i < numMascotas; i++) {
             const mascotaNombre = document.getElementById(`mascota-nombre-${i}`).value;
             const mascotaEdad = parseInt(document.getElementById(`mascota-edad-${i}`).value);
@@ -131,7 +142,15 @@ export const guardarMascotasYTurnos = () => {
             mascotas.push(mascota);
             const turno = new TurnoClass(null, mascota.mascotaId, fecha, turnoHora.toTimeString().slice(0, 5), servicioId);
             turnos.push(turno);
-            turnoHora.setMinutes(turnoHora.getMinutes() + 45);
+            turnoHora.setMinutes(turnoHora.getMinutes() + duracionDeTurno);
+
+            // Verificación de si el turno termina fuera del horario de atención
+            const finHorario = luxon.DateTime.fromFormat(`${fecha}T17:00`, 'yyyy-MM-dd\'T\'H:mm');
+            const horaFinTurno = luxon.DateTime.fromISO(turno.turnoHora);
+            if (horaFinTurno.plus({ minutes: duracionDeTurno }) > finHorario) {
+                mostrarError("Los turnos duran 45 minutos. El turno que estás tratando de tomar terminaría fuera del horario laboral. Por favor tomá un turno que termine antes de éste horario. Por favor ver horarios a la izquierda.");
+                return;
+            }
         }
         gestionarAlmacenamientoLocal("guardar", "mascotas", mascotas);
         gestionarAlmacenamientoLocal("guardar", "turnos", turnos);
@@ -140,6 +159,7 @@ export const guardarMascotasYTurnos = () => {
         document.getElementById("guardar-mascotas-turnos").style.display = "none"; // Ocultar el botón
     } catch (error) {
         mostrarError('Error al guardar mascotas y turnos');
+        console.error('Error al guardar mascotas y turnos:', error);
     }
 };
 
@@ -156,4 +176,6 @@ export const comenzarDeNuevo = () => {
     document.getElementById('mascotas-formulario').style.display = 'none';
     document.getElementById('botones-gardar-borrar').style.display = 'none';
     document.getElementById('seccion-salida-datos-dos').style.display = 'none';
+    document.getElementById('siguiente-mascota').style.display = 'inline-block'; // Make "Siguiente" button visible again
+    document.getElementById('numero-mascotas').disabled = false; // Enable the number of pets field
 };

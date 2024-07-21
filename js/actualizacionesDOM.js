@@ -1,6 +1,8 @@
+/* js/actualizacionesDOM.js */
+
 /* Nombre del archivo: js/actualizacionesDOM.js
 Autor: Alessio Aguirre Pimentel
-Versión: 324 */
+Versión: 348 */
 
 // Funciones para actualizar el DOM con los datos de la aplicación
 import { mostrarError } from './manejoErrores.js';
@@ -42,12 +44,14 @@ export const poblarDatosDeCita = (data) => {
 };
 
 // Actualizar los detalles del cliente
-const actualizarDetallesCliente = (cliente) => {
+const actualizarDetallesCliente = (cliente, turnos) => {
     const clienteDetalles = document.getElementById("cliente-detalles");
+    const fechaTurno = turnos.length > 0 ? turnos[0].turnoFecha : 'N/A';
     clienteDetalles.innerHTML = `
         <h3>Detalles del Cliente</h3>
-        <p>Nombre: ${cliente.clienteNombre}</p>
-        <p>Teléfono: ${cliente.clienteTelefono}</p>
+        <p><strong>Nombre:</strong> ${cliente.clienteNombre} <strong>Teléfono:</strong> ${cliente.clienteTelefono}</p>
+        <p><strong>Fecha del Turno:</strong> ${fechaTurno}</p>
+        <hr>
     `;
 };
 
@@ -61,13 +65,9 @@ const actualizarDetallesMascotas = (mascotas, turnos, servicios) => {
         const servicioNombre = servicios[turno.turnoForeignServicioId];
         mascotaDetalles.innerHTML += `
             <div class="mascota-detalle">
-                <p>Nombre de Mascota: ${mascota.mascotaNombre}</p>
-                <p>Edad: ${mascota.mascotaEdad} años</p>
-                <p>Servicio: ${servicioNombre}</p>
-                <p>Fecha del Turno: ${turno.turnoFecha}</p>
-                <p>Hora del Turno: ${turno.turnoHora}</p>
+                <p><strong>Nombre de Mascota:</strong> ${mascota.mascotaNombre} <strong>Edad:</strong> ${mascota.mascotaEdad} años</p>
+                <p><strong>Hora del Turno:</strong> ${turno.turnoHora} <strong>Servicio:</strong> ${servicioNombre}</p>
             </div>
-            <hr>
         `;
     });
 };
@@ -79,7 +79,7 @@ export const actualizarDOM = (cliente, mascotas, turnos, servicios, horarios) =>
     actualizarListaDeHorarios(horarios);
     
     if (cliente) {
-        actualizarDetallesCliente(cliente);
+        actualizarDetallesCliente(cliente, turnos);
     }
     
     if (mascotas.length > 0 && turnos.length > 0) {

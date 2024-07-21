@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/almacenamientoLocal.js
 Autor: Alessio Aguirre Pimentel
-Versión: 322 */
+Versión: 348 */
 
 import { mostrarError } from './manejoErrores.js';
 
@@ -11,17 +11,15 @@ export const gestionarAlmacenamientoLocal = (accion, clave, valor = null) => {
         switch (accion) {
             case "guardar":
                 if (!clave || valor === null) {
-                    console.error("Clave y valor son requeridos para guardar");
                     throw new Error("Clave y valor son requeridos para guardar");
                 }
                 const fechaExp = new Date();
-                fechaExp.setDate(fechaExp.getDate() + 45); // Set expiration for local storage items
+                fechaExp.setDate(fechaExp.getDate() + 45);
                 localStorage.setItem(clave, JSON.stringify({ valor, fechaExp }));
                 console.log(`Saved to localStorage: ${clave} = ${JSON.stringify({ valor, fechaExp })}`);
                 break;
             case "cargar":
                 if (!clave) {
-                    console.error("Clave es requerida para cargar");
                     throw new Error("Clave es requerida para cargar");
                 }
                 const item = JSON.parse(localStorage.getItem(clave));
@@ -29,13 +27,12 @@ export const gestionarAlmacenamientoLocal = (accion, clave, valor = null) => {
                 if (item && new Date(item.fechaExp) > new Date()) {
                     return item.valor;
                 } else {
+                    console.log(`Item expired or not found: ${clave}`);
                     localStorage.removeItem(clave);
-                    console.log(`Removed expired item from localStorage: ${clave}`);
-                    return null;
                 }
+                break;
             case "borrar":
                 if (!clave) {
-                    console.error("Clave es requerida para borrar");
                     throw new Error("Clave es requerida para borrar");
                 }
                 localStorage.removeItem(clave);
@@ -46,7 +43,6 @@ export const gestionarAlmacenamientoLocal = (accion, clave, valor = null) => {
                 console.log("Cleared all items from localStorage");
                 break;
             default:
-                console.error("Acción no reconocida");
                 throw new Error("Acción no reconocida");
         }
     } catch (error) {
@@ -60,12 +56,17 @@ export const gestionarAlmacenamientoLocal = (accion, clave, valor = null) => {
 export const obtenerDatosDeAlmacenamientoLocal = (clave) => {
     try {
         const item = JSON.parse(localStorage.getItem(clave));
-        if (item && new Date(item.fechaExp) > new Date()) {
-            return item.valor;
+        if (item) {
+            if (new Date(item.fechaExp) > new Date()) {
+                return item.valor;
+            } else {
+                console.log(`Item expired: ${clave}`);
+                localStorage.removeItem(clave);
+            }
         } else {
-            localStorage.removeItem(clave);
-            return null;
+            console.log(`No item found: ${clave}`);
         }
+        return null;
     } catch (error) {
         mostrarError(`Error al obtener datos de almacenamiento local: ${error.message}`);
         console.error(`Error in obtenerDatosDeAlmacenamientoLocal: ${error.message}`);

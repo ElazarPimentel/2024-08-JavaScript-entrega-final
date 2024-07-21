@@ -1,13 +1,13 @@
 /* Nombre del archivo: js/manejoErrores.js
 Autor: Alessio Aguirre Pimentel
-Versión: 322 */
+Versión: 348 */
 
 // Función para mostrar errores utilizando SweetAlert
 export const mostrarError = (mensaje) => {
     console.log('mostrarError called with mensaje:', mensaje);
     Swal.fire({
-        icon: 'error',
-        title: 'Error',
+        icon: 'info',
+        title: 'Ups :)',
         text: mensaje,
         confirmButtonText: 'Aceptar'
     });
