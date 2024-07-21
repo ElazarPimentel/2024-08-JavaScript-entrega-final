@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/tema.js
 Autor: Alessio Aguirre Pimentel
-Versión: 348 */
+Versión: 353 */
 
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { mostrarError } from './manejoErrores.js';

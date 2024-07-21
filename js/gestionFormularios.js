@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/gestionFormularios.js
 Autor: Alessio Aguirre Pimentel
-Versión: 349 */
+Versión: 354 */
 
 import { ClienteClass, MascotaClass, TurnoClass } from './modelos.js';
 import { actualizarDOM } from './actualizacionesDOM.js';
@@ -32,11 +32,8 @@ let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null;
 let mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
 let turnos = gestionarAlmacenamientoLocal("cargar", "turnos") || [];
 
-const showError = (element, message) => {
+const showError = (message) => {
     mostrarError(message);
-    element.focus();
-    element.classList.add('error');
-    setTimeout(() => limpiarError(element), 3000);
 };
 
 export const mostrarFormulariosMascotas = async () => {
@@ -48,7 +45,7 @@ export const mostrarFormulariosMascotas = async () => {
     limpiarError(hora);
 
     if (!validarNumeroMascotas(numMascotas.value)) {
-        showError(numMascotas, "El número de mascotas debe estar entre 1 y 3. Si tiene más de tres mascotas, por favor haga otro turno para las otras mascotas.");
+        showError("El número de mascotas debe estar entre 1 y 3. Si tiene más de tres mascotas, por favor haga otro turno para las otras mascotas.");
         Swal.fire({
             icon: 'info',
             title: 'Límite de Mascotas',
@@ -58,16 +55,16 @@ export const mostrarFormulariosMascotas = async () => {
         return;
     }
     if (!validarFecha(fecha.value)) {
-        showError(fecha, "La fecha del turno debe ser un día que la veterinaria esté abierta y dentro de los próximos 45 días.");
+        showError("La fecha del turno debe ser un día que la veterinaria esté abierta y dentro de los próximos 45 días.");
         return;
     }
     if (!validarDiaAbierto(fecha.value)) {
-        showError(fecha, "Por favor seleccionar un día en el que la veterinaria esté abierta. Ver días y horarios a la izquierda.");
+        showError("Por favor seleccionar un día en el que la veterinaria esté abierta. Ver días y horarios a la izquierda.");
         return;
     }
     const ahoraArgentina = await obtenerHoraActualArgentina();
     if (!validarHora(fecha.value, hora.value, horarios)) {
-        showError(hora, "El turno que estás tratando de tomar no está dentro del horario habil de la veterinaria, por favor mirá nuestros horarios a la izquierda.");
+        showError("El turno que estás tratando de tomar no está dentro del horario habil de la veterinaria, por favor mirá nuestros horarios a la izquierda.");
         return;
     }
 
@@ -103,11 +100,11 @@ export const guardarCliente = () => {
     limpiarError(telefono);
 
     if (!validarNombre(nombre.value)) {
-        showError(nombre, "El nombre debe contener entre 2 y 25 letras del alfabeto latino.");
+        showError("El nombre debe contener entre 2 y 25 letras del alfabeto latino.");
         return;
     }
     if (!validarTelefono(telefono.value)) {
-        showError(telefono, "El teléfono debe contener solo números, signos +, -, (, ), y espacios, con un máximo de 20 caracteres.");
+        showError("El teléfono debe contener solo números, signos +, -, (, ), y espacios, con un máximo de 20 caracteres.");
         return;
     }
     cliente = new ClienteClass(null, nombre.value, telefono.value);
@@ -131,11 +128,11 @@ export const guardarMascotasYTurnos = async () => {
             const mascotaEdad = parseInt(document.getElementById(`mascota-edad-${i}`).value);
             const servicioId = parseInt(document.getElementById(`servicio-${i}`).value);
             if (!validarNombre(mascotaNombre)) {
-                showError(document.getElementById(`mascota-nombre-${i}`), "El nombre de la mascota debe contener entre 2 y 25 letras del alfabeto latino.");
+                showError("El nombre de la mascota debe contener entre 2 y 25 letras del alfabeto latino.");
                 return;
             }
             if (!validarEdadMascota(mascotaEdad.toString())) {
-                showError(document.getElementById(`mascota-edad-${i}`), "La edad de la mascota debe ser un número entre 0 y 40 años.");
+                showError("La edad de la mascota debe ser un número entre 0 y 40 años.");
                 return;
             }
             const mascota = new MascotaClass(null, cliente.clienteId, mascotaNombre, mascotaEdad);

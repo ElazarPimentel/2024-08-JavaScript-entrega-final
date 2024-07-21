@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/inicializacionApp.js
 Autor: Alessio Aguirre Pimentel
-Versión: 350 */
+Versión: 354 */
 
 import { actualizarListaDeServicios, actualizarListaDeHorarios, actualizarDOM, poblarDatosDeCita } from './actualizacionesDOM.js';
 import { gestionarAlmacenamientoLocal, obtenerDatosDeAlmacenamientoLocal } from './almacenamientoLocal.js';
@@ -8,14 +8,14 @@ import { mostrarError as mostrarErrorGlobal } from './manejoErrores.js';
 
 const DateTime = luxon.DateTime;
 
-const servicios = {
+export const servicios = {
     1: "Bañado y Peinado",
     2: "Vacunación",
     3: "Chequeo General",
     4: "Quitar pulgas"
 };
 
-const horarios = {
+export const horarios = {
     Lunes: "9:00 - 17:00",
     Martes: "9:00 - 17:00",
     Miércoles: "9:00 - 17:00",
@@ -117,6 +117,14 @@ export const inicializarApp = async () => {
     actualizarListaDeServicios(servicios);
     actualizarListaDeHorarios(horarios);
     actualizarDOM(cliente, mascotas, turnos, servicios, horarios);
+
+    // Check if there is existing data and adjust the UI accordingly
+    if (cliente || (mascotas && mascotas.length > 0) || (turnos && turnos.length > 0)) {
+        document.getElementById("numero-mascotas").style.display = "none";
+        document.getElementById("siguiente-mascota").style.display = "none";
+        document.getElementById("borrar-datos").style.display = "block";
+        document.getElementById("guardar-mascotas-turnos").style.display = "none";
+    }
 };
 
 const recuperarYPoblarDatos = () => {
@@ -125,7 +133,7 @@ const recuperarYPoblarDatos = () => {
         mascotas: gestionarAlmacenamientoLocal("cargar", "mascotas"),
         turnos: gestionarAlmacenamientoLocal("cargar", "turnos")
     };
-    if (storedData.cliente && storedData.mascotas.length && storedData.turnos.length) {
+    if (storedData.cliente && storedData.mascotas && storedData.turnos) {
         cliente = storedData.cliente;
         mascotas = storedData.mascotas;
         turnos = storedData.turnos;

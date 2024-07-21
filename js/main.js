@@ -1,7 +1,7 @@
 /* Nombre del archivo: js/main.js
 Nombre del archivo destino: js/main.js
 Autor: Alessio Aguirre Pimentel
-Versión: 348 */
+Versión: 353 */
 
 import { inicializarApp } from './inicializacionApp.js';
 import { configurarOyentesDeEventos } from './eventos.js';

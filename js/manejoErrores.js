@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/manejoErrores.js
 Autor: Alessio Aguirre Pimentel
-Versión: 348 */
+Versión: 353 */
 
 // Función para mostrar errores utilizando SweetAlert
 export const mostrarError = (mensaje) => {

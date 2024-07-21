@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/modelos.js
 Autor: Alessio Aguirre Pimentel
-Versión: 348 */
+Versión: 353 */
 
 // Clase para manejar los datos del cliente
 export class ClienteClass {

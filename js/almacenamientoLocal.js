@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/almacenamientoLocal.js
 Autor: Alessio Aguirre Pimentel
-Versión: 348 */
+Versión: 353 */
 
 import { mostrarError } from './manejoErrores.js';
 
