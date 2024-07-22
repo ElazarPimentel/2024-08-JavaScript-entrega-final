@@ -5,9 +5,9 @@ Versión: 361 */
 import { mostrarFormulariosMascotas, guardarCliente, guardarMascotasYTurnos, comenzarDeNuevo } from './gestionFormularios.js';
 import { aplicarTema } from './tema.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
-import { validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora } from './validaciones.js';
+import { validarFecha, validarDiaAbierto, validarHora } from './validaciones.js';
 import { mostrarError } from './manejoErrores.js';
-import { horarios } from './constantes.js'; // Import horarios from constantes.js
+import { horarios, errorMessages } from './constantes.js'; // Import horarios and errorMessages
 
 // Configuración de los oyentes de eventos del DOM
 export const configurarOyentesDeEventos = () => {
@@ -17,20 +17,20 @@ export const configurarOyentesDeEventos = () => {
         const fecha = document.getElementById("turno-fecha");
         const hora = document.getElementById("turno-hora");
 
-        if (!validarNumeroMascotas(numMascotas.value)) {
-            mostrarError("El número de mascotas debe estar entre 1 y 3. Si tiene más de tres mascotas, por favor haga otro turno para las otras mascotas.");
+        if (numMascotas.value < 1 || numMascotas.value > 3) {
+            mostrarError(errorMessages.limiteMascotas);
             return;
         }
         if (!validarFecha(fecha.value)) {
-            mostrarError("La fecha del turno debe ser un día que la veterinaria esté abierta y dentro de los próximos 45 días.");
+            mostrarError(errorMessages.fechaInvalida);
             return;
         }
         if (!validarDiaAbierto(fecha.value)) {
-            mostrarError("Por favor seleccionar un día en el que la veterinaria esté abierta. Ver días y horarios a la izquierda.");
+            mostrarError(errorMessages.diaCerrado);
             return;
         }
         if (!validarHora(fecha.value, hora.value, horarios)) {
-            mostrarError("El turno que estás tratando de tomar no está dentro del horario habil de la veterinaria, por favor mirá nuestros horarios a la izquierda.");
+            mostrarError(errorMessages.horaInvalida);
             return;
         }
 

@@ -2,7 +2,7 @@
 Autor: Alessio Aguirre Pimentel
 Versión: 361 */
 
-import { horarios } from './constantes.js';
+import { horarios, errorMessages } from './constantes.js';
 
 // Validar nombre: solo permite de 2 a 25 caracteres alfabéticos y espacios
 export const validarNombre = (nombre) => {

@@ -8,7 +8,7 @@ import { mostrarError, limpiarError } from './manejoErrores.js';
 import { validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { obtenerHoraActualArgentina } from './inicializacionApp.js';
-import { servicios, horarios, duracionDeTurno } from './constantes.js';
+import { servicios, horarios, duracionDeTurno, formatoFecha, formatoHora, errorMessages } from './constantes.js';
 
 const showError = (message) => {
     mostrarError(message);
@@ -28,26 +28,26 @@ export const mostrarFormulariosMascotas = async () => {
     limpiarError(hora);
 
     if (!validarNumeroMascotas(numMascotas.value)) {
-        showError("El número de mascotas debe estar entre 1 y 3. Si tiene más de tres mascotas, por favor haga otro turno para las otras mascotas.");
+        showError(errorMessages.limiteMascotas);
         Swal.fire({
             icon: 'info',
             title: 'Límite de Mascotas',
-            text: 'Por motivos de bienestar de todas las mascotas aceptamos turnos de hasta tres mascotas. Para ver el resto de tus mascotas por favor hacé otro turno otro día.',
+            text: errorMessages.limiteMascotas,
             confirmButtonText: 'Aceptar'
         });
         return;
     }
     if (!validarFecha(fecha.value)) {
-        showError("La fecha del turno debe ser un día que la veterinaria esté abierta y dentro de los próximos 45 días.");
+        showError(errorMessages.fechaInvalida);
         return;
     }
     if (!validarDiaAbierto(fecha.value)) {
-        showError("Por favor seleccionar un día en el que la veterinaria esté abierta. Ver días y horarios a la izquierda.");
+        showError(errorMessages.diaCerrado);
         return;
     }
     const ahoraArgentina = await obtenerHoraActualArgentina();
     if (!validarHora(fecha.value, hora.value, horarios)) {
-        showError("El turno que estás tratando de tomar no está dentro del horario habil de la veterinaria, por favor mirá nuestros horarios a la izquierda.");
+        showError(errorMessages.horaInvalida);
         return;
     }
 
@@ -83,11 +83,11 @@ export const guardarCliente = () => {
     limpiarError(telefono);
 
     if (!validarNombre(nombre.value)) {
-        showError("El nombre debe contener entre 2 y 25 letras del alfabeto latino.");
+        showError(errorMessages.nombreInvalido);
         return;
     }
     if (!validarTelefono(telefono.value)) {
-        showError("El teléfono debe contener solo números, signos +, -, (, ), y espacios, con un máximo de 20 caracteres.");
+        showError(errorMessages.telefonoInvalido);
         return;
     }
     cliente = new ClienteClass(null, nombre.value, telefono.value);
@@ -98,37 +98,37 @@ export const guardarCliente = () => {
 export const guardarMascotasYTurnos = async () => {
     try {
         if (!cliente) {
-            mostrarError('Cliente no está inicializado');
+            mostrarError(errorMessages.clienteNoInicializado);
             return;
         }
         const numMascotas = parseInt(document.getElementById("numero-mascotas").value);
         const fecha = document.getElementById("turno-fecha").value;
         const hora = document.getElementById("turno-hora").value;
-        let turnoHora = new Date(`${fecha}T${hora}`);
+        let turnoHora = luxon.DateTime.fromFormat(`${fecha}T${hora}`, `${formatoFecha}T${formatoHora}`);
         const ahoraArgentina = await obtenerHoraActualArgentina();
         for (let i = 0; i < numMascotas; i++) {
             const mascotaNombre = document.getElementById(`mascota-nombre-${i}`).value;
             const mascotaEdad = parseInt(document.getElementById(`mascota-edad-${i}`).value);
             const servicioId = parseInt(document.getElementById(`servicio-${i}`).value);
             if (!validarNombre(mascotaNombre)) {
-                showError("El nombre de la mascota debe contener entre 2 y 25 letras del alfabeto latino.");
+                showError(errorMessages.nombreMascotaInvalido);
                 return;
             }
             if (!validarEdadMascota(mascotaEdad.toString())) {
-                showError("La edad de la mascota debe ser un número entre 0 y 40 años.");
+                showError(errorMessages.edadMascotaInvalida);
                 return;
             }
             const mascota = new MascotaClass(null, cliente.clienteId, mascotaNombre, mascotaEdad);
             mascotas.push(mascota);
-            const turno = new TurnoClass(null, mascota.mascotaId, fecha, turnoHora.toTimeString().slice(0, 5), servicioId);
+            const turno = new TurnoClass(null, mascota.mascotaId, fecha, turnoHora.toFormat(formatoHora), servicioId);
             turnos.push(turno);
-            turnoHora.setMinutes(turnoHora.getMinutes() + duracionDeTurno);
+            turnoHora = turnoHora.plus({ minutes: duracionDeTurno });
 
             // Verificación de si el turno termina fuera del horario de atención
-            const finHorario = luxon.DateTime.fromFormat(`${fecha}T17:00`, 'yyyy-MM-dd\'T\'H:mm');
-            const horaFinTurno = luxon.DateTime.fromISO(turno.turnoHora);
+            const finHorario = luxon.DateTime.fromFormat(`${fecha}T17:00`, `${formatoFecha}T${formatoHora}`);
+            const horaFinTurno = luxon.DateTime.fromFormat(turno.turnoHora, formatoHora);
             if (horaFinTurno.plus({ minutes: duracionDeTurno }) > finHorario) {
-                mostrarError("Los turnos duran 45 minutos. El turno que estás tratando de tomar terminaría fuera del horario laboral. Por favor tomá un turno que termine antes de éste horario. Por favor ver horarios a la izquierda.");
+                mostrarError(errorMessages.horaInvalida);
                 return;
             }
         }
