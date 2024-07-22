@@ -1,6 +1,6 @@
 /* Nombre del archivo: constantes.js
 Autor: Alessio Aguirre Pimentel
-Versión: 365 */
+Versión: 367 */
 
 // Servicios ofrecidos por la veterinaria
 export const servicios = {
@@ -25,7 +25,7 @@ export const horarios = {
 export const duracionDeTurno = 45;
 
 // Formatos de fecha y hora
-export const formatoFecha = "Y-mmm-d";
+export const formatoFecha = "Y-MMM-d";
 export const formatoHora = "H:i";
 
 // Mensajes de error comunes
@@ -38,7 +38,8 @@ export const errorMessages = {
     nombreInvalido: "El nombre debe contener entre 2 y 25 letras del alfabeto latino.",
     telefonoInvalido: "El teléfono debe contener solo números, signos +, -, (, ), y espacios, con un máximo de 20 caracteres.",
     nombreMascotaInvalido: "El nombre de la mascota debe contener entre 2 y 25 letras del alfabeto latino.",
-    edadMascotaInvalida: "La edad de la mascota debe ser un número entre 0 y 40 años."
+    edadMascotaInvalida: "La edad de la mascota debe ser un número entre 0 y 40 años.",
+    turnoFueraHorario: "Los turnos duran 45 minutos. El turno que estás tratando de tomar terminaría fuera del horario laboral. Por favor tomá un turno que termine antes de éste horario. Por favor ver horarios a la izquierda."
 };
 
 // URL de la API para obtener feriados

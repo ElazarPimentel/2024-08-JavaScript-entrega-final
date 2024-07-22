@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/eventos.js
 Autor: Alessio Aguirre Pimentel
-Versión: 361 */
+Versión: 367 */
 
 import { mostrarFormulariosMascotas, guardarCliente, guardarMascotasYTurnos, comenzarDeNuevo } from './gestionFormularios.js';
 import { aplicarTema } from './tema.js';

@@ -1,13 +1,14 @@
 /* Nombre del archivo: js/actualizacionesDOM.js
 Autor: Alessio Aguirre Pimentel
-Versión: 360 */
+Versión: 367 */
 
-// Funciones para actualizar el DOM con los datos de la aplicación
 import { mostrarError } from './manejoErrores.js';
+const { DateTime } = luxon; // Acceso a luxon desde el objeto global
+import { formatoFecha } from './constantes.js';
 
 // Actualiza la lista de servicios en el DOM
 export const actualizarListaDeServicios = (servicios) => {
-    console.log('actualizarListaDeServicios called with servicios:', servicios);
+    console.log('actualizarListaDeServicios llamado con servicios:', servicios);
     const serviciosList = document.getElementById("servicios-listado");
     serviciosList.innerHTML = '';
     Object.entries(servicios).forEach(([id, nombre]) => {
@@ -19,7 +20,7 @@ export const actualizarListaDeServicios = (servicios) => {
 
 // Actualiza la lista de horarios en el DOM
 export const actualizarListaDeHorarios = (horarios) => {
-    console.log('actualizarListaDeHorarios called with horarios:', horarios);
+    console.log('actualizarListaDeHorarios llamado con horarios:', horarios);
     const horariosList = document.getElementById("horarios-listado");
     horariosList.innerHTML = '';
     Object.entries(horarios).forEach(([dia, horas]) => {
@@ -31,7 +32,7 @@ export const actualizarListaDeHorarios = (horarios) => {
 
 // Poblar datos de citas en el formulario desde los datos guardados
 export const poblarDatosDeCita = (data) => {
-    console.log('poblarDatosDeCita called with data:', data);
+    console.log('poblarDatosDeCita llamado con datos:', data);
     const { clienteNombre = '', clienteTelefono = '', numeroMascotas = '', turnoFecha = '', turnoHora = '' } = data;
     document.getElementById('cliente-nombre').value = clienteNombre;
     document.getElementById('cliente-telefono').value = clienteTelefono;
@@ -44,7 +45,7 @@ export const poblarDatosDeCita = (data) => {
 // Actualizar los detalles del cliente
 const actualizarDetallesCliente = (cliente, turnos) => {
     const clienteDetalles = document.getElementById("cliente-detalles");
-    const fechaTurno = turnos.length > 0 ? turnos[0].turnoFecha : 'N/A';
+    const fechaTurno = turnos.length > 0 ? DateTime.fromISO(turnos[0].turnoFecha).toFormat(formatoFecha) : 'N/A';
     clienteDetalles.innerHTML = `
         <h3>Detalles del Cliente</h3>
         <p><strong>Nombre:</strong> ${cliente.clienteNombre} <strong>Teléfono:</strong> ${cliente.clienteTelefono}</p>
@@ -61,10 +62,12 @@ const actualizarDetallesMascotas = (mascotas, turnos, servicios) => {
     mascotas.forEach(mascota => {
         const turno = turnos.find(turno => turno.turnoForeignMascotaId === mascota.mascotaId);
         const servicioNombre = servicios[turno.turnoForeignServicioId];
+        const fechaTurno = DateTime.fromISO(turno.turnoFecha).toFormat(formatoFecha);
+        const horaTurno = DateTime.fromISO(turno.turnoHora).toFormat(formatoHora);
         mascotaDetalles.innerHTML += `
             <div class="mascota-detalle">
                 <p><strong>Nombre de Mascota:</strong> ${mascota.mascotaNombre} <strong>Edad:</strong> ${mascota.mascotaEdad} años</p>
-                <p><strong>Hora del Turno:</strong> ${turno.turnoHora} <strong>Servicio:</strong> ${servicioNombre}</p>
+                <p><strong>Fecha del Turno:</strong> ${fechaTurno} <strong>Hora del Turno:</strong> ${horaTurno} <strong>Servicio:</strong> ${servicioNombre}</p>
             </div>
         `;
     });
@@ -72,7 +75,7 @@ const actualizarDetallesMascotas = (mascotas, turnos, servicios) => {
 
 // Exportar la función actualizarDOM
 export const actualizarDOM = (cliente, mascotas, turnos, servicios, horarios) => {
-    console.log('actualizarDOM called with:', { cliente, mascotas, turnos, servicios, horarios });
+    console.log('actualizarDOM llamado con:', { cliente, mascotas, turnos, servicios, horarios });
     actualizarListaDeServicios(servicios);
     actualizarListaDeHorarios(horarios);
     

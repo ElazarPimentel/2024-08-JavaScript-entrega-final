@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/gestionFormularios.js
 Autor: Alessio Aguirre Pimentel
-Versión: 361 */
+Versión: 367 */
 
 import { ClienteClass, MascotaClass, TurnoClass } from './modelos.js';
 import { actualizarDOM } from './actualizacionesDOM.js';
@@ -9,12 +9,13 @@ import { validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, va
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { obtenerHoraActualArgentina } from './inicializacionApp.js';
 import { servicios, horarios, duracionDeTurno, formatoFecha, formatoHora, errorMessages } from './constantes.js';
+const { DateTime } = luxon; // Acceso a luxon desde el objeto global
 
 const showError = (message) => {
     mostrarError(message);
 };
 
-// Declare cliente, mascotas, and turnos at the top level to avoid reference errors
+// Declarar cliente, mascotas, y turnos a nivel superior para evitar errores de referencia
 let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null;
 let mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
 let turnos = gestionarAlmacenamientoLocal("cargar", "turnos") || [];
@@ -104,7 +105,7 @@ export const guardarMascotasYTurnos = async () => {
         const numMascotas = parseInt(document.getElementById("numero-mascotas").value);
         const fecha = document.getElementById("turno-fecha").value;
         const hora = document.getElementById("turno-hora").value;
-        let turnoHora = luxon.DateTime.fromFormat(`${fecha}T${hora}`, `${formatoFecha}T${formatoHora}`);
+        let turnoHora = DateTime.fromISO(`${fecha}T${hora}`);
         const ahoraArgentina = await obtenerHoraActualArgentina();
         for (let i = 0; i < numMascotas; i++) {
             const mascotaNombre = document.getElementById(`mascota-nombre-${i}`).value;
@@ -120,15 +121,15 @@ export const guardarMascotasYTurnos = async () => {
             }
             const mascota = new MascotaClass(null, cliente.clienteId, mascotaNombre, mascotaEdad);
             mascotas.push(mascota);
-            const turno = new TurnoClass(null, mascota.mascotaId, fecha, turnoHora.toFormat(formatoHora), servicioId);
+            const turno = new TurnoClass(null, mascota.mascotaId, turnoHora.toFormat(formatoFecha), turnoHora.toFormat(formatoHora), servicioId);
             turnos.push(turno);
             turnoHora = turnoHora.plus({ minutes: duracionDeTurno });
 
             // Verificación de si el turno termina fuera del horario de atención
-            const finHorario = luxon.DateTime.fromFormat(`${fecha}T17:00`, `${formatoFecha}T${formatoHora}`);
-            const horaFinTurno = luxon.DateTime.fromFormat(turno.turnoHora, formatoHora);
+            const finHorario = DateTime.fromFormat(`${fecha}T17:00`, `${formatoFecha}T${formatoHora}`);
+            const horaFinTurno = DateTime.fromISO(turno.turnoHora);
             if (horaFinTurno.plus({ minutes: duracionDeTurno }) > finHorario) {
-                mostrarError(errorMessages.horaInvalida);
+                mostrarError(errorMessages.turnoFueraHorario);
                 return;
             }
         }

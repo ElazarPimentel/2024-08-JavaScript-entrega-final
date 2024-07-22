@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /* Nombre del archivo: scss/style.scss
 Autor: Alessio Aguirre Pimentel
-Versión: 365 */
+Versión: 367 */
 body.light {
   color: black;
   background-color: rgb(145, 144, 144);
@@ -40,21 +40,6 @@ body.dark {
 
 .feriado {
   background-color: tomato;
-  color: white;
-}
-
-.flatpickr-day.holiday {
-  background-color: #ff6347;
-  color: white;
-}
-
-.flatpickr-day.closed {
-  background-color: #808080;
-  color: white;
-}
-
-.flatpickr-day.working {
-  background-color: #008000;
   color: white;
 }
 
