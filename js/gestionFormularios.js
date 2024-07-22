@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/gestionFormularios.js
 Autor: Alessio Aguirre Pimentel
-Versión: 360 */
+Versión: 361 */
 
 import { ClienteClass, MascotaClass, TurnoClass } from './modelos.js';
 import { actualizarDOM } from './actualizacionesDOM.js';
@@ -8,33 +8,15 @@ import { mostrarError, limpiarError } from './manejoErrores.js';
 import { validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { obtenerHoraActualArgentina } from './inicializacionApp.js';
+import { servicios, horarios, duracionDeTurno } from './constantes.js';
 
-const duracionDeTurno = 45;
-
-const servicios = {
-    1: "Bañado y Peinado",
-    2: "Vacunación",
-    3: "Chequeo General",
-    4: "Quitar pulgas"
-};
-
-const horarios = {
-    Lunes: "9:00 - 17:00",
-    Martes: "9:00 - 17:00",
-    Miércoles: "9:00 - 17:00",
-    Jueves: "9:00 - 17:00",
-    Viernes: "9:00 - 17:00",
-    Sábado: "Cerrado",
-    Domingo: "Cerrado"
+const showError = (message) => {
+    mostrarError(message);
 };
 
 let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null;
 let mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
 let turnos = gestionarAlmacenamientoLocal("cargar", "turnos") || [];
-
-const showError = (message) => {
-    mostrarError(message);
-};
 
 export const mostrarFormulariosMascotas = async () => {
     const numMascotas = document.getElementById("numero-mascotas");

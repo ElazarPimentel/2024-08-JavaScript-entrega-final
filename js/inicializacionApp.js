@@ -1,29 +1,13 @@
 /* Nombre del archivo: js/inicializacionApp.js
 Autor: Alessio Aguirre Pimentel
-Versión: 360 */
+Versión: 361 */
 
 import { actualizarListaDeServicios, actualizarListaDeHorarios, actualizarDOM, poblarDatosDeCita } from './actualizacionesDOM.js';
 import { gestionarAlmacenamientoLocal, obtenerDatosDeAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { mostrarError as mostrarErrorGlobal } from './manejoErrores.js';
+import { servicios, horarios, apiUrls } from './constantes.js';
 
 const DateTime = luxon.DateTime;
-
-export const servicios = {
-    1: "Bañado y Peinado",
-    2: "Vacunación",
-    3: "Chequeo General",
-    4: "Quitar pulgas"
-};
-
-export const horarios = {
-    Lunes: "9:00 - 17:00",
-    Martes: "9:00 - 17:00",
-    Miércoles: "9:00 - 17:00",
-    Jueves: "9:00 - 17:00",
-    Viernes: "9:00 - 17:00",
-    Sábado: "Cerrado",
-    Domingo: "Cerrado"
-};
 
 let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null;
 let mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
@@ -44,7 +28,7 @@ function obtenerAnioActual() {
 
 // Función para traer feriados desde la API
 async function traerFeriados(anio) {
-    const url = `https://api.argentinadatos.com/v1/feriados/${anio}`;
+    const url = apiUrls.feriados(anio);
     try {
         const response = await fetch(url);
         if (!response.ok) {

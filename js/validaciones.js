@@ -1,6 +1,8 @@
 /* Nombre del archivo: js/validaciones.js
 Autor: Alessio Aguirre Pimentel
-Versión: 360 */
+Versión: 361 */
+
+import { horarios } from './constantes.js';
 
 // Validar nombre: solo permite de 2 a 25 caracteres alfabéticos y espacios
 export const validarNombre = (nombre) => {

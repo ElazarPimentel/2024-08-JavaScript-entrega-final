@@ -1,13 +1,13 @@
 /* Nombre del archivo: js/eventos.js
 Autor: Alessio Aguirre Pimentel
-Versión: 360 */
+Versión: 361 */
 
 import { mostrarFormulariosMascotas, guardarCliente, guardarMascotasYTurnos, comenzarDeNuevo } from './gestionFormularios.js';
 import { aplicarTema } from './tema.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora } from './validaciones.js';
 import { mostrarError } from './manejoErrores.js';
-import { horarios } from './inicializacionApp.js'; // Import horarios from inicializacionApp.js
+import { horarios } from './constantes.js'; // Import horarios from constantes.js
 
 // Configuración de los oyentes de eventos del DOM
 export const configurarOyentesDeEventos = () => {

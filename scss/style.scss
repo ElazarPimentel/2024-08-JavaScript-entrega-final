@@ -1,6 +1,6 @@
 /* Nombre del archivo: scss/style.scss
-   Autor: Alessio Aguirre Pimentel
-   Versión: 360 */
+Autor: Alessio Aguirre Pimentel
+Versión: 365 */
 
 // Variables
 $font-color-light: black;
@@ -11,8 +11,13 @@ $background-color-dark: black;
 $border-color-light: #ccc;
 $border-color-dark: #444;
 
-$primary-color: #77797a; 
+$primary-color: #77797a;
 $error-color: tomato;
+
+// Variables para resaltar fechas en Flatpickr
+$holiday-color: #ff6347; // rojo para feriados
+$closed-day-color: #808080; // gris para días cerrados
+$working-day-color: #008000; // verde para días laborables
 
 // Mixins
 @mixin theme($font-color, $background-color, $border-color) {
@@ -61,6 +66,22 @@ body.dark {
     color: white;
 }
 
+// Estilos para Flatpickr date picker
+.flatpickr-day.holiday {
+    background-color: $holiday-color;
+    color: white;
+}
+
+.flatpickr-day.closed {
+    background-color: $closed-day-color;
+    color: white;
+}
+
+.flatpickr-day.working {
+    background-color: $working-day-color;
+    color: white;
+}
+
 .slider:before {
     position: absolute;
     content: "";
@@ -72,11 +93,11 @@ body.dark {
     transition: .4s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
     background-color: $primary-color;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
     transform: translateX(26px);
 }
 
@@ -96,7 +117,7 @@ body {
     font-size: 16px;
     padding: 0;
     margin: 0;
-    transition: background-color 0.4s, color 0.4s; 
+    transition: background-color 0.4s, color 0.4s;
 
     &[data-theme="light"] {
         color: $font-color-light;
@@ -317,7 +338,7 @@ select[id^="servicio"] {
     max-width: 20ch;
 }
 
-// Media queries rango - Responsive real próxima versión
+
 @media (max-width: 767px) {
 
     .contenedor-01,
