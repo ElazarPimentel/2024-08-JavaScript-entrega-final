@@ -14,6 +14,7 @@ const showError = (message) => {
     mostrarError(message);
 };
 
+// Declare cliente, mascotas, and turnos at the top level to avoid reference errors
 let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null;
 let mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
 let turnos = gestionarAlmacenamientoLocal("cargar", "turnos") || [];
