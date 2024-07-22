@@ -1,10 +1,10 @@
 /* Nombre del archivo: js/actualizacionesDOM.js
 Autor: Alessio Aguirre Pimentel
-Versión: 367 */
+Versión: 400 */
 
 import { mostrarError } from './manejoErrores.js';
 const { DateTime } = luxon; // Acceso a luxon desde el objeto global
-import { formatoFecha } from './constantes.js';
+import { formatoFecha, formatoHora } from './constantes.js'; // Agregar formatoHora
 
 // Actualiza la lista de servicios en el DOM
 export const actualizarListaDeServicios = (servicios) => {
@@ -58,12 +58,12 @@ const actualizarDetallesCliente = (cliente, turnos) => {
 const actualizarDetallesMascotas = (mascotas, turnos, servicios) => {
     const mascotaDetalles = document.getElementById("mascota-detalles");
     mascotaDetalles.innerHTML = `<h3>Detalles de Mascotas y Turnos</h3>`;
-    
+
     mascotas.forEach(mascota => {
         const turno = turnos.find(turno => turno.turnoForeignMascotaId === mascota.mascotaId);
         const servicioNombre = servicios[turno.turnoForeignServicioId];
-        const fechaTurno = DateTime.fromISO(turno.turnoFecha).toFormat(formatoFecha);
-        const horaTurno = DateTime.fromISO(turno.turnoHora).toFormat(formatoHora);
+        const fechaTurno = DateTime.fromFormat(turno.turnoFecha, formatoFecha).toLocaleString(DateTime.DATE_FULL);
+        const horaTurno = DateTime.fromFormat(turno.turnoHora, formatoHora).toLocaleString(DateTime.TIME_SIMPLE);
         mascotaDetalles.innerHTML += `
             <div class="mascota-detalle">
                 <p><strong>Nombre de Mascota:</strong> ${mascota.mascotaNombre} <strong>Edad:</strong> ${mascota.mascotaEdad} años</p>
@@ -78,11 +78,11 @@ export const actualizarDOM = (cliente, mascotas, turnos, servicios, horarios) =>
     console.log('actualizarDOM llamado con:', { cliente, mascotas, turnos, servicios, horarios });
     actualizarListaDeServicios(servicios);
     actualizarListaDeHorarios(horarios);
-    
+
     if (cliente) {
         actualizarDetallesCliente(cliente, turnos);
     }
-    
+
     if (mascotas.length > 0 && turnos.length > 0) {
         actualizarDetallesMascotas(mascotas, turnos, servicios);
     }

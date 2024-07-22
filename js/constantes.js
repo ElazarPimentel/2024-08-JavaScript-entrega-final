@@ -26,7 +26,7 @@ export const duracionDeTurno = 45;
 
 // Formatos de fecha y hora
 export const formatoFecha = "Y-MMM-d";
-export const formatoHora = "H:i";
+export const formatoHora = "H:i"; // Agregado formatoHora
 
 // Mensajes de error comunes
 export const errorMessages = {
