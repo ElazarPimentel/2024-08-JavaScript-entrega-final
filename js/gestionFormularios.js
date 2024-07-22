@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/gestionFormularios.js
 Autor: Alessio Aguirre Pimentel
-Versión: 354 */
+Versión: 360 */
 
 import { ClienteClass, MascotaClass, TurnoClass } from './modelos.js';
 import { actualizarDOM } from './actualizacionesDOM.js';

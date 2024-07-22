@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /* Nombre del archivo: scss/style.scss
    Autor: Alessio Aguirre Pimentel
-   Versión: 353 */
+   Versión: 360 */
 body.light {
   color: black;
   background-color: rgb(145, 144, 144);
@@ -36,6 +36,11 @@ body.dark {
   bottom: 0;
   background-color: #ccc;
   transition: 0.4s;
+}
+
+.feriado {
+  background-color: tomato;
+  color: white;
 }
 
 .slider:before {

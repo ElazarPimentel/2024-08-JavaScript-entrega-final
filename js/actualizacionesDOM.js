@@ -1,8 +1,6 @@
-/* js/actualizacionesDOM.js */
-
 /* Nombre del archivo: js/actualizacionesDOM.js
 Autor: Alessio Aguirre Pimentel
-Versión: 353 */
+Versión: 360 */
 
 // Funciones para actualizar el DOM con los datos de la aplicación
 import { mostrarError } from './manejoErrores.js';

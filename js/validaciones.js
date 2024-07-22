@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/validaciones.js
 Autor: Alessio Aguirre Pimentel
-Versión: 353 */
+Versión: 360 */
 
 // Validar nombre: solo permite de 2 a 25 caracteres alfabéticos y espacios
 export const validarNombre = (nombre) => {

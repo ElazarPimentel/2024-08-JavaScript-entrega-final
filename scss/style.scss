@@ -1,6 +1,6 @@
 /* Nombre del archivo: scss/style.scss
    Autor: Alessio Aguirre Pimentel
-   Versión: 353 */
+   Versión: 360 */
 
 // Variables
 $font-color-light: black;
@@ -12,7 +12,6 @@ $border-color-light: #ccc;
 $border-color-dark: #444;
 
 $primary-color: #77797a; 
-
 $error-color: tomato;
 
 // Mixins
@@ -22,7 +21,7 @@ $error-color: tomato;
     border-color: $border-color;
 }
 
-// Body styles for light and dark themes
+// Estilos del body para temas claro y oscuro
 body.light {
     @include theme($font-color-light, $background-color-light, $border-color-light);
 }
@@ -31,7 +30,7 @@ body.dark {
     @include theme($font-color-dark, $background-color-dark, $border-color-dark);
 }
 
-// Theme switcher styles
+// Estilos del interruptor de tema
 .theme-switch {
     position: relative;
     display: inline-block;
@@ -54,6 +53,12 @@ body.dark {
     bottom: 0;
     background-color: $border-color-light;
     transition: .4s;
+}
+
+// Agregar una clase para feriados
+.feriado {
+    background-color: $error-color;
+    color: white;
 }
 
 .slider:before {
@@ -83,7 +88,7 @@ input:checked + .slider:before {
     border-radius: 50%;
 }
 
-// Existing styles
+// Estilos existentes
 
 body {
     color: $font-color-dark;

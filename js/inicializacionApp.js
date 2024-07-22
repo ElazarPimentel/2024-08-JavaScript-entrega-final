@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/inicializacionApp.js
 Autor: Alessio Aguirre Pimentel
-Versión: 354 */
+Versión: 360 */
 
 import { actualizarListaDeServicios, actualizarListaDeHorarios, actualizarDOM, poblarDatosDeCita } from './actualizacionesDOM.js';
 import { gestionarAlmacenamientoLocal, obtenerDatosDeAlmacenamientoLocal } from './almacenamientoLocal.js';
@@ -29,6 +29,7 @@ let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null;
 let mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
 let turnos = gestionarAlmacenamientoLocal("cargar", "turnos") || [];
 
+// Función para verificar si los datos están desactualizados
 function datosDesactualizados(fechaString) {
     const fechaAlmacenada = DateTime.fromISO(fechaString);
     const fechaActual = DateTime.now();
@@ -36,10 +37,12 @@ function datosDesactualizados(fechaString) {
     return diferencia > 7;
 }
 
+// Función para obtener el año actual
 function obtenerAnioActual() {
     return DateTime.now().year;
 }
 
+// Función para traer feriados desde la API
 async function traerFeriados(anio) {
     const url = `https://api.argentinadatos.com/v1/feriados/${anio}`;
     try {
@@ -58,6 +61,7 @@ async function traerFeriados(anio) {
     }
 }
 
+// Función para inicializar datos de feriados
 async function inicializarDatosFeriados() {
     const feriadosAlmacenados = localStorage.getItem('feriadosArgentina');
     if (feriadosAlmacenados) {
@@ -89,11 +93,14 @@ async function inicializarDatosFeriados() {
         };
         localStorage.setItem('feriadosArgentina', JSON.stringify(datosParaAlmacenar));
         console.log('Feriados actualizados:', feriados);
+        return feriados;
     } else {
         console.warn('No se pudieron obtener los feriados del próximo año.');
+        return null;
     }
 }
 
+// Función para obtener la hora actual de Argentina
 export async function obtenerHoraActualArgentina() {
     const url = 'http://worldtimeapi.org/api/timezone/America/Argentina/Buenos_Aires';
     try {
@@ -109,8 +116,9 @@ export async function obtenerHoraActualArgentina() {
     }
 }
 
+// Función principal para inicializar la aplicación
 export const inicializarApp = async () => {
-    await inicializarDatosFeriados();
+    const feriados = await inicializarDatosFeriados();
     recuperarYPoblarDatos();
     aplicarTema();
     controlarBotonGuardar();
@@ -118,7 +126,11 @@ export const inicializarApp = async () => {
     actualizarListaDeHorarios(horarios);
     actualizarDOM(cliente, mascotas, turnos, servicios, horarios);
 
-    // Check if there is existing data and adjust the UI accordingly
+    if (feriados) {
+        mostrarFeriadosProximos(feriados);
+        resaltarFeriadosEnCalendario(feriados);
+    }
+
     if (cliente || (mascotas && mascotas.length > 0) || (turnos && turnos.length > 0)) {
         document.getElementById("numero-mascotas").style.display = "none";
         document.getElementById("siguiente-mascota").style.display = "none";
@@ -127,6 +139,7 @@ export const inicializarApp = async () => {
     }
 };
 
+// Función para recuperar y poblar datos guardados
 const recuperarYPoblarDatos = () => {
     const storedData = {
         cliente: gestionarAlmacenamientoLocal("cargar", "cliente"),
@@ -143,6 +156,7 @@ const recuperarYPoblarDatos = () => {
     }
 };
 
+// Función para aplicar el tema
 const aplicarTema = () => {
     try {
         const temaAlmacenado = gestionarAlmacenamientoLocal("cargar", "theme");
@@ -155,9 +169,38 @@ const aplicarTema = () => {
     }
 };
 
+// Función para controlar el botón de guardar
 const controlarBotonGuardar = () => {
     const guardarBtn = document.getElementById("guardar-mascotas-turnos");
     if (guardarBtn) {
         guardarBtn.style.display = 'none';
     }
+};
+
+// Función para mostrar los próximos feriados
+const mostrarFeriadosProximos = (feriados) => {
+    const feriadosProximos = feriados.filter(feriado => {
+        const fechaFeriado = DateTime.fromISO(feriado.fecha);
+        const hoy = DateTime.now();
+        const diferencia = fechaFeriado.diff(hoy, 'days').days;
+        return diferencia >= 0 && diferencia <= 45;
+    });
+
+    const feriadosListado = document.getElementById('feriados-listado');
+    feriadosListado.innerHTML = feriadosProximos.length > 0 ? feriadosProximos.map(feriado => `<li>${feriado.fecha}</li>`).join('') : '<li>Sin feriados próximos</li>';
+};
+
+// Función para resaltar los feriados en el calendario
+const resaltarFeriadosEnCalendario = (feriados) => {
+    const inputFecha = document.getElementById('turno-fecha');
+    const fechasFeriados = feriados.map(feriado => feriado.fecha);
+
+    inputFecha.addEventListener('input', (event) => {
+        const fechaSeleccionada = event.target.value;
+        if (fechasFeriados.includes(fechaSeleccionada)) {
+            inputFecha.style.borderColor = 'tomato';
+        } else {
+            inputFecha.style.borderColor = '';
+        }
+    });
 };
