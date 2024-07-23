@@ -84,6 +84,7 @@ body[data-theme=light] {
 }
 body[data-theme=light] input[type=text],
 body[data-theme=light] input[type=tel],
+body[data-theme=light] input[type=email],
 body[data-theme=light] select,
 body[data-theme=light] option {
   background-color: rgb(145, 144, 144);
@@ -222,6 +223,7 @@ form {
 }
 form input[type=text],
 form input[type=tel],
+form input[type=email],
 form select,
 form option {
   background-color: black;
@@ -230,18 +232,6 @@ form option {
   padding: 0.15rem;
   margin-bottom: 0.5rem;
   box-sizing: border-box;
-}
-form input[type=text][id=numero-mascotas],
-form input[type=tel][id=numero-mascotas],
-form select[id=numero-mascotas],
-form option[id=numero-mascotas] {
-  width: 4ch;
-}
-form input[type=text][id^=mascota-edad],
-form input[type=tel][id^=mascota-edad],
-form select[id^=mascota-edad],
-form option[id^=mascota-edad] {
-  width: 3ch;
 }
 form input[type=submit] {
   background-color: rgba(255, 255, 255, 0.795);
@@ -266,7 +256,8 @@ form button {
 }
 
 input#cliente-nombre,
-input#cliente-telefono {
+input#cliente-telefono,
+input#cliente-email {
   padding: 0.2rem;
   margin-bottom: 0.5rem;
 }
@@ -279,12 +270,24 @@ input#cliente-telefono {
   width: 15ch;
 }
 
+input#cliente-email {
+  width: 25ch;
+}
+
 input[id^=mascota-nombre] {
   max-width: 10ch;
 }
 
 select[id^=servicio] {
   max-width: 20ch;
+}
+
+button#agregar-mascota {
+  margin-top: 1rem;
+}
+
+button#recibir-correo {
+  display: none;
 }
 
 @media (max-width: 767px) {

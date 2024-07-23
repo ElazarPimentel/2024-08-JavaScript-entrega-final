@@ -17,5 +17,7 @@ export const mostrarError = (mensaje) => {
 
 // Función para limpiar errores en el formulario
 export const limpiarError = (element) => {
-    element.classList.remove('error');
+    if (element && element.classList) {
+        element.classList.remove('error');
+    }
 };

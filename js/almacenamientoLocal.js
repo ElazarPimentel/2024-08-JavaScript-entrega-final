@@ -58,24 +58,3 @@ export const gestionarAlmacenamientoLocal = (accion, clave, valor = null) => {
     }
 };
 
-// Función para obtener datos de almacenamiento local
-export const obtenerDatosDeAlmacenamientoLocal = (clave) => {
-    try {
-        const item = JSON.parse(localStorage.getItem(clave));
-        if (item) {
-            if (new Date(item.fechaExp) > new Date()) {
-                return item.valor;
-            } else {
-                console.log(`Item expired: ${clave}`);
-                localStorage.removeItem(clave);
-            }
-        } else {
-            console.log(`No item found: ${clave}`);
-        }
-        return null;
-    } catch (error) {
-        mostrarError(`${errorMessages.errorAl} ${errorMessages.obtener} ${errorMessages.enAlmacenamientoLocal}: ${error.message}`);
-        console.error(`Error in obtenerDatosDeAlmacenamientoLocal: ${error.message}`);
-        return null;
-    }
-};

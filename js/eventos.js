@@ -2,7 +2,7 @@
 Autor: Alessio Aguirre Pimentel
 Versión: 42 */
 
-import { mostrarFormulariosMascotas, guardarCliente, guardarMascotasYTurnos, comenzarDeNuevo } from './gestionFormularios.js';
+import { mostrarFormulariosMascotas, guardarCliente, guardarMascotasYTurnos, comenzarDeNuevo, agregarMascotaFormulario, recibirCorreo } from './gestionFormularios.js';
 import { aplicarTema } from './tema.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { validarFecha, validarDiaAbierto, validarHora } from './validaciones.js';
@@ -11,37 +11,6 @@ import { horarios, errorMessages } from './constantes.js'; // Import horarios an
 
 // Configuración de los oyentes de eventos del DOM
 export const configurarOyentesDeEventos = () => {
-    document.getElementById('siguiente-mascota').addEventListener('click', () => {
-        console.log('Button "siguiente-mascota" clicked');
-        const numMascotas = document.getElementById("numero-mascotas");
-        const fecha = document.getElementById("turno-fecha");
-        const hora = document.getElementById("turno-hora");
-
-        if (numMascotas.value < 1 || numMascotas.value > 3) {
-            mostrarError(errorMessages.limiteMascotas);
-            return;
-        }
-        if (!validarFecha(fecha.value)) {
-            mostrarError(errorMessages.fechaInvalida);
-            return;
-        }
-        if (!validarDiaAbierto(fecha.value)) {
-            mostrarError(errorMessages.diaCerrado);
-            return;
-        }
-        if (!validarHora(fecha.value, hora.value, horarios)) {
-            mostrarError(errorMessages.horaInvalida);
-            return;
-        }
-
-        mostrarFormulariosMascotas();
-        document.getElementById('siguiente-mascota').style.display = 'none'; // Hide the "Siguiente" button
-        document.getElementById('numero-mascotas').disabled = true; // Grey out the number of pets field
-        document.getElementById('turno-fecha').disabled = true; // Disable the date input
-        document.getElementById('turno-hora').disabled = true; // Disable the time input
-        document.getElementById('guardar-mascotas-turnos').style.display = 'inline-block'; // Show the "Pedir éste Turno" button
-    });
-
     document.getElementById('guardar-cliente').addEventListener('click', () => {
         console.log('Button "guardar-cliente" clicked');
         guardarCliente();
@@ -72,8 +41,19 @@ export const configurarOyentesDeEventos = () => {
         aplicarTema(theme);
     });
 
+    document.getElementById('agregar-mascota').addEventListener('click', () => {
+        console.log('Button "agregar-mascota" clicked');
+        agregarMascotaFormulario();
+    });
+
+    document.getElementById('recibir-correo').addEventListener('click', () => {
+        console.log('Button "recibir-correo" clicked');
+        recibirCorreo();
+    });
+
     // Aplicar el tema inicialmente al cargar la página
     const initialTheme = themeToggle.checked ? 'dark' : 'light';
     console.log(`Initial theme: ${initialTheme}`);
     aplicarTema(initialTheme);
 };
+

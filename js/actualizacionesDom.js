@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* Nombre del archivo: js/actualizacionesDom.js
 Autor: Alessio Aguirre Pimentel
 Versión: 42 */
@@ -33,10 +32,10 @@ export const actualizarListaDeHorarios = (horarios) => {
 // Poblar datos de citas en el formulario desde los datos guardados
 export const poblarDatosDeCita = (data) => {
     console.log('poblarDatosDeCita llamado con datos:', data);
-    const { clienteNombre = '', clienteTelefono = '', numeroMascotas = '', turnoFecha = '', turnoHora = '' } = data;
+    const { clienteNombre = '', clienteTelefono = '', clienteEmail = '', turnoFecha = '', turnoHora = '' } = data;
     document.getElementById('cliente-nombre').value = clienteNombre;
     document.getElementById('cliente-telefono').value = clienteTelefono;
-    document.getElementById('numero-mascotas').value = numeroMascotas;
+    document.getElementById('cliente-email').value = clienteEmail;
     document.getElementById('turno-fecha').value = turnoFecha;
     document.getElementById('turno-hora').value = turnoHora;
     // Más lógica para mostrar/ocultar elementos basados en los datos
@@ -48,7 +47,7 @@ const actualizarDetallesCliente = (cliente, turnos) => {
     const fechaTurno = turnos.length > 0 ? DateTime.fromISO(turnos[0].turnoFecha).setLocale('es').toFormat(formatoFecha) : 'N/A';
     clienteDetalles.innerHTML = `
         <h3>Detalles del Cliente</h3>
-        <p><strong>Nombre:</strong> ${cliente.clienteNombre} <strong>Teléfono:</strong> ${cliente.clienteTelefono}</p>
+        <p><strong>Nombre:</strong> ${cliente.clienteNombre} <strong>Teléfono:</strong> ${cliente.clienteTelefono} <strong>Email:</strong> ${cliente.clienteEmail}</p>
         <p><strong>Fecha del Turno:</strong> ${fechaTurno}</p>
         <hr>
     `;

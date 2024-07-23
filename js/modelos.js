@@ -4,10 +4,11 @@ Versión: 42 */
 
 // Clase para manejar los datos del cliente
 export class ClienteClass {
-    constructor(clienteId, clienteNombre, clienteTelefono) {
+    constructor(clienteId, clienteNombre, clienteTelefono, clienteEmail) {
         this.clienteId = clienteId || ClienteClass.generarId('cliente');
         this.clienteNombre = clienteNombre;
         this.clienteTelefono = clienteTelefono;
+        this.clienteEmail = clienteEmail;
         console.log('ClienteClass instance created:', this);
     }
 

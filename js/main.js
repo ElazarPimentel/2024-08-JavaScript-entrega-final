@@ -7,8 +7,9 @@ import { configurarOyentesDeEventos } from './eventos.js';
 
 // Inicializar la aplicación
 console.log('Inicializando la aplicación');
-inicializarApp();
+document.addEventListener('DOMContentLoaded', () => {
+    inicializarApp();
+    console.log('Configurando oyentes de eventos');
+    configurarOyentesDeEventos();
+});
 
-// Configurar oyentes de eventos
-console.log('Configurando oyentes de eventos');
-configurarOyentesDeEventos();

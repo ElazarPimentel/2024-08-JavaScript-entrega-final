@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* Nombre del archivo: js/inicializacionApp.js
 Autor: Alessio Aguirre Pimentel
 Versión: 42 */
@@ -176,3 +175,4 @@ const resaltarFeriadosEnCalendario = (feriados) => {
         }
     });
 };
+
