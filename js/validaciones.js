@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/validaciones.js
 Autor: Alessio Aguirre Pimentel
-Versión: 367 */
+Versión: 400 */
 
 import { horarios, errorMessages } from './constantes.js';
 

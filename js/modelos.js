@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/modelos.js
 Autor: Alessio Aguirre Pimentel
-Versión: 367 */
+Versión: 400 */
 
 // Clase para manejar los datos del cliente
 export class ClienteClass {
@@ -40,8 +40,8 @@ export class TurnoClass {
     constructor(turnoId, turnoForeignMascotaId, turnoFecha, turnoHora, turnoForeignServicioId) {
         this.turnoId = turnoId || TurnoClass.generarId('turno');
         this.turnoForeignMascotaId = turnoForeignMascotaId;
-        this.turnoFecha = turnoFecha;
-        this.turnoHora = turnoHora;
+        this.turnoFecha = turnoFecha; // Ensure this is an ISO string
+        this.turnoHora = turnoHora;   // Ensure this is an ISO string
         this.turnoForeignServicioId = turnoForeignServicioId;
         console.log('TurnoClass instance created:', this);
     }

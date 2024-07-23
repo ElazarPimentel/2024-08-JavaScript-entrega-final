@@ -1,4 +1,6 @@
-/* Nombre del archivo: js/actualizacionesDOM.js
+/* js/actualizaciones-dom.js */
+
+/* Nombre del archivo: js/actualizaciones-dom.js
 Autor: Alessio Aguirre Pimentel
 Versión: 400 */
 
@@ -45,7 +47,7 @@ export const poblarDatosDeCita = (data) => {
 // Actualizar los detalles del cliente
 const actualizarDetallesCliente = (cliente, turnos) => {
     const clienteDetalles = document.getElementById("cliente-detalles");
-    const fechaTurno = turnos.length > 0 ? DateTime.fromISO(turnos[0].turnoFecha).toFormat(formatoFecha) : 'N/A';
+    const fechaTurno = turnos.length > 0 ? DateTime.fromISO(turnos[0].turnoFecha).setLocale('es').toFormat(formatoFecha) : 'N/A';
     clienteDetalles.innerHTML = `
         <h3>Detalles del Cliente</h3>
         <p><strong>Nombre:</strong> ${cliente.clienteNombre} <strong>Teléfono:</strong> ${cliente.clienteTelefono}</p>
@@ -62,12 +64,11 @@ const actualizarDetallesMascotas = (mascotas, turnos, servicios) => {
     mascotas.forEach(mascota => {
         const turno = turnos.find(turno => turno.turnoForeignMascotaId === mascota.mascotaId);
         const servicioNombre = servicios[turno.turnoForeignServicioId];
-        const fechaTurno = DateTime.fromFormat(turno.turnoFecha, formatoFecha).toLocaleString(DateTime.DATE_FULL);
-        const horaTurno = DateTime.fromFormat(turno.turnoHora, formatoHora).toLocaleString(DateTime.TIME_SIMPLE);
+        const horaTurno = DateTime.fromISO(turno.turnoHora).setLocale('es').toFormat(formatoHora);
         mascotaDetalles.innerHTML += `
             <div class="mascota-detalle">
                 <p><strong>Nombre de Mascota:</strong> ${mascota.mascotaNombre} <strong>Edad:</strong> ${mascota.mascotaEdad} años</p>
-                <p><strong>Fecha del Turno:</strong> ${fechaTurno} <strong>Hora del Turno:</strong> ${horaTurno} <strong>Servicio:</strong> ${servicioNombre}</p>
+                <p><strong>Hora del Turno:</strong> ${horaTurno} <strong>Servicio:</strong> ${servicioNombre}</p>
             </div>
         `;
     });
@@ -86,4 +87,19 @@ export const actualizarDOM = (cliente, mascotas, turnos, servicios, horarios) =>
     if (mascotas.length > 0 && turnos.length > 0) {
         actualizarDetallesMascotas(mascotas, turnos, servicios);
     }
+};
+
+// Mostrar los próximos feriados
+export const mostrarFeriadosProximos = (feriados) => {
+    const feriadosProximos = feriados.filter(feriado => {
+        const fechaFeriado = DateTime.fromISO(feriado.fecha);
+        const hoy = DateTime.now();
+        const diferencia = fechaFeriado.diff(hoy, 'days').days;
+        return diferencia >= 0 && diferencia <= 45;
+    });
+
+    const feriadosListado = document.getElementById('feriados-listado');
+    feriadosListado.innerHTML = feriadosProximos.length > 0 
+        ? feriadosProximos.map(feriado => `<li>${DateTime.fromISO(feriado.fecha).setLocale('es').toFormat(formatoFecha)}</li>`).join('') 
+        : '<li>Sin feriados próximos</li>';
 };

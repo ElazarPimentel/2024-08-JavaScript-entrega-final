@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/eventos.js
 Autor: Alessio Aguirre Pimentel
-Versión: 367 */
+Versión: 400 */
 
 import { mostrarFormulariosMascotas, guardarCliente, guardarMascotasYTurnos, comenzarDeNuevo } from './gestionFormularios.js';
 import { aplicarTema } from './tema.js';
@@ -37,16 +37,21 @@ export const configurarOyentesDeEventos = () => {
         mostrarFormulariosMascotas();
         document.getElementById('siguiente-mascota').style.display = 'none'; // Hide the "Siguiente" button
         document.getElementById('numero-mascotas').disabled = true; // Grey out the number of pets field
+        document.getElementById('turno-fecha').disabled = true; // Disable the date input
+        document.getElementById('turno-hora').disabled = true; // Disable the time input
         document.getElementById('guardar-mascotas-turnos').style.display = 'inline-block'; // Show the "Pedir éste Turno" button
     });
+
     document.getElementById('guardar-cliente').addEventListener('click', () => {
         console.log('Button "guardar-cliente" clicked');
         guardarCliente();
     });
+
     document.getElementById('borrar-datos').addEventListener('click', () => {
         console.log('Button "borrar-datos" clicked');
         comenzarDeNuevo();
     });
+
     document.getElementById('guardar-mascotas-turnos').addEventListener('click', () => {
         console.log('Button "guardar-mascotas-turnos" clicked');
         guardarMascotasYTurnos();

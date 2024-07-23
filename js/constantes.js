@@ -1,6 +1,6 @@
 /* Nombre del archivo: constantes.js
 Autor: Alessio Aguirre Pimentel
-Versión: 367 */
+Versión: 400 */
 
 // Servicios ofrecidos por la veterinaria
 export const servicios = {
@@ -25,8 +25,8 @@ export const horarios = {
 export const duracionDeTurno = 45;
 
 // Formatos de fecha y hora
-export const formatoFecha = "Y-MMM-d";
-export const formatoHora = "H:i"; // Agregado formatoHora
+export const formatoFecha = "yyyy-LLL-dd";
+export const formatoHora = "HH:mm";
 
 // Mensajes de error comunes
 export const errorMessages = {

@@ -1,9 +1,9 @@
 /* Nombre del archivo: js/gestionFormularios.js
 Autor: Alessio Aguirre Pimentel
-Versión: 367 */
+Versión: 400 */
 
 import { ClienteClass, MascotaClass, TurnoClass } from './modelos.js';
-import { actualizarDOM } from './actualizacionesDOM.js';
+import { actualizarDOM } from './actualizaciones-dom.js';
 import { mostrarError, limpiarError } from './manejoErrores.js';
 import { validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
@@ -121,13 +121,13 @@ export const guardarMascotasYTurnos = async () => {
             }
             const mascota = new MascotaClass(null, cliente.clienteId, mascotaNombre, mascotaEdad);
             mascotas.push(mascota);
-            const turno = new TurnoClass(null, mascota.mascotaId, turnoHora.toFormat(formatoFecha), turnoHora.toFormat(formatoHora), servicioId);
+            const turno = new TurnoClass(null, mascota.mascotaId, turnoHora.toISO(), turnoHora.toISO(), servicioId);
             turnos.push(turno);
             turnoHora = turnoHora.plus({ minutes: duracionDeTurno });
 
             // Verificación de si el turno termina fuera del horario de atención
             const finHorario = DateTime.fromFormat(`${fecha}T17:00`, `${formatoFecha}T${formatoHora}`);
-            const horaFinTurno = DateTime.fromISO(turno.turnoHora);
+            const horaFinTurno = DateTime.fromISO(turnoHora.toISO());
             if (horaFinTurno.plus({ minutes: duracionDeTurno }) > finHorario) {
                 mostrarError(errorMessages.turnoFueraHorario);
                 return;
@@ -159,4 +159,6 @@ export const comenzarDeNuevo = () => {
     document.getElementById('seccion-salida-datos-dos').style.display = 'none';
     document.getElementById('siguiente-mascota').style.display = 'inline-block'; // Make "Siguiente" button visible again
     document.getElementById('numero-mascotas').disabled = false; // Enable the number of pets field
+    document.getElementById('turno-fecha').disabled = false; // Enable the date input
+    document.getElementById('turno-hora').disabled = false; // Enable the time input
 };

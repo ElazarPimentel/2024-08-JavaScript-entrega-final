@@ -1,8 +1,8 @@
 /* Nombre del archivo: js/inicializacionApp.js
 Autor: Alessio Aguirre Pimentel
-Versión: 367 */
+Versión: 400 */
 
-import { actualizarListaDeServicios, actualizarListaDeHorarios, actualizarDOM, poblarDatosDeCita } from './actualizacionesDOM.js';
+import { actualizarListaDeServicios, actualizarListaDeHorarios, actualizarDOM, mostrarFeriadosProximos } from './actualizaciones-dom.js';
 import { gestionarAlmacenamientoLocal, obtenerDatosDeAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { mostrarError as mostrarErrorGlobal } from './manejoErrores.js';
 import { servicios, horarios, apiUrls } from './constantes.js';
@@ -162,19 +162,6 @@ const controlarBotonGuardar = () => {
 };
 
 // Función para mostrar los próximos feriados
-const mostrarFeriadosProximos = (feriados) => {
-    const feriadosProximos = feriados.filter(feriado => {
-        const fechaFeriado = DateTime.fromISO(feriado.fecha);
-        const hoy = DateTime.now();
-        const diferencia = fechaFeriado.diff(hoy, 'days').days;
-        return diferencia >= 0 && diferencia <= 45;
-    });
-
-    const feriadosListado = document.getElementById('feriados-listado');
-    feriadosListado.innerHTML = feriadosProximos.length > 0 ? feriadosProximos.map(feriado => `<li>${feriado.fecha}</li>`).join('') : '<li>Sin feriados próximos</li>';
-};
-
-// Función para resaltar los feriados en el calendario
 const resaltarFeriadosEnCalendario = (feriados) => {
     const inputFecha = document.getElementById('turno-fecha');
     const fechasFeriados = feriados.map(feriado => feriado.fecha);
