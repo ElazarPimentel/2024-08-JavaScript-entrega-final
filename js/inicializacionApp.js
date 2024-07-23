@@ -2,7 +2,7 @@
 Autor: Alessio Aguirre Pimentel
 Versión: 400 */
 
-import { actualizarListaDeServicios, actualizarListaDeHorarios, actualizarDOM, mostrarFeriadosProximos } from './actualizaciones-dom.js';
+import { actualizarListaDeServicios, actualizarListaDeHorarios, actualizarDOM, mostrarFeriadosProximos } from './actualizacionesDom.js';
 import { gestionarAlmacenamientoLocal, obtenerDatosDeAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { mostrarError as mostrarErrorGlobal } from './manejoErrores.js';
 import { servicios, horarios, apiUrls } from './constantes.js';

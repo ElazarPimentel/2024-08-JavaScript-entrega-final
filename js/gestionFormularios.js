@@ -3,13 +3,13 @@ Autor: Alessio Aguirre Pimentel
 Versión: 400 */
 
 import { ClienteClass, MascotaClass, TurnoClass } from './modelos.js';
-import { actualizarDOM } from './actualizaciones-dom.js';
+import { actualizarDOM } from './actualizacionesDom.js';
 import { mostrarError, limpiarError } from './manejoErrores.js';
 import { validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { obtenerHoraActualArgentina } from './inicializacionApp.js';
 import { servicios, horarios, duracionDeTurno, formatoFecha, formatoHora, errorMessages } from './constantes.js';
-const { DateTime } = luxon; // Acceso a luxon desde el objeto global
+const { DateTime } = luxon; 
 
 const showError = (message) => {
     mostrarError(message);
