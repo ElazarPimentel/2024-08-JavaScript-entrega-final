@@ -57,6 +57,7 @@ Este proyecto es la entrega final para el curso de JavaScript en CoderHouse. Es 
 - Creación de fetch a API de feriados para año actual y próximo, con catch try en caso que no haya próximo todavía. 
 - Eliminación del botón "sacar turno" cuando no se ha presionado "siguiente".
 - Mover constantes, arrays o elementos que no cambian durante la ejecución a nuevo archivo constantes.js para Separation of Concerns. 
+- Agregar ESlint y ver todos los errores que había y no dormir. 
 
 
 ### Por Hacer

@@ -1,6 +1,6 @@
 /* Nombre del archivo: constantes.js
 Autor: Alessio Aguirre Pimentel
-Versión: 400 */
+Versión: 42 */
 
 // Servicios ofrecidos por la veterinaria
 export const servicios = {
@@ -39,7 +39,20 @@ export const errorMessages = {
     telefonoInvalido: "El teléfono debe contener solo números, signos +, -, (, ), y espacios, con un máximo de 20 caracteres.",
     nombreMascotaInvalido: "El nombre de la mascota debe contener entre 2 y 25 letras del alfabeto latino.",
     edadMascotaInvalida: "La edad de la mascota debe ser un número entre 0 y 40 años.",
-    turnoFueraHorario: "Los turnos duran 45 minutos. El turno que estás tratando de tomar terminaría fuera del horario laboral. Por favor tomá un turno que termine antes de éste horario. Por favor ver horarios a la izquierda."
+    turnoFueraHorario: "Los turnos duran 45 minutos. El turno que estás tratando de tomar terminaría fuera del horario laboral. Por favor tomá un turno que termine antes de éste horario. Por favor ver horarios a la izquierda.",
+    claveValorRequeridos: "Clave y valor son requeridos para guardar",
+    claveRequerida: "Clave es requerida para cargar",
+    accionNoReconocida: "Acción no reconocida",
+    errorAl: "Error al",
+    obtener: "obtener",
+    enAlmacenamientoLocal: "en almacenamiento local",
+    errorGuardarMascotasTurnos: "Error al guardar mascotas y turnos",
+    noObtenerFeriados: "No se pudieron obtener los feriados",
+    noObtenerFeriadosAnioActual: "No se pudieron obtener los feriados del año actual.",
+    noObtenerFeriadosAnioSiguiente: "No se pudieron obtener los feriados del próximo año aún. Intenta nuevamente más tarde.",
+    noObtenerHoraActual: "No se pudo obtener la hora actual",
+    noObtenerHoraActualUsarHoraPC: "No se pudo obtener la hora actual. Usando la hora local de la PC.",
+    errorAplicarTema: "Error al aplicar el tema"
 };
 
 // URL de la API para obtener feriados

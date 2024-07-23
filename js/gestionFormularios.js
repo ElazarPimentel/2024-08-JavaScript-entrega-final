@@ -1,15 +1,15 @@
+/* eslint-disable no-undef */
 /* Nombre del archivo: js/gestionFormularios.js
 Autor: Alessio Aguirre Pimentel
-Versión: 400 */
+Versión: 42 */
 
 import { ClienteClass, MascotaClass, TurnoClass } from './modelos.js';
 import { actualizarDOM } from './actualizacionesDom.js';
 import { mostrarError, limpiarError } from './manejoErrores.js';
 import { validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
-import { obtenerHoraActualArgentina } from './inicializacionApp.js';
 import { servicios, horarios, duracionDeTurno, formatoFecha, formatoHora, errorMessages } from './constantes.js';
-const { DateTime } = luxon; 
+const { DateTime } = luxon;
 
 const showError = (message) => {
     mostrarError(message);
@@ -46,7 +46,6 @@ export const mostrarFormulariosMascotas = async () => {
         showError(errorMessages.diaCerrado);
         return;
     }
-    const ahoraArgentina = await obtenerHoraActualArgentina();
     if (!validarHora(fecha.value, hora.value, horarios)) {
         showError(errorMessages.horaInvalida);
         return;
@@ -106,7 +105,6 @@ export const guardarMascotasYTurnos = async () => {
         const fecha = document.getElementById("turno-fecha").value;
         const hora = document.getElementById("turno-hora").value;
         let turnoHora = DateTime.fromISO(`${fecha}T${hora}`);
-        const ahoraArgentina = await obtenerHoraActualArgentina();
         for (let i = 0; i < numMascotas; i++) {
             const mascotaNombre = document.getElementById(`mascota-nombre-${i}`).value;
             const mascotaEdad = parseInt(document.getElementById(`mascota-edad-${i}`).value);
@@ -139,7 +137,7 @@ export const guardarMascotasYTurnos = async () => {
         document.getElementById("seccion-salida-datos-dos").style.display = "block";
         document.getElementById("guardar-mascotas-turnos").style.display = "none"; // Ocultar el botón
     } catch (error) {
-        mostrarError('Error al guardar mascotas y turnos');
+        mostrarError(errorMessages.errorGuardarMascotasTurnos);
         console.error('Error al guardar mascotas y turnos:', error);
     }
 };

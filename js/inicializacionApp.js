@@ -1,13 +1,14 @@
+/* eslint-disable no-undef */
 /* Nombre del archivo: js/inicializacionApp.js
 Autor: Alessio Aguirre Pimentel
-Versión: 400 */
+Versión: 42 */
 
 import { actualizarListaDeServicios, actualizarListaDeHorarios, actualizarDOM, mostrarFeriadosProximos } from './actualizacionesDom.js';
-import { gestionarAlmacenamientoLocal, obtenerDatosDeAlmacenamientoLocal } from './almacenamientoLocal.js';
+import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { mostrarError as mostrarErrorGlobal } from './manejoErrores.js';
-import { servicios, horarios, apiUrls } from './constantes.js';
+import { servicios, horarios, apiUrls, errorMessages } from './constantes.js';
 
-const DateTime = luxon.DateTime;
+const { DateTime } = luxon;
 
 let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null;
 let mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
@@ -32,13 +33,13 @@ async function traerFeriados(anio) {
     try {
         const response = await fetch(url);
         if (!response.ok) {
-            throw new Error('No se pudieron obtener los feriados');
+            throw new Error(errorMessages.noObtenerFeriados);
         }
         const data = await response.json();
         return data;
-    } catch (error) {
+    } catch {
         if (anio === obtenerAnioActual()) {
-            mostrarErrorGlobal('No se pudieron obtener los feriados del año actual.');
+            mostrarErrorGlobal(errorMessages.noObtenerFeriadosAnioActual);
         }
         console.log(`Failed to fetch holidays for the year ${anio}`);
         return null;
@@ -65,8 +66,8 @@ async function inicializarDatosFeriados() {
     let feriadosAnioSiguiente = [];
     try {
         feriadosAnioSiguiente = await traerFeriados(anioActual + 1);
-    } catch (error) {
-        console.warn('No se pudieron obtener los feriados del próximo año aún. Intenta nuevamente más tarde.');
+    } catch {
+        console.warn(errorMessages.noObtenerFeriadosAnioSiguiente);
     }
 
     const feriados = [...feriadosAnioActual, ...(feriadosAnioSiguiente || [])];
@@ -79,7 +80,7 @@ async function inicializarDatosFeriados() {
         console.log('Feriados actualizados:', feriados);
         return feriados;
     } else {
-        console.warn('No se pudieron obtener los feriados del próximo año.');
+        console.warn(errorMessages.noObtenerFeriadosAnioSiguiente);
         return null;
     }
 }
@@ -90,12 +91,12 @@ export async function obtenerHoraActualArgentina() {
     try {
         const response = await fetch(url);
         if (!response.ok) {
-            throw new Error('No se pudo obtener la hora actual');
+            throw new Error(errorMessages.noObtenerHoraActual);
         }
         const data = await response.json();
         return DateTime.fromISO(data.datetime);
-    } catch (error) {
-        mostrarErrorGlobal('No se pudo obtener la hora actual. Usando la hora local de la PC.');
+    } catch {
+        mostrarErrorGlobal(errorMessages.noObtenerHoraActualUsarHoraPC);
         return DateTime.now().setZone('America/Argentina/Buenos_Aires');
     }
 }
@@ -148,8 +149,8 @@ const aplicarTema = () => {
             document.body.dataset.theme = temaAlmacenado;
             document.getElementById('checkbox').checked = temaAlmacenado === 'dark';
         }
-    } catch (error) {
-        mostrarErrorGlobal('Error al aplicar el tema');
+    } catch {
+        mostrarErrorGlobal(errorMessages.errorAplicarTema);
     }
 };
 

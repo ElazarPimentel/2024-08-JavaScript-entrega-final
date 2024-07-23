@@ -1,8 +1,9 @@
+/* eslint-disable no-undef */
 /* Nombre del archivo: js/validaciones.js
 Autor: Alessio Aguirre Pimentel
-Versión: 400 */
+Versión: 42 */
 
-import { horarios, errorMessages } from './constantes.js';
+const { DateTime } = luxon; // Acceso a luxon desde el objeto global
 
 // Validar nombre: solo permite de 2 a 25 caracteres alfabéticos y espacios
 export const validarNombre = (nombre) => {
@@ -27,8 +28,8 @@ export const validarNumeroMascotas = (num) => {
 
 // Validar la fecha del turno: debe ser dentro de los próximos 45 días
 export const validarFecha = (fecha) => {
-    const now = luxon.DateTime.now();  
-    const fechaTurno = luxon.DateTime.fromISO(fecha);  
+    const now = DateTime.now();  
+    const fechaTurno = DateTime.fromISO(fecha);  
     const diffInDays = fechaTurno.startOf('day').diff(now.startOf('day'), 'days').days;  
     const isValid = diffInDays >= 0 && diffInDays <= 45;  
     return isValid;
@@ -36,7 +37,7 @@ export const validarFecha = (fecha) => {
 
 // Validar si la fecha es un día laborable (de lunes a viernes)
 export const validarDiaAbierto = (fecha) => {
-    const dia = luxon.DateTime.fromISO(fecha).weekday;
+    const dia = DateTime.fromISO(fecha).weekday;
     const isValid = dia >= 1 && dia <= 5;  // Lunes a Viernes
     console.log(`validarDiaAbierto(${fecha}): ${isValid}, dia: ${dia}`);
     return isValid;
@@ -44,17 +45,17 @@ export const validarDiaAbierto = (fecha) => {
 
 // Validar la hora del turno
 export const validarHora = (fecha, hora, horarios) => {
-    const dia = luxon.DateTime.fromISO(fecha).weekday;
+    const dia = DateTime.fromISO(fecha).weekday;
     const diaSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
     const nombreDia = diaSemana[dia];
     const horario = horarios[nombreDia];
     if (!horario || horario === 'Cerrado') return false;
 
     const [inicioStr, finStr] = horario.split(' - ');
-    const inicio = luxon.DateTime.fromFormat(`${fecha}T${inicioStr}`, 'yyyy-MM-dd\'T\'H:mm');
-    const fin = luxon.DateTime.fromFormat(`${fecha}T${finStr}`, 'yyyy-MM-dd\'T\'H:mm');
-    const horaTurno = luxon.DateTime.fromISO(`${fecha}T${hora}`);
-    const now = luxon.DateTime.now();
+    const inicio = DateTime.fromFormat(`${fecha}T${inicioStr}`, 'yyyy-MM-dd\'T\'H:mm');
+    const fin = DateTime.fromFormat(`${fecha}T${finStr}`, 'yyyy-MM-dd\'T\'H:mm');
+    const horaTurno = DateTime.fromISO(`${fecha}T${hora}`);
+    const now = DateTime.now();
     const isValid = horaTurno >= inicio && horaTurno <= fin && horaTurno >= now.plus({ hours: 1 });
 
     console.log(`validarHora(${fecha}, ${hora}): ${isValid}, Inicio: ${inicio}, Fin: ${fin}, HoraTurno: ${horaTurno}, Now: ${now}`);

@@ -1,26 +1,28 @@
 /* Nombre del archivo: js/almacenamientoLocal.js
 Autor: Alessio Aguirre Pimentel
-Versión: 400 */
+Versión: 42 */
 
 import { mostrarError } from './manejoErrores.js';
+import { errorMessages } from './constantes.js';
 
 // Función para gestionar el almacenamiento local
 export const gestionarAlmacenamientoLocal = (accion, clave, valor = null) => {
     console.log(`gestionarAlmacenamientoLocal called with accion: ${accion}, clave: ${clave}, valor: ${valor}`);
     try {
         switch (accion) {
-            case "guardar":
+            case "guardar": {
                 if (!clave || valor === null) {
-                    throw new Error("Clave y valor son requeridos para guardar");
+                    throw new Error(errorMessages.claveValorRequeridos);
                 }
                 const fechaExp = new Date();
                 fechaExp.setDate(fechaExp.getDate() + 45);
                 localStorage.setItem(clave, JSON.stringify({ valor, fechaExp }));
                 console.log(`Saved to localStorage: ${clave} = ${JSON.stringify({ valor, fechaExp })}`);
                 break;
-            case "cargar":
+            }
+            case "cargar": {
                 if (!clave) {
-                    throw new Error("Clave es requerida para cargar");
+                    throw new Error(errorMessages.claveRequerida);
                 }
                 const item = JSON.parse(localStorage.getItem(clave));
                 console.log(`Loaded from localStorage: ${clave} = ${JSON.stringify(item)}`);
@@ -31,22 +33,26 @@ export const gestionarAlmacenamientoLocal = (accion, clave, valor = null) => {
                     localStorage.removeItem(clave);
                 }
                 break;
-            case "borrar":
+            }
+            case "borrar": {
                 if (!clave) {
-                    throw new Error("Clave es requerida para borrar");
+                    throw new Error(errorMessages.claveRequerida);
                 }
                 localStorage.removeItem(clave);
                 console.log(`Removed item from localStorage: ${clave}`);
                 break;
-            case "borrarTodo":
+            }
+            case "borrarTodo": {
                 localStorage.clear();
                 console.log("Cleared all items from localStorage");
                 break;
-            default:
-                throw new Error("Acción no reconocida");
+            }
+            default: {
+                throw new Error(errorMessages.accionNoReconocida);
+            }
         }
     } catch (error) {
-        mostrarError(`Error al ${accion} en almacenamiento local: ${error.message}`);
+        mostrarError(`${errorMessages.errorAl} ${accion} ${errorMessages.enAlmacenamientoLocal}: ${error.message}`);
         console.error(`Error in gestionarAlmacenamientoLocal: ${error.message}`);
         return null;
     }
@@ -68,7 +74,7 @@ export const obtenerDatosDeAlmacenamientoLocal = (clave) => {
         }
         return null;
     } catch (error) {
-        mostrarError(`Error al obtener datos de almacenamiento local: ${error.message}`);
+        mostrarError(`${errorMessages.errorAl} ${errorMessages.obtener} ${errorMessages.enAlmacenamientoLocal}: ${error.message}`);
         console.error(`Error in obtenerDatosDeAlmacenamientoLocal: ${error.message}`);
         return null;
     }

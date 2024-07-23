@@ -1,12 +1,10 @@
-/* js/actualizaciones-dom.js */
-
-/* Nombre del archivo: js/actualizaciones-dom.js
+/* eslint-disable no-undef */
+/* Nombre del archivo: js/actualizacionesDom.js
 Autor: Alessio Aguirre Pimentel
-Versión: 400 */
+Versión: 42 */
 
-import { mostrarError } from './manejoErrores.js';
 const { DateTime } = luxon; // Acceso a luxon desde el objeto global
-import { formatoFecha, formatoHora } from './constantes.js'; // Agregar formatoHora
+import { formatoFecha, formatoHora } from './constantes.js';
 
 // Actualiza la lista de servicios en el DOM
 export const actualizarListaDeServicios = (servicios) => {
