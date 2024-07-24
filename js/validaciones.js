@@ -1,9 +1,10 @@
-/* eslint-disable no-undef */
 /* Nombre del archivo: js/validaciones.js
 Autor: Alessio Aguirre Pimentel
-Versión: 42 */
+Versión: 46 */
 
+// eslint-disable-next-line no-undef
 const { DateTime } = luxon; // Acceso a luxon desde el objeto global
+import { rangoFeriados } from './constantes.js';
 
 // Validar nombre: solo permite de 2 a 25 caracteres alfabéticos y espacios
 export const validarNombre = (nombre) => {
@@ -19,7 +20,7 @@ export const validarTelefono = (telefono) => {
     return isValid;
 };
 
-// Validar el número de mascotas: permite un dígito único, del 1 al 3
+// Validar el número de mascotas: permite un dígito único, del 1 al 3 y explica a usuario en función error
 export const validarNumeroMascotas = (num) => {
     const isValid = /^[1-3]$/.test(num);
     console.log(`validarNumeroMascotas(${num}): ${isValid}`);
@@ -31,7 +32,8 @@ export const validarFecha = (fecha) => {
     const now = DateTime.now();  
     const fechaTurno = DateTime.fromISO(fecha);  
     const diffInDays = fechaTurno.startOf('day').diff(now.startOf('day'), 'days').days;  
-    const isValid = diffInDays >= 0 && diffInDays <= 45;  
+    const isValid = diffInDays >= 0 && diffInDays <= rangoFeriados;  
+    console.log(`validarFecha(${fecha}): ${isValid}, Diferencia en días: ${diffInDays}`);
     return isValid;
 };
 
@@ -67,5 +69,12 @@ export const validarEdadMascota = (edad) => {
     const edadParsed = parseInt(edad);
     const isValid = Number.isInteger(edadParsed) && edadParsed >= 0 && edadParsed <= 40;
     console.log(`validarEdadMascota(${edad}): ${isValid}`);
+    return isValid;
+};
+
+// Validar correo electrónico: debe ser un formato válido de email
+export const validarEmail = (email) => {
+    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    console.log(`validarEmail(${email}): ${isValid}`);
     return isValid;
 };

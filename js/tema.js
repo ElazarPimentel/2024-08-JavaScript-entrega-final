@@ -1,19 +1,20 @@
 /* Nombre del archivo: js/tema.js
 Autor: Alessio Aguirre Pimentel
-Versión: 42 */
+Versión: 46 */
 
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { mostrarError } from './manejoErrores.js';
+import { errorMessages } from './constantes.js';
 
-// Aplicar tema oscuro o claro
+// Aplicar tema DArk o Light
 export const aplicarTema = (tema) => {
-    console.log('aplicarTema called with tema:', tema);
+    console.log('aplicarTema llamado con tema:', tema);
     try {
         document.body.dataset.theme = tema;
         gestionarAlmacenamientoLocal('guardar', 'theme', tema);
         console.log('Tema aplicado:', tema);
     } catch (error) {
-        mostrarError('Error al aplicar el tema');
-        console.error('Error applying theme:', error);
+        mostrarError(errorMessages.errorAplicarTema);
+        console.error(`${errorMessages.errorAplicarTema}: ${error}`);
     }
 };

@@ -1,8 +1,6 @@
-/* js/inicializacionApp.js */
-
 /* Nombre del archivo: js/inicializacionApp.js
 Autor: Alessio Aguirre Pimentel
-Versión: 42 */
+Versión: 48 */
 
 import { actualizarListaDeServicios, actualizarListaDeHorarios, actualizarDOM, mostrarFeriadosProximos } from './actualizacionesDom.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
@@ -12,11 +10,11 @@ import { servicios, horarios, apiUrls, errorMessages } from './constantes.js';
 // eslint-disable-next-line no-undef
 const { DateTime } = luxon;
 
-let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null;
+let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null; //null por objeto...
 let mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
 let turnos = gestionarAlmacenamientoLocal("cargar", "turnos") || [];
 
-// Función para verificar si los datos están desactualizados
+// verificar si los datos están desactualizados
 function datosDesactualizados(fechaString) {
     const fechaAlmacenada = DateTime.fromISO(fechaString);
     const fechaActual = DateTime.now();
@@ -24,12 +22,12 @@ function datosDesactualizados(fechaString) {
     return diferencia > 7;
 }
 
-// Función para obtener el año actual
+// obtener el año actual
 function obtenerAnioActual() {
     return DateTime.now().year;
 }
 
-// Función para traer feriados desde la API
+// traer feriados desde la API
 async function traerFeriados(anio) {
     const url = apiUrls.feriados(anio);
     try {
@@ -40,15 +38,12 @@ async function traerFeriados(anio) {
         const data = await response.json();
         return data;
     } catch {
-        if (anio === obtenerAnioActual()) {
-            mostrarErrorGlobal(errorMessages.noObtenerFeriadosAnioActual);
-        }
-        console.log(`Failed to fetch holidays for the year ${anio}`);
+        console.log(`No se pudieron obtener los feriados para el año ${anio}`);
         return null;
     }
 }
 
-// Función para inicializar datos de feriados
+// inicializar datos de feriados
 async function inicializarDatosFeriados() {
     const feriadosAlmacenados = localStorage.getItem('feriadosArgentina');
     if (feriadosAlmacenados) {
@@ -58,6 +53,7 @@ async function inicializarDatosFeriados() {
             return holidays;
         }
     }
+
     const anioActual = obtenerAnioActual();
     const feriadosAnioActual = await traerFeriados(anioActual);
 
@@ -69,7 +65,7 @@ async function inicializarDatosFeriados() {
     try {
         feriadosAnioSiguiente = await traerFeriados(anioActual + 1);
     } catch {
-        console.warn(errorMessages.noObtenerFeriadosAnioSiguiente);
+        console.warn(errorMessages.noObtenerFeriados);
     }
 
     const feriados = [...feriadosAnioActual, ...(feriadosAnioSiguiente || [])];
@@ -82,12 +78,12 @@ async function inicializarDatosFeriados() {
         console.log('Feriados actualizados:', feriados);
         return feriados;
     } else {
-        console.warn(errorMessages.noObtenerFeriadosAnioSiguiente);
+        console.warn(errorMessages.noObtenerFeriados);
         return null;
     }
 }
 
-// Función para obtener la hora actual de Argentina
+// obtener la hora actual de Argentina así no hay dramas con el horario de la PC
 export async function obtenerHoraActualArgentina() {
     const url = 'http://worldtimeapi.org/api/timezone/America/Argentina/Buenos_Aires';
     try {
@@ -98,7 +94,7 @@ export async function obtenerHoraActualArgentina() {
         const data = await response.json();
         return DateTime.fromISO(data.datetime);
     } catch {
-        mostrarErrorGlobal(errorMessages.noObtenerHoraActualUsarHoraPC);
+        mostrarErrorGlobal(errorMessages.noObtenerHoraActual);
         return DateTime.now().setZone('America/Argentina/Buenos_Aires');
     }
 }
@@ -126,7 +122,7 @@ export const inicializarApp = async () => {
     }
 };
 
-// Función para recuperar y poblar datos guardados
+// recuperar y poblar datos guardados
 const recuperarYPoblarDatos = () => {
     const storedData = {
         cliente: gestionarAlmacenamientoLocal("cargar", "cliente"),
@@ -143,7 +139,7 @@ const recuperarYPoblarDatos = () => {
     }
 };
 
-// Función para aplicar el tema
+// aplicar el tema
 const aplicarTema = () => {
     try {
         const temaAlmacenado = gestionarAlmacenamientoLocal("cargar", "theme");
@@ -156,7 +152,7 @@ const aplicarTema = () => {
     }
 };
 
-// Función para controlar el botón de guardar
+// controlar el botón de guardar
 const controlarBotonGuardar = () => {
     const guardarBtn = document.getElementById("guardar-mascotas-turnos");
     if (guardarBtn) {
@@ -164,7 +160,7 @@ const controlarBotonGuardar = () => {
     }
 };
 
-// Función para mostrar los próximos feriados
+// mostrar los próximos feriados
 const resaltarFeriadosEnCalendario = (feriados) => {
     const inputFecha = document.getElementById('turno-fecha');
     const fechasFeriados = feriados.map(feriado => feriado.fecha);

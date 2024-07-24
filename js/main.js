@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/main.js
 Autor: Alessio Aguirre Pimentel
-Versión: 42 */
+Versión: 46 */
 
 import { inicializarApp } from './inicializacionApp.js';
 import { configurarOyentesDeEventos } from './eventos.js';
@@ -12,4 +12,3 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Configurando oyentes de eventos');
     configurarOyentesDeEventos();
 });
-

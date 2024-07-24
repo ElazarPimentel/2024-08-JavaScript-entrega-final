@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /* Nombre del archivo: scss/style.scss
 Autor: Alessio Aguirre Pimentel
-Versión: 42 */
+Versión: 45 */
 body.light {
   color: black;
   background-color: rgb(145, 144, 144);
@@ -36,11 +36,6 @@ body.dark {
   bottom: 0;
   background-color: #ccc;
   transition: 0.4s;
-}
-
-.feriado {
-  background-color: tomato;
-  color: white;
 }
 
 .slider:before {
@@ -174,11 +169,6 @@ ul {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
   }
-}
-
-/* Error para validación de formulario */
-.error {
-  color: tomato;
 }
 
 .contenedor-02 {

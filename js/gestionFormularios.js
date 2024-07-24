@@ -1,11 +1,11 @@
 /* Nombre del archivo: js/gestionFormularios.js
 Autor: Alessio Aguirre Pimentel
-Versión: 42 */
+Versión: 46 */
 
 import { ClienteClass, MascotaClass, TurnoClass } from './modelos.js';
 import { actualizarDOM } from './actualizacionesDom.js';
 import { mostrarError, limpiarError } from './manejoErrores.js';
-import { validarNombre, validarTelefono, validarEdadMascota } from './validaciones.js';
+import { validarNombre, validarTelefono, validarEdadMascota, validarEmail, validarFecha, validarDiaAbierto, validarHora } from './validaciones.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { servicios, horarios, duracionDeTurno, formatoFecha, formatoHora, errorMessages } from './constantes.js';
 // eslint-disable-next-line no-undef
@@ -67,6 +67,7 @@ export const guardarCliente = () => {
     const email = document.getElementById("cliente-email").value;
     limpiarError(document.getElementById("cliente-nombre"));
     limpiarError(document.getElementById("cliente-telefono"));
+    limpiarError(document.getElementById("cliente-email"));
 
     if (!validarNombre(nombre)) {
         showError(errorMessages.nombreInvalido);
@@ -74,6 +75,10 @@ export const guardarCliente = () => {
     }
     if (!validarTelefono(telefono)) {
         showError(errorMessages.telefonoInvalido);
+        return;
+    }
+    if (!validarEmail(email)) {
+        showError(errorMessages.correoInvalido);
         return;
     }
     cliente = new ClienteClass(null, nombre, telefono, email);
@@ -89,6 +94,20 @@ export const guardarMascotasYTurnos = async () => {
         }
         const fecha = document.getElementById("turno-fecha").value;
         const hora = document.getElementById("turno-hora").value;
+
+        if (!validarFecha(fecha)) {
+            showError(errorMessages.fechaInvalida);
+            return;
+        }
+        if (!validarDiaAbierto(fecha)) {
+            showError(errorMessages.diaCerrado);
+            return;
+        }
+        if (!validarHora(fecha, hora, horarios)) {
+            showError(errorMessages.horaInvalida);
+            return;
+        }
+
         let turnoHora = DateTime.fromISO(`${fecha}T${hora}`);
         for (let i = 0; i < mascotas.length; i++) {
             const mascotaNombre = document.getElementById(`mascota-nombre-${i}`).value;
@@ -120,11 +139,11 @@ export const guardarMascotasYTurnos = async () => {
         gestionarAlmacenamientoLocal("guardar", "turnos", turnos);
         actualizarDOM(cliente, mascotas, turnos, servicios, horarios);
         document.getElementById("seccion-salida-datos-dos").style.display = "block";
-        document.getElementById("guardar-mascotas-turnos").style.display = "none"; // Ocultar el botón
-        document.getElementById("recibir-correo").style.display = "inline-block"; // Mostrar botón de recibir correo
+        document.getElementById("guardar-mascotas-turnos").style.display = "none"; 
+        document.getElementById("recibir-correo").style.display = "inline-block"; 
     } catch (error) {
         mostrarError(errorMessages.errorGuardarMascotasTurnos);
-        console.error('Error al guardar mascotas y turnos:', error);
+        console.error(`${errorMessages.errorGuardarMascotasTurnos}: ${error}`);
     }
 };
 
@@ -133,7 +152,7 @@ export const recibirCorreo = () => {
     Swal.fire({
         icon: 'info',
         title: 'Correo Enviado',
-        text: 'El correo con la información del turno fue enviado',
+        text: errorMessages.correoEnviado, 
         confirmButtonText: 'Aceptar'
     });
 };
@@ -152,20 +171,18 @@ export const comenzarDeNuevo = () => {
     document.getElementById('mascotas-formulario').style.display = 'none';
     document.getElementById('botones-gardar-borrar').style.display = 'none';
     document.getElementById('seccion-salida-datos-dos').style.display = 'none';
-    document.getElementById('siguiente-mascota').style.display = 'inline-block'; // Make "Siguiente" button visible again
-    document.getElementById('numero-mascotas').disabled = false; // Enable the number of pets field
-    document.getElementById('turno-fecha').disabled = false; // Enable the date input
-    document.getElementById('turno-hora').disabled = false; // Enable the time input
 };
 
 document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('editar-mascota')) {
-        const index = event.target.dataset.index;
-        // Logic to handle editing the pet details
-    } else if (event.target.classList.contains('eliminar-mascota')) {
-        const index = event.target.dataset.index;
-        mascotas.splice(index, 1);
-        turnos.splice(index, 1);
-        mostrarFormulariosMascotas();
+    const button = event.target.closest('.editar-mascota, .eliminar-mascota');
+    if (button) {
+        const index = button.dataset.index;
+        if (button.classList.contains('editar-mascota')) {
+            // Nueva lógica CRUD para edición de los detalles de la mascota ...
+        } else if (button.classList.contains('eliminar-mascota')) {
+            mascotas.splice(index, 1);
+            turnos.splice(index, 1);
+            mostrarFormulariosMascotas();
+        }
     }
 });

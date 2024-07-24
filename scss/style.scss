@@ -1,6 +1,6 @@
 /* Nombre del archivo: scss/style.scss
 Autor: Alessio Aguirre Pimentel
-Versión: 42 */
+Versión: 45 */
 
 // Variables
 $font-color-light: black;
@@ -30,7 +30,7 @@ body.dark {
     @include theme($font-color-dark, $background-color-dark, $border-color-dark);
 }
 
-// Estilos del interruptor de tema
+// cambio de theme
 .theme-switch {
     position: relative;
     display: inline-block;
@@ -55,11 +55,6 @@ body.dark {
     transition: .4s;
 }
 
-// Agregar una clase para feriados
-.feriado {
-    background-color: $error-color;
-    color: white;
-}
 
 .slider:before {
     position: absolute;
@@ -87,8 +82,6 @@ input:checked+.slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
-
-// Estilos existentes
 
 body {
     color: $font-color-dark;
@@ -201,11 +194,6 @@ ul {
         grid-template-columns: 1fr;
         grid-template-rows: auto;
     }
-}
-
-/* Error para validación de formulario */
-.error {
-    color: $error-color;
 }
 
 .contenedor-02 {

@@ -1,13 +1,13 @@
 /* Nombre del archivo: js/almacenamientoLocal.js
 Autor: Alessio Aguirre Pimentel
-Versión: 42 */
+Versión: 46 */
 
 import { mostrarError } from './manejoErrores.js';
-import { errorMessages } from './constantes.js';
+import { errorMessages, rangoFeriados } from './constantes.js';
 
-// Función para gestionar el almacenamiento local
+// gestionar el almacenamiento local
 export const gestionarAlmacenamientoLocal = (accion, clave, valor = null) => {
-    console.log(`gestionarAlmacenamientoLocal called with accion: ${accion}, clave: ${clave}, valor: ${valor}`);
+    console.log(`gestionarAlmacenamientoLocal llamado con accion: ${accion}, clave: ${clave}, valor: ${valor}`);
     try {
         switch (accion) {
             case "guardar": {
@@ -15,9 +15,9 @@ export const gestionarAlmacenamientoLocal = (accion, clave, valor = null) => {
                     throw new Error(errorMessages.claveValorRequeridos);
                 }
                 const fechaExp = new Date();
-                fechaExp.setDate(fechaExp.getDate() + 45);
+                fechaExp.setDate(fechaExp.getDate() + rangoFeriados);
                 localStorage.setItem(clave, JSON.stringify({ valor, fechaExp }));
-                console.log(`Saved to localStorage: ${clave} = ${JSON.stringify({ valor, fechaExp })}`);
+                console.log(`Guardado en localStorage: ${clave} = ${JSON.stringify({ valor, fechaExp })}`);
                 break;
             }
             case "cargar": {
@@ -25,11 +25,11 @@ export const gestionarAlmacenamientoLocal = (accion, clave, valor = null) => {
                     throw new Error(errorMessages.claveRequerida);
                 }
                 const item = JSON.parse(localStorage.getItem(clave));
-                console.log(`Loaded from localStorage: ${clave} = ${JSON.stringify(item)}`);
+                console.log(`Cargado de localStorage: ${clave} = ${JSON.stringify(item)}`);
                 if (item && new Date(item.fechaExp) > new Date()) {
                     return item.valor;
                 } else {
-                    console.log(`Item expired or not found: ${clave}`);
+                    console.log(`Item expirado o no encontrado: ${clave}`);
                     localStorage.removeItem(clave);
                 }
                 break;
@@ -39,12 +39,12 @@ export const gestionarAlmacenamientoLocal = (accion, clave, valor = null) => {
                     throw new Error(errorMessages.claveRequerida);
                 }
                 localStorage.removeItem(clave);
-                console.log(`Removed item from localStorage: ${clave}`);
+                console.log(`Item removido de localStorage: ${clave}`);
                 break;
             }
             case "borrarTodo": {
                 localStorage.clear();
-                console.log("Cleared all items from localStorage");
+                console.log("Todos los items fueron eliminados de localStorage");
                 break;
             }
             default: {
@@ -52,9 +52,8 @@ export const gestionarAlmacenamientoLocal = (accion, clave, valor = null) => {
             }
         }
     } catch (error) {
-        mostrarError(`${errorMessages.errorAl} ${accion} ${errorMessages.enAlmacenamientoLocal}: ${error.message}`);
-        console.error(`Error in gestionarAlmacenamientoLocal: ${error.message}`);
+        mostrarError(`${error.message}`);
+        console.error(`${error.message}`);
         return null;
     }
 };
-

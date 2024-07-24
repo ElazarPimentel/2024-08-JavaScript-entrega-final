@@ -1,10 +1,10 @@
 /* Nombre del archivo: js/actualizacionesDom.js
 Autor: Alessio Aguirre Pimentel
-Versión: 42 */
+Versión: 46 */
 
 // eslint-disable-next-line no-undef
-const { DateTime } = luxon; // Acceso a luxon desde el objeto global
-import { formatoFecha, formatoHora } from './constantes.js';
+const { DateTime } = luxon; // Acceso a luxon desde el objeto global, evita errores varios. 
+import { formatoFecha, formatoHora, rangoFeriados, errorMessages } from './constantes.js';
 
 // Actualiza la lista de servicios en el DOM
 export const actualizarListaDeServicios = (servicios) => {
@@ -93,11 +93,11 @@ export const mostrarFeriadosProximos = (feriados) => {
         const fechaFeriado = DateTime.fromISO(feriado.fecha);
         const hoy = DateTime.now();
         const diferencia = fechaFeriado.diff(hoy, 'days').days;
-        return diferencia >= 0 && diferencia <= 45;
+        return diferencia >= 0 && diferencia <= rangoFeriados; // rangoFeriados en días
     });
 
     const feriadosListado = document.getElementById('feriados-listado');
     feriadosListado.innerHTML = feriadosProximos.length > 0 
         ? feriadosProximos.map(feriado => `<li>${DateTime.fromISO(feriado.fecha).setLocale('es').toFormat(formatoFecha)}</li>`).join('') 
-        : '<li>Sin feriados próximos</li>';
+        : `<li>${errorMessages.noObtenerFeriados}</li>`;
 };
