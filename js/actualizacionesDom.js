@@ -2,6 +2,7 @@
 Autor: Alessio Aguirre Pimentel
 Versión: 42 */
 
+// eslint-disable-next-line no-undef
 const { DateTime } = luxon; // Acceso a luxon desde el objeto global
 import { formatoFecha, formatoHora } from './constantes.js';
 

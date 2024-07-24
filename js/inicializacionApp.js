@@ -1,3 +1,5 @@
+/* js/inicializacionApp.js */
+
 /* Nombre del archivo: js/inicializacionApp.js
 Autor: Alessio Aguirre Pimentel
 Versión: 42 */
@@ -7,6 +9,7 @@ import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { mostrarError as mostrarErrorGlobal } from './manejoErrores.js';
 import { servicios, horarios, apiUrls, errorMessages } from './constantes.js';
 
+// eslint-disable-next-line no-undef
 const { DateTime } = luxon;
 
 let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null;
@@ -175,4 +178,3 @@ const resaltarFeriadosEnCalendario = (feriados) => {
         }
     });
 };
-

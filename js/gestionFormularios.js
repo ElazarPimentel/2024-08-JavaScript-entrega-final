@@ -5,9 +5,10 @@ Versión: 42 */
 import { ClienteClass, MascotaClass, TurnoClass } from './modelos.js';
 import { actualizarDOM } from './actualizacionesDom.js';
 import { mostrarError, limpiarError } from './manejoErrores.js';
-import { validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js';
+import { validarNombre, validarTelefono, validarEdadMascota } from './validaciones.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { servicios, horarios, duracionDeTurno, formatoFecha, formatoHora, errorMessages } from './constantes.js';
+// eslint-disable-next-line no-undef
 const { DateTime } = luxon;
 
 const showError = (message) => {
@@ -64,8 +65,8 @@ export const guardarCliente = () => {
     const nombre = document.getElementById("cliente-nombre").value;
     const telefono = document.getElementById("cliente-telefono").value;
     const email = document.getElementById("cliente-email").value;
-    limpiarError(nombre);
-    limpiarError(telefono);
+    limpiarError(document.getElementById("cliente-nombre"));
+    limpiarError(document.getElementById("cliente-telefono"));
 
     if (!validarNombre(nombre)) {
         showError(errorMessages.nombreInvalido);
@@ -128,6 +129,7 @@ export const guardarMascotasYTurnos = async () => {
 };
 
 export const recibirCorreo = () => {
+    // eslint-disable-next-line no-undef
     Swal.fire({
         icon: 'info',
         title: 'Correo Enviado',

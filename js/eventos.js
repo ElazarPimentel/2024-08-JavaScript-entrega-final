@@ -5,9 +5,6 @@ Versión: 42 */
 import { mostrarFormulariosMascotas, guardarCliente, guardarMascotasYTurnos, comenzarDeNuevo, agregarMascotaFormulario, recibirCorreo } from './gestionFormularios.js';
 import { aplicarTema } from './tema.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
-import { validarFecha, validarDiaAbierto, validarHora } from './validaciones.js';
-import { mostrarError } from './manejoErrores.js';
-import { horarios, errorMessages } from './constantes.js'; // Import horarios and errorMessages
 
 // Configuración de los oyentes de eventos del DOM
 export const configurarOyentesDeEventos = () => {
@@ -56,4 +53,3 @@ export const configurarOyentesDeEventos = () => {
     console.log(`Initial theme: ${initialTheme}`);
     aplicarTema(initialTheme);
 };
-
