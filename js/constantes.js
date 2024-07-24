@@ -1,6 +1,6 @@
 /* Nombre del archivo: constantes.js
 Autor: Alessio Aguirre Pimentel
-Versión: 46 */
+Versión: 49 */
 
 // Servicios ofrecidos por la veterinaria
 export const servicios = {

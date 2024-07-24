@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/inicializacionApp.js
 Autor: Alessio Aguirre Pimentel
-Versión: 48 */
+Versión: 49 */
 
 import { actualizarListaDeServicios, actualizarListaDeHorarios, actualizarDOM, mostrarFeriadosProximos } from './actualizacionesDom.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';

@@ -1,8 +1,7 @@
 /* Nombre del archivo: js/eventos.js
 Autor: Alessio Aguirre Pimentel
-Versión: 46 */
-
-import { guardarCliente, guardarMascotasYTurnos, comenzarDeNuevo, agregarMascotaFormulario, recibirCorreo } from './gestionFormularios.js';
+Versión: 49 */
+import { guardarCliente, guardarMascotasYTurnos, comenzarDeNuevo, agregarMascotaFormulario, agregarPrimeraMascota, recibirCorreo } from './gestionFormularios.js';
 import { aplicarTema } from './tema.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 
@@ -41,6 +40,12 @@ export const configurarOyentesDeEventos = () => {
     document.getElementById('agregar-mascota').addEventListener('click', () => {
         console.log('Button "agregar-mascota" clickeado');
         agregarMascotaFormulario();
+    });
+
+    document.getElementById('siguiente').addEventListener('click', () => {
+        console.log('Button "siguiente" clickeado');
+        document.getElementById('agregar-mascota').style.display = 'inline-block'; // Make the button visible
+        agregarPrimeraMascota();
     });
 
     document.getElementById('recibir-correo').addEventListener('click', () => {

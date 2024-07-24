@@ -1,7 +1,6 @@
 /* Nombre del archivo: js/gestionFormularios.js
 Autor: Alessio Aguirre Pimentel
-Versión: 46 */
-
+Versión: 49 */
 import { ClienteClass, MascotaClass, TurnoClass } from './modelos.js';
 import { actualizarDOM } from './actualizacionesDom.js';
 import { mostrarError, limpiarError } from './manejoErrores.js';
@@ -40,7 +39,7 @@ const crearFormularioMascota = (index, mascota = {}) => {
             <label for="mascota-nombre-${index}">Nombre:</label>
             <input type="text" id="mascota-nombre-${index}" name="mascota-nombre-${index}" value="${mascota.mascotaNombre || ''}" required>
             <label for="mascota-edad-${index}">Edad:</label>
-            <input type="number" id="mascota-edad-${index}" name="mascota-edad-${index}" value="${mascota.mascotaEdad || ''}" required>
+            <input type="number" id="mascota-edad-${index}" name="mascota-edad-${index}" value="${mascota.mascotaEdad || ''}" required size="1">
             <label for="servicio-${index}">Servicio:</label>
             <select id="servicio-${index}" name="servicio-${index}" required>
                 ${Object.entries(servicios).map(([id, nombre]) => `<option value="${id}" ${mascota.turnoForeignServicioId === id ? 'selected' : ''}>${nombre}</option>`).join('')}
@@ -92,6 +91,10 @@ export const guardarMascotasYTurnos = async () => {
             mostrarError(errorMessages.clienteNoInicializado);
             return;
         }
+        //Debug turnofecha
+        console.log('turno-fecha:'+document.getElementById("turno-fecha").value)
+        console.log('turno-hora:'+document.getElementById("turno-hora").value)
+
         const fecha = document.getElementById("turno-fecha").value;
         const hora = document.getElementById("turno-hora").value;
 
@@ -171,6 +174,12 @@ export const comenzarDeNuevo = () => {
     document.getElementById('mascotas-formulario').style.display = 'none';
     document.getElementById('botones-gardar-borrar').style.display = 'none';
     document.getElementById('seccion-salida-datos-dos').style.display = 'none';
+};
+
+export const agregarPrimeraMascota = () => {
+    if (mascotas.length === 0) {
+        agregarMascotaFormulario();
+    }
 };
 
 document.addEventListener('click', (event) => {

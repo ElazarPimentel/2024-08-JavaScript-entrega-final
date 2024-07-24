@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/main.js
 Autor: Alessio Aguirre Pimentel
-Versión: 46 */
+Versión: 49 */
 
 import { inicializarApp } from './inicializacionApp.js';
 import { configurarOyentesDeEventos } from './eventos.js';
