@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/gestionFormularios.js
 Autor: Alessio Aguirre Pimentel
-Versión: 51 */
+Versión: 54 */
 
 import { ClienteClass, MascotaClass, TurnoClass } from './modelos.js';
 import { actualizarDOM } from './actualizacionesDom.js';
@@ -8,6 +8,7 @@ import { mostrarError, limpiarError } from './manejoErrores.js';
 import { validarNombre, validarTelefono, validarEdadMascota, validarEmail, validarFecha, validarDiaAbierto, validarHora } from './validaciones.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { servicios, horarios, duracionDeTurno, formatoFecha, formatoHora, errorMessages } from './constantes.js';
+
 // eslint-disable-next-line no-undef
 const { DateTime } = luxon;
 
@@ -15,7 +16,6 @@ const showError = (message) => {
     mostrarError(message);
 };
 
-// Declarar cliente, mascotas, y turnos a nivel superior para evitar errores de referencia
 let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null;
 let mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
 let turnos = gestionarAlmacenamientoLocal("cargar", "turnos") || [];
@@ -199,6 +199,7 @@ export const agregarPrimeraMascota = () => {
     if (mascotas.length === 0) {
         agregarMascotaFormulario();
     }
+    mostrarFormulariosMascotas();
 };
 
 document.addEventListener('click', (event) => {
@@ -206,12 +207,29 @@ document.addEventListener('click', (event) => {
     if (button) {
         const index = button.dataset.index;
         if (button.classList.contains('editar-mascota')) {
-            // Nueva lógica CRUD para edición de los detalles de la mascota ...
+            editarMascotaFormulario(index);
         } else if (button.classList.contains('eliminar-mascota')) {
-            console.log("Eliminando mascota en el índice:", index);
-            mascotas.splice(index, 1);
-            turnos.splice(index, 1);
-            mostrarFormulariosMascotas();
+            eliminarMascotaFormulario(index);
         }
     }
 });
+
+const editarMascotaFormulario = (index) => {
+    const mascotaForm = document.getElementById(`mascota-form-${index}`);
+    const nombre = mascotaForm.querySelector(`#mascota-nombre-${index}`).value;
+    const edad = mascotaForm.querySelector(`#mascota-edad-${index}`).value;
+    const servicioId = mascotaForm.querySelector(`#servicio-${index}`).value;
+
+    mascotas[index].mascotaNombre = nombre;
+    mascotas[index].mascotaEdad = parseInt(edad);
+    turnos[index].turnoForeignServicioId = parseInt(servicioId);
+
+    console.log("Mascota editada:", mascotas[index]);
+    mostrarFormulariosMascotas();
+};
+
+const eliminarMascotaFormulario = (index) => {
+    mascotas.splice(index, 1);
+    turnos.splice(index, 1);
+    mostrarFormulariosMascotas();
+};

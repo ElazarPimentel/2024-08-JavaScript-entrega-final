@@ -1,20 +1,21 @@
 /* Nombre del archivo: js/inicializacionApp.js
 Autor: Alessio Aguirre Pimentel
-Versión: 51 */
+Versión: 55 */
 
+// Import statements and constants...
 import { actualizarListaDeServicios, actualizarListaDeHorarios, actualizarDOM, mostrarFeriadosProximos } from './actualizacionesDom.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { mostrarError as mostrarErrorGlobal } from './manejoErrores.js';
+import { mostrarFormulariosMascotas } from './gestionFormularios.js'; // Correct import
 import { servicios, horarios, apiUrls, errorMessages } from './constantes.js';
 
 // eslint-disable-next-line no-undef
 const { DateTime } = luxon;
 
-let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null; //null por objeto...
+let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null;
 let mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
 let turnos = gestionarAlmacenamientoLocal("cargar", "turnos") || [];
 
-// verificar si los datos están desactualizados
 function datosDesactualizados(fechaString) {
     const fechaAlmacenada = DateTime.fromISO(fechaString);
     const fechaActual = DateTime.now();
@@ -22,12 +23,10 @@ function datosDesactualizados(fechaString) {
     return diferencia > 7;
 }
 
-// obtener el año actual
 function obtenerAnioActual() {
     return DateTime.now().year;
 }
 
-// traer feriados desde la API
 async function traerFeriados(anio) {
     const url = apiUrls.feriados(anio);
     try {
@@ -38,18 +37,15 @@ async function traerFeriados(anio) {
         const data = await response.json();
         return data;
     } catch {
-        console.log(`No se pudieron obtener los feriados para el año ${anio}`);
         return null;
     }
 }
 
-// inicializar datos de feriados
 async function inicializarDatosFeriados() {
     const feriadosAlmacenados = localStorage.getItem('feriadosArgentina');
     if (feriadosAlmacenados) {
         const { dateFetched, holidays } = JSON.parse(feriadosAlmacenados);
         if (!datosDesactualizados(dateFetched)) {
-            console.log('Feriados almacenados:', holidays);
             return holidays;
         }
     }
@@ -75,15 +71,12 @@ async function inicializarDatosFeriados() {
             holidays: feriados
         };
         localStorage.setItem('feriadosArgentina', JSON.stringify(datosParaAlmacenar));
-        console.log('Feriados actualizados:', feriados);
         return feriados;
     } else {
-        console.warn(errorMessages.noObtenerFeriados);
         return null;
     }
 }
 
-// obtener la hora actual de Argentina así no hay dramas con el horario de la PC
 export async function obtenerHoraActualArgentina() {
     const url = 'http://worldtimeapi.org/api/timezone/America/Argentina/Buenos_Aires';
     try {
@@ -99,7 +92,6 @@ export async function obtenerHoraActualArgentina() {
     }
 }
 
-// Función principal para inicializar la aplicación
 export const inicializarApp = async () => {
     const feriados = await inicializarDatosFeriados();
     recuperarYPoblarDatos();
@@ -115,14 +107,20 @@ export const inicializarApp = async () => {
     }
 
     if (cliente || (mascotas && mascotas.length > 0) || (turnos && turnos.length > 0)) {
-        document.getElementById("numero-mascotas").style.display = "none";
-        document.getElementById("siguiente-mascota").style.display = "none";
-        document.getElementById("borrar-datos").style.display = "block";
-        document.getElementById("guardar-mascotas-turnos").style.display = "none";
+        const numeroMascotas = document.getElementById("numero-mascotas");
+        const siguienteMascota = document.getElementById("siguiente-mascota");
+        const borrarDatos = document.getElementById("borrar-datos");
+        const guardarMascotasTurnos = document.getElementById("guardar-mascotas-turnos");
+
+        if (numeroMascotas) numeroMascotas.style.display = "none";
+        if (siguienteMascota) siguienteMascota.style.display = "none";
+        if (borrarDatos) borrarDatos.style.display = "block";
+        if (guardarMascotasTurnos) guardarMascotasTurnos.style.display = "none";
+
+        mostrarFormulariosMascotas();
     }
 };
 
-// recuperar y poblar datos guardados
 const recuperarYPoblarDatos = () => {
     const storedData = {
         cliente: gestionarAlmacenamientoLocal("cargar", "cliente"),
@@ -134,25 +132,42 @@ const recuperarYPoblarDatos = () => {
         mascotas = storedData.mascotas;
         turnos = storedData.turnos;
         actualizarDOM(cliente, mascotas, turnos, servicios, horarios);
-        document.getElementById("formulario-mascotas-info").style.display = "block";
-        document.getElementById("seccion-salida-datos-dos").style.display = "block";
+
+        const formularioMascotasInfo = document.getElementById("formulario-mascotas-info");
+        const seccionSalidaDatosDos = document.getElementById("seccion-salida-datos-dos");
+        const mascotasFormulario = document.getElementById('mascotas-formulario');
+        const botonesGardarBorrar = document.getElementById('botones-gardar-borrar');
+        const borrarDatos = document.getElementById('borrar-datos');
+        const recibirCorreo = document.getElementById('recibir-correo');
+
+        if (formularioMascotasInfo) formularioMascotasInfo.style.display = "block";
+        if (seccionSalidaDatosDos) seccionSalidaDatosDos.style.display = "block";
+        if (mascotasFormulario) mascotasFormulario.style.display = 'block';
+        if (botonesGardarBorrar) botonesGardarBorrar.style.display = 'flex';
+
+        if (borrarDatos) borrarDatos.style.display = 'block';
+
+        if (cliente.clienteEmail && recibirCorreo) {
+            recibirCorreo.style.display = 'inline-block';
+        }
+
+        mostrarFormulariosMascotas();
     }
 };
 
-// aplicar el tema
 const aplicarTema = () => {
     try {
         const temaAlmacenado = gestionarAlmacenamientoLocal("cargar", "theme");
+        const checkbox = document.getElementById('checkbox');
         if (temaAlmacenado) {
             document.body.dataset.theme = temaAlmacenado;
-            document.getElementById('checkbox').checked = temaAlmacenado === 'dark';
+            if (checkbox) checkbox.checked = temaAlmacenado === 'dark';
         }
     } catch {
         mostrarErrorGlobal(errorMessages.errorAplicarTema);
     }
 };
 
-// controlar el botón de guardar
 const controlarBotonGuardar = () => {
     const guardarBtn = document.getElementById("guardar-mascotas-turnos");
     if (guardarBtn) {
@@ -160,17 +175,21 @@ const controlarBotonGuardar = () => {
     }
 };
 
-// mostrar los próximos feriados
 const resaltarFeriadosEnCalendario = (feriados) => {
     const inputFecha = document.getElementById('turno-fecha');
     const fechasFeriados = feriados.map(feriado => feriado.fecha);
 
-    inputFecha.addEventListener('input', (event) => {
-        const fechaSeleccionada = event.target.value;
-        if (fechasFeriados.includes(fechaSeleccionada)) {
-            inputFecha.style.borderColor = 'tomato';
-        } else {
-            inputFecha.style.borderColor = '';
-        }
-    });
+    if (inputFecha) {
+        inputFecha.addEventListener('input', (event) => {
+            const fechaSeleccionada = event.target.value;
+            if (fechasFeriados.includes(fechaSeleccionada)) {
+                inputFecha.style.borderColor = 'tomato';
+            } else {
+                inputFecha.style.borderColor = '';
+            }
+        });
+    }
 };
+
+// Export mascotas y turnos
+export { mascotas, turnos };
