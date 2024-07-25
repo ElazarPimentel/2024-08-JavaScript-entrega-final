@@ -9,12 +9,10 @@ export class ClienteClass {
         this.clienteNombre = clienteNombre;
         this.clienteTelefono = clienteTelefono;
         this.clienteEmail = clienteEmail;
-        console.log('ClienteClass instancia creada:', this);
     }
 
     static generarId(prefijo) {
-        const id = `${prefijo}_` + Math.random().toString(36).substring(2, 15); // Nueva modalidad
-        console.log(`generarId llamado con prefijo: ${prefijo}, id generado: ${id}`);
+        const id = `${prefijo}_` + Math.random().toString(36).substring(2, 15);
         return id;
     }
 }
@@ -26,12 +24,10 @@ export class MascotaClass {
         this.mascotaForeignClienteId = mascotaForeignClienteId;
         this.mascotaNombre = mascotaNombre;
         this.mascotaEdad = mascotaEdad;
-        console.log('MascotaClass instancia creada:', this);
     }
 
     static generarId(prefijo) {
         const id = `${prefijo}_` + Math.random().toString(36).substring(2, 15);
-        console.log(`generarId llamado con prefijo: ${prefijo}, id generado: ${id}`);
         return id;
     }
 }
@@ -44,12 +40,10 @@ export class TurnoClass {
         this.turnoFecha = turnoFecha; 
         this.turnoHora = turnoHora;   
         this.turnoForeignServicioId = turnoForeignServicioId;
-        console.log('TurnoClass instancia creada:', this);
     }
 
     static generarId(prefijo) {
         const id = `${prefijo}_` + Math.random().toString(36).substring(2, 15);
-        console.log(`generarId llamado con prefijo: ${prefijo}, id generado: ${id}`);
         return id;
     }
 }

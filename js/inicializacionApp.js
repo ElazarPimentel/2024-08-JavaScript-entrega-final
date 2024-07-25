@@ -73,6 +73,7 @@ async function inicializarDatosFeriados() {
         localStorage.setItem('feriadosArgentina', JSON.stringify(datosParaAlmacenar));
         return feriados;
     } else {
+        console.warn(errorMessages.noObtenerFeriados);
         return null;
     }
 }
@@ -191,5 +192,5 @@ const resaltarFeriadosEnCalendario = (feriados) => {
     }
 };
 
-// Export mascotas y turnos
+// Export mascotas and turnos
 export { mascotas, turnos };

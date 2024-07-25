@@ -24,31 +24,25 @@ export const configurarOyentesDeEventos = () => {
 
     if (guardarClienteBtn) {
         guardarClienteBtn.addEventListener('click', () => {
-            console.log('Button "guardar-cliente" clickeado');
             guardarCliente();
         });
     }
 
     if (borrarDatosBtn) {
         borrarDatosBtn.addEventListener('click', () => {
-            console.log('Button "borrar-datos" clickeado');
             comenzarDeNuevo();
         });
     }
 
     if (guardarMascotasTurnosBtn) {
         guardarMascotasTurnosBtn.addEventListener('click', () => {
-            console.log('Button "guardar-mascotas-turnos" clickeado');
             guardarMascotasYTurnos();
         });
     }
 
     if (borrarTodoTempBtn) {
         borrarTodoTempBtn.addEventListener('click', () => {
-            console.log('Button "borrar-todo-temp" clickeado');
-            console.log('LocalStorage antes de limpiar:', JSON.parse(JSON.stringify(localStorage)));
             gestionarAlmacenamientoLocal('borrarTodo');
-            console.log('LocalStorage después de limpiar:', JSON.parse(JSON.stringify(localStorage)));
             location.reload();
         });
     }
@@ -56,21 +50,18 @@ export const configurarOyentesDeEventos = () => {
     if (themeToggle) {
         themeToggle.addEventListener('change', () => {
             const theme = themeToggle.checked ? 'dark' : 'light';
-            console.log(`Tema cambiado a: ${theme}`);
             aplicarTema(theme);
         });
     }
 
     if (agregarMascotaBtn) {
         agregarMascotaBtn.addEventListener('click', () => {
-            console.log('Button "agregar-mascota" clickeado');
             agregarMascotaFormulario();
         });
     }
 
     if (siguienteBtn) {
         siguienteBtn.addEventListener('click', () => {
-            console.log('Button "siguiente" clickeado');
             const fecha = document.getElementById("turno-fecha").value;
             const hora = document.getElementById("turno-hora").value;
 
@@ -91,20 +82,17 @@ export const configurarOyentesDeEventos = () => {
 
     if (recibirCorreoBtn) {
         recibirCorreoBtn.addEventListener('click', () => {
-            console.log('Button "recibir-correo" clickeado');
             recibirCorreo();
         });
     }
 
     // Aplicar el tema inicialmente al cargar la página
     const initialTheme = themeToggle && themeToggle.checked ? 'dark' : 'light';
-    console.log(`Tema inicial: ${initialTheme}`);
     aplicarTema(initialTheme);
 
     // Detectar cambios en las mascotas
     if (mascotasFormulario) {
         mascotasFormulario.addEventListener('input', () => {
-            console.log('Formulario de mascotas modificado');
             const guardarMascotasTurnosBtn = document.getElementById("guardar-mascotas-turnos");
             const recibirCorreoBtn = document.getElementById("recibir-correo");
             if (guardarMascotasTurnosBtn) {
@@ -121,10 +109,8 @@ export const configurarOyentesDeEventos = () => {
         if (button) {
             const index = button.dataset.index;
             if (button.classList.contains('editar-mascota')) {
-                console.log('Button "editar-mascota" clickeado', index);
                 editarMascotaFormulario(index);
             } else if (button.classList.contains('eliminar-mascota')) {
-                console.log("Eliminando mascota en el índice:", index);
                 eliminarMascotaFormulario(index);
             }
         }
@@ -142,7 +128,6 @@ const editarMascotaFormulario = (index) => {
         mascotas[index].mascotaEdad = parseInt(edad);
         turnos[index].turnoForeignServicioId = parseInt(servicioId);
 
-        console.log("Mascota editada:", mascotas[index]);
         mostrarFormulariosMascotas();
     } else {
         console.error(`No se encontró el formulario de la mascota con el índice: ${index}`);

@@ -9,21 +9,18 @@ import { rangoFeriados } from './constantes.js';
 // Validar nombre: solo permite de 2 a 25 caracteres alfabéticos y espacios
 export const validarNombre = (nombre) => {
     const isValid = /^[a-zA-Z\s]{2,25}$/.test(nombre);
-    console.log(`validarNombre(${nombre}): ${isValid}`);
     return isValid;
 };
 
 // Validar números de teléfono: permite de 7 a 15 caracteres, solo números
 export const validarTelefono = (telefono) => {
     const isValid = /^[0-9]{7,15}$/.test(telefono);
-    console.log(`validarTelefono(${telefono}): ${isValid}`);
     return isValid;
 };
 
 // Validar el número de mascotas: permite un dígito único, del 1 al 3 y explica a usuario en función error
 export const validarNumeroMascotas = (num) => {
     const isValid = /^[1-3]$/.test(num);
-    console.log(`validarNumeroMascotas(${num}): ${isValid}`);
     return isValid;
 };
 
@@ -33,7 +30,6 @@ export const validarFecha = (fecha) => {
     const fechaTurno = DateTime.fromISO(fecha);  
     const diffInDays = fechaTurno.startOf('day').diff(now.startOf('day'), 'days').days;  
     const isValid = diffInDays >= 0 && diffInDays <= rangoFeriados;  
-    console.log(`validarFecha(${fecha}): ${isValid}, Diferencia en días: ${diffInDays}`);
     return isValid;
 };
 
@@ -41,7 +37,6 @@ export const validarFecha = (fecha) => {
 export const validarDiaAbierto = (fecha) => {
     const dia = DateTime.fromISO(fecha).weekday;
     const isValid = dia >= 1 && dia <= 5;  // Lunes a Viernes
-    console.log(`validarDiaAbierto(${fecha}): ${isValid}, dia: ${dia}`);
     return isValid;
 };
 
@@ -60,7 +55,6 @@ export const validarHora = (fecha, hora, horarios) => {
     const now = DateTime.now();
     const isValid = horaTurno >= inicio && horaTurno <= fin && horaTurno >= now.plus({ hours: 1 });
 
-    console.log(`validarHora(${fecha}, ${hora}): ${isValid}, Inicio: ${inicio}, Fin: ${fin}, HoraTurno: ${horaTurno}, Now: ${now}`);
     return isValid;
 };
 
@@ -68,13 +62,11 @@ export const validarHora = (fecha, hora, horarios) => {
 export const validarEdadMascota = (edad) => {
     const edadParsed = parseInt(edad);
     const isValid = Number.isInteger(edadParsed) && edadParsed >= 0 && edadParsed <= 40;
-    console.log(`validarEdadMascota(${edad}): ${isValid}`);
     return isValid;
 };
 
 // Validar correo electrónico: debe ser un formato válido de email
 export const validarEmail = (email) => {
     const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    console.log(`validarEmail(${email}): ${isValid}`);
     return isValid;
 };

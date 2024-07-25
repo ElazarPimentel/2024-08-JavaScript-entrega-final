@@ -21,7 +21,6 @@ let mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
 let turnos = gestionarAlmacenamientoLocal("cargar", "turnos") || [];
 
 export const mostrarFormulariosMascotas = async () => {
-    console.log("Mostrando formularios de mascotas con las siguientes mascotas:", mascotas);
     const mascotasForm = document.getElementById("mascotas-formulario");
     mascotasForm.innerHTML = '';
     mascotas.forEach((mascota, index) => {
@@ -54,8 +53,6 @@ const crearFormularioMascota = (index, mascota = {}) => {
 };
 
 export const agregarMascotaFormulario = () => {
-    console.log("Agregando una nueva mascota. Estado actual de mascotas:", mascotas);
-
     // Guardar el estado actual de los formularios de mascotas antes de agregar una nueva
     for (let i = 0; i < mascotas.length; i++) {
         const mascotaNombre = document.getElementById(`mascota-nombre-${i}`).value;
@@ -71,7 +68,6 @@ export const agregarMascotaFormulario = () => {
     }
 
     mascotas.push(new MascotaClass());
-    console.log("Nueva mascota agregada. Estado actualizado de mascotas:", mascotas);
     mostrarFormulariosMascotas();
 };
 
@@ -109,9 +105,6 @@ export const guardarMascotasYTurnos = async () => {
             mostrarError(errorMessages.clienteNoInicializado);
             return;
         }
-        // Debug turnofecha
-        console.log('turno-fecha:' + document.getElementById("turno-fecha").value)
-        console.log('turno-hora:' + document.getElementById("turno-hora").value)
 
         const fecha = document.getElementById("turno-fecha").value;
         const hora = document.getElementById("turno-hora").value;
@@ -156,7 +149,6 @@ export const guardarMascotasYTurnos = async () => {
                 return;
             }
         }
-        console.log("Guardando mascotas y turnos. Estado actual de mascotas:", mascotas);
         gestionarAlmacenamientoLocal("guardar", "mascotas", mascotas);
         gestionarAlmacenamientoLocal("guardar", "turnos", turnos);
         actualizarDOM(cliente, mascotas, turnos, servicios, horarios);
@@ -224,7 +216,6 @@ const editarMascotaFormulario = (index) => {
     mascotas[index].mascotaEdad = parseInt(edad);
     turnos[index].turnoForeignServicioId = parseInt(servicioId);
 
-    console.log("Mascota editada:", mascotas[index]);
     mostrarFormulariosMascotas();
 };
 
