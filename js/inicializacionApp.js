@@ -2,37 +2,39 @@
 Autor: Alessio Aguirre Pimentel
 Versión: 55 */
 
-// Import statements and constants...
-import { actualizarListaDeServicios, actualizarListaDeHorarios, actualizarDOM, mostrarFeriadosProximos } from './actualizacionesDom.js';
+import { actualizarListaDeServicios } from './actualizacionesDom.js';
+import { actualizarListaDeHorarios } from './actualizacionesDom.js';
+import { actualizarDOM } from './actualizacionesDom.js';
+import { mostrarFeriadosProximos } from './actualizacionesDom.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { mostrarError as mostrarErrorGlobal } from './manejoErrores.js';
 import { mostrarFormulariosMascotas } from './gestionFormularios.js'; // Correct import
-import { servicios, horarios, apiUrls, errorMessages } from './constantes.js';
+import { servicios, horarios, apiUrls, mensajesDeError } from './constantes.js';
 
 // eslint-disable-next-line no-undef
 const { DateTime } = luxon;
 
-let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null;
-let mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
-let turnos = gestionarAlmacenamientoLocal("cargar", "turnos") || [];
+export let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null;
+export let mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
+export let turnos = gestionarAlmacenamientoLocal("cargar", "turnos") || [];
 
-function datosDesactualizados(fechaString) {
+export function datosDesactualizados(fechaString) {
     const fechaAlmacenada = DateTime.fromISO(fechaString);
     const fechaActual = DateTime.now();
     const diferencia = fechaActual.diff(fechaAlmacenada, 'days').days;
     return diferencia > 7;
 }
 
-function obtenerAnioActual() {
+export function obtenerAnioActual() {
     return DateTime.now().year;
 }
 
-async function traerFeriados(anio) {
+export async function traerFeriados(anio) {
     const url = apiUrls.feriados(anio);
     try {
         const response = await fetch(url);
         if (!response.ok) {
-            throw new Error(errorMessages.noObtenerFeriados);
+            throw new Error(mensajesDeError.noObtenerFeriados);
         }
         const data = await response.json();
         return data;
@@ -41,7 +43,7 @@ async function traerFeriados(anio) {
     }
 }
 
-async function inicializarDatosFeriados() {
+export async function inicializarDatosFeriados() {
     const feriadosAlmacenados = localStorage.getItem('feriadosArgentina');
     if (feriadosAlmacenados) {
         const { dateFetched, holidays } = JSON.parse(feriadosAlmacenados);
@@ -61,7 +63,7 @@ async function inicializarDatosFeriados() {
     try {
         feriadosAnioSiguiente = await traerFeriados(anioActual + 1);
     } catch {
-        console.warn(errorMessages.noObtenerFeriados);
+        console.warn(mensajesDeError.noObtenerFeriados);
     }
 
     const feriados = [...feriadosAnioActual, ...(feriadosAnioSiguiente || [])];
@@ -73,7 +75,7 @@ async function inicializarDatosFeriados() {
         localStorage.setItem('feriadosArgentina', JSON.stringify(datosParaAlmacenar));
         return feriados;
     } else {
-        console.warn(errorMessages.noObtenerFeriados);
+        console.warn(mensajesDeError.noObtenerFeriados);
         return null;
     }
 }
@@ -83,12 +85,12 @@ export async function obtenerHoraActualArgentina() {
     try {
         const response = await fetch(url);
         if (!response.ok) {
-            throw new Error(errorMessages.noObtenerHoraActual);
+            throw new Error(mensajesDeError.noObtenerHoraActual);
         }
         const data = await response.json();
         return DateTime.fromISO(data.datetime);
     } catch {
-        mostrarErrorGlobal(errorMessages.noObtenerHoraActual);
+        mostrarErrorGlobal(mensajesDeError.noObtenerHoraActual);
         return DateTime.now().setZone('America/Argentina/Buenos_Aires');
     }
 }
@@ -122,7 +124,7 @@ export const inicializarApp = async () => {
     }
 };
 
-const recuperarYPoblarDatos = () => {
+export const recuperarYPoblarDatos = () => {
     const storedData = {
         cliente: gestionarAlmacenamientoLocal("cargar", "cliente"),
         mascotas: gestionarAlmacenamientoLocal("cargar", "mascotas"),
@@ -156,7 +158,7 @@ const recuperarYPoblarDatos = () => {
     }
 };
 
-const aplicarTema = () => {
+export const aplicarTema = () => {
     try {
         const temaAlmacenado = gestionarAlmacenamientoLocal("cargar", "theme");
         const checkbox = document.getElementById('checkbox');
@@ -165,18 +167,18 @@ const aplicarTema = () => {
             if (checkbox) checkbox.checked = temaAlmacenado === 'dark';
         }
     } catch {
-        mostrarErrorGlobal(errorMessages.errorAplicarTema);
+        mostrarErrorGlobal(mensajesDeError.errorAplicarTema);
     }
 };
 
-const controlarBotonGuardar = () => {
+export const controlarBotonGuardar = () => {
     const guardarBtn = document.getElementById("guardar-mascotas-turnos");
     if (guardarBtn) {
         guardarBtn.style.display = 'none';
     }
 };
 
-const resaltarFeriadosEnCalendario = (feriados) => {
+export const resaltarFeriadosEnCalendario = (feriados) => {
     const inputFecha = document.getElementById('turno-fecha');
     const fechasFeriados = feriados.map(feriado => feriado.fecha);
 
@@ -191,6 +193,3 @@ const resaltarFeriadosEnCalendario = (feriados) => {
         });
     }
 };
-
-// Export mascotas and turnos
-export { mascotas, turnos };

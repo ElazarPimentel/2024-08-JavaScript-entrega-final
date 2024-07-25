@@ -2,7 +2,6 @@
 Autor: Alessio Aguirre Pimentel
 Versión: 70 */
 
-// Servicios ofrecidos por la veterinaria
 export const servicios = {
     1: "Bañado y Peinado",
     2: "Vacunación",
@@ -10,7 +9,6 @@ export const servicios = {
     4: "Quitar pulgas"
 };
 
-// Horarios de atención de la veterinaria
 export const horarios = {
     Lunes: "9:00 - 17:00",
     Martes: "9:00 - 17:00",
@@ -21,18 +19,13 @@ export const horarios = {
     Domingo: "Cerrado"
 };
 
-// Duración de un turno en minutos
-export const duracionDeTurno = 45;
+export const rangoFeriados = 45;
 
-// Formatos de fecha y hora
 export const formatoFecha = "yyyy-LLL-dd";
 export const formatoHora = "HH:mm";
 
-// Rango de feriados en días
-export const rangoFeriados = 45;
 
-// Mensajes de error comunes
-export const errorMessages = {
+export const mensajesDeError = {
     clienteNoInicializado: "Cliente no está inicializado, avisá a soporte técnico",
     limiteMascotas: "El número de mascotas debe estar entre 1 y 3. Si tiene más de tres mascotas, por favor hacé otro turno para las otras mascotas.",
     fechaInvalida: `La fecha del turno debe ser un día que la veterinaria esté abierta y dentro de los próximos ${rangoFeriados} días.`,

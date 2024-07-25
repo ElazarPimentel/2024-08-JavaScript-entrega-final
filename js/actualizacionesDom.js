@@ -2,11 +2,9 @@
 Autor: Alessio Aguirre Pimentel
 Versión: 70 */
 
-// eslint-disable-next-line no-undef
 const { DateTime } = luxon; // Acceso a luxon desde el objeto global, evita errores varios. 
-import { formatoFecha, formatoHora, rangoFeriados, errorMessages } from './constantes.js';
+import { formatoFecha, formatoHora, rangoFeriados, mensajesDeError } from './constantes.js';
 
-// Actualiza la lista de servicios en el DOM
 export const actualizarListaDeServicios = (servicios) => {
     
     const serviciosList = document.getElementById("servicios-listado");
@@ -82,7 +80,6 @@ export const actualizarDOM = (cliente, mascotas, turnos, servicios, horarios) =>
     }
 };
 
-// Mostrar los próximos feriados
 export const mostrarFeriadosProximos = (feriados) => {
     const feriadosProximos = feriados.filter(feriado => {
         const fechaFeriado = DateTime.fromISO(feriado.fecha);
@@ -94,5 +91,5 @@ export const mostrarFeriadosProximos = (feriados) => {
     const feriadosListado = document.getElementById('feriados-listado');
     feriadosListado.innerHTML = feriadosProximos.length > 0 
         ? feriadosProximos.map(feriado => `<li>${DateTime.fromISO(feriado.fecha).setLocale('es').toFormat(formatoFecha)}</li>`).join('') 
-        : `<li>${errorMessages.noObtenerFeriados}</li>`;
+        : `<li>${mensajesDeError.noObtenerFeriados}</li>`;
 };

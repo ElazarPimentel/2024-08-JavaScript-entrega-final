@@ -4,7 +4,7 @@ Versión: 70 */
 
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { mostrarError } from './manejoErrores.js';
-import { errorMessages } from './constantes.js';
+import { mensajesDeError } from './constantes.js';
 
 // Aplicar tema Dark o Light
 export const aplicarTema = (tema) => {
@@ -12,7 +12,7 @@ export const aplicarTema = (tema) => {
         document.body.dataset.theme = tema;
         gestionarAlmacenamientoLocal('guardar', 'theme', tema);
     } catch (error) {
-        mostrarError(errorMessages.errorAplicarTema);
-        console.error(`${errorMessages.errorAplicarTema}: ${error}`);
+        mostrarError(mensajesDeError.errorAplicarTema);
+        console.error(`${mensajesDeError.errorAplicarTema}: ${error}`);
     }
 };

@@ -3,16 +3,15 @@ Autor: Alessio Aguirre Pimentel
 Versión: 70 */
 
 import { mostrarError } from './manejoErrores.js';
-import { errorMessages, rangoFeriados } from './constantes.js';
+import { mensajesDeError, rangoFeriados } from './constantes.js';
 
-// gestionar el almacenamiento local
 export const gestionarAlmacenamientoLocal = (accion, clave, valor = null) => {
     
     try {
         switch (accion) {
             case "guardar": {
                 if (!clave || valor === null) {
-                    throw new Error(errorMessages.claveValorRequeridos);
+                    throw new Error(mensajesDeError.claveValorRequeridos);
                 }
                 const fechaExp = new Date();
                 fechaExp.setDate(fechaExp.getDate() + rangoFeriados);
@@ -22,7 +21,7 @@ export const gestionarAlmacenamientoLocal = (accion, clave, valor = null) => {
             }
             case "cargar": {
                 if (!clave) {
-                    throw new Error(errorMessages.claveRequerida);
+                    throw new Error(mensajesDeError.claveRequerida);
                 }
                 const item = JSON.parse(localStorage.getItem(clave));
                 
@@ -36,7 +35,7 @@ export const gestionarAlmacenamientoLocal = (accion, clave, valor = null) => {
             }
             case "borrar": {
                 if (!clave) {
-                    throw new Error(errorMessages.claveRequerida);
+                    throw new Error(mensajesDeError.claveRequerida);
                 }
                 localStorage.removeItem(clave);
                
@@ -48,7 +47,7 @@ export const gestionarAlmacenamientoLocal = (accion, clave, valor = null) => {
                 break;
             }
             default: {
-                throw new Error(errorMessages.accionNoReconocida);
+                throw new Error(mensajesDeError.accionNoReconocida);
             }
         }
     } catch (error) {

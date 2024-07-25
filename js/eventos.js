@@ -6,11 +6,10 @@ import { guardarCliente, guardarMascotasYTurnos, comenzarDeNuevo, agregarMascota
 import { aplicarTema } from './tema.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { validarFecha, validarHora } from './validaciones.js';
-import { errorMessages, horarios } from './constantes.js';
+import { mensajesDeError, horarios } from './constantes.js';
 import { mostrarError } from './manejoErrores.js';
-import { mascotas, turnos } from './inicializacionApp.js'; // Import the required variables from inicializacionApp.js
+import { mascotas, turnos } from './inicializacionApp.js'; 
 
-// Configuración de los oyentes de eventos del DOM
 export const configurarOyentesDeEventos = () => {
     const guardarClienteBtn = document.getElementById('guardar-cliente');
     const borrarDatosBtn = document.getElementById('borrar-datos');
@@ -66,11 +65,11 @@ export const configurarOyentesDeEventos = () => {
             const hora = document.getElementById("turno-hora").value;
 
             if (!validarFecha(fecha)) {
-                mostrarError(errorMessages.fechaInvalida);
+                mostrarError(mensajesDeError.fechaInvalida);
                 return;
             }
             if (!validarHora(fecha, hora, horarios)) {
-                mostrarError(errorMessages.horaInvalida);
+                mostrarError(mensajesDeError.horaInvalida);
                 return;
             }
 
@@ -86,11 +85,9 @@ export const configurarOyentesDeEventos = () => {
         });
     }
 
-    // Aplicar el tema inicialmente al cargar la página
     const initialTheme = themeToggle && themeToggle.checked ? 'dark' : 'light';
     aplicarTema(initialTheme);
 
-    // Detectar cambios en las mascotas
     if (mascotasFormulario) {
         mascotasFormulario.addEventListener('input', () => {
             const guardarMascotasTurnosBtn = document.getElementById("guardar-mascotas-turnos");
@@ -130,12 +127,17 @@ const editarMascotaFormulario = (index) => {
 
         mostrarFormulariosMascotas();
     } else {
-        console.error(`No se encontró el formulario de la mascota con el índice: ${index}`);
+        console.error(`No se encontró el formulario de la mascota con el ID (índice): ${index}`);
     }
 };
 
 const eliminarMascotaFormulario = (index) => {
+    
+    
+    
     mascotas.splice(index, 1);
     turnos.splice(index, 1);
     mostrarFormulariosMascotas();
+
+
 };

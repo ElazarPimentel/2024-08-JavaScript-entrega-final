@@ -7,9 +7,8 @@ import { actualizarDOM } from './actualizacionesDom.js';
 import { mostrarError, limpiarError } from './manejoErrores.js';
 import { validarNombre, validarTelefono, validarEdadMascota, validarEmail, validarFecha, validarDiaAbierto, validarHora } from './validaciones.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
-import { servicios, horarios, duracionDeTurno, formatoFecha, formatoHora, errorMessages } from './constantes.js';
+import { servicios, horarios, rangoFeriados, formatoFecha, formatoHora, mensajesDeError } from './constantes.js';
 
-// eslint-disable-next-line no-undef
 const { DateTime } = luxon;
 
 const showError = (message) => {
@@ -26,8 +25,8 @@ export const mostrarFormulariosMascotas = async () => {
     mascotas.forEach((mascota, index) => {
         mascotasForm.appendChild(crearFormularioMascota(index, mascota));
     });
-    document.getElementById("guardar-mascotas-turnos").style.display = "inline-block";
-    document.getElementById("borrar-datos").style.display = "inline-block";
+    document.getElementById("guardar-mascotas-turnos").style.display = "inline-block"; //ver
+    document.getElementById("borrar-datos").style.display = "inline-block"; //ver
 };
 
 const crearFormularioMascota = (index, mascota = {}) => {
@@ -45,15 +44,14 @@ const crearFormularioMascota = (index, mascota = {}) => {
             <select id="servicio-${index}" name="servicio-${index}" required>
                 ${Object.entries(servicios).map(([id, nombre]) => `<option value="${id}" ${mascota.turnoForeignServicioId === id ? 'selected' : ''}>${nombre}</option>`).join('')}
             </select>
-            <button type="button" class="editar-mascota" data-index="${index}">📝</button>
-            <button type="button" class="eliminar-mascota" data-index="${index}">➖</button>
+            <button type="button" class="editar-mascota" data-index="${index}">Editar</button>
+            <button type="button" class="eliminar-mascota" data-index="${index}">Sacar</button>
         </fieldset>
     `;
     return petForm;
 };
 
 export const agregarMascotaFormulario = () => {
-    // Guardar el estado actual de los formularios de mascotas antes de agregar una nueva
     for (let i = 0; i < mascotas.length; i++) {
         const mascotaNombre = document.getElementById(`mascota-nombre-${i}`).value;
         const mascotaEdad = parseInt(document.getElementById(`mascota-edad-${i}`).value);
@@ -63,7 +61,7 @@ export const agregarMascotaFormulario = () => {
     }
 
     if (mascotas.length >= 3) {
-        showError(errorMessages.limiteMascotas);
+        showError(mensajesDeError.limiteMascotas);
         return;
     }
 
@@ -80,15 +78,15 @@ export const guardarCliente = () => {
     limpiarError(document.getElementById("cliente-email"));
 
     if (!validarNombre(nombre)) {
-        showError(errorMessages.nombreInvalido);
+        showError(mensajesDeError.nombreInvalido);
         return;
     }
     if (!validarTelefono(telefono)) {
-        showError(errorMessages.telefonoInvalido);
+        showError(mensajesDeError.telefonoInvalido);
         return;
     }
     if (email && !validarEmail(email)) {
-        showError(errorMessages.correoInvalido);
+        showError(mensajesDeError.correoInvalido);
         return;
     }
     cliente = new ClienteClass(null, nombre, telefono, email);
@@ -102,7 +100,7 @@ export const guardarCliente = () => {
 export const guardarMascotasYTurnos = async () => {
     try {
         if (!cliente) {
-            mostrarError(errorMessages.clienteNoInicializado);
+            mostrarError(mensajesDeError.clienteNoInicializado);
             return;
         }
 
@@ -110,15 +108,15 @@ export const guardarMascotasYTurnos = async () => {
         const hora = document.getElementById("turno-hora").value;
 
         if (!validarFecha(fecha)) {
-            showError(errorMessages.fechaInvalida);
+            showError(mensajesDeError.fechaInvalida);
             return;
         }
         if (!validarDiaAbierto(fecha)) {
-            showError(errorMessages.diaCerrado);
+            showError(mensajesDeError.diaCerrado);
             return;
         }
         if (!validarHora(fecha, hora, horarios)) {
-            showError(errorMessages.horaInvalida);
+            showError(mensajesDeError.horaInvalida);
             return;
         }
 
@@ -128,24 +126,23 @@ export const guardarMascotasYTurnos = async () => {
             const mascotaEdad = parseInt(document.getElementById(`mascota-edad-${i}`).value);
             const servicioId = parseInt(document.getElementById(`servicio-${i}`).value);
             if (!validarNombre(mascotaNombre)) {
-                showError(errorMessages.nombreMascotaInvalido);
+                showError(mensajesDeError.nombreMascotaInvalido);
                 return;
             }
             if (!validarEdadMascota(mascotaEdad.toString())) {
-                showError(errorMessages.edadMascotaInvalida);
+                showError(mensajesDeError.edadMascotaInvalida);
                 return;
             }
             const mascota = new MascotaClass(null, cliente.clienteId, mascotaNombre, mascotaEdad);
             mascotas[i] = mascota;
             const turno = new TurnoClass(null, mascota.mascotaId, turnoHora.toISO(), turnoHora.toISO(), servicioId);
             turnos[i] = turno;
-            turnoHora = turnoHora.plus({ minutes: duracionDeTurno });
+            turnoHora = turnoHora.plus({ minutes: rangoFeriados });
 
-            // Verificación de si el turno termina fuera del horario de atención
             const finHorario = DateTime.fromFormat(`${fecha}T17:00`, `${formatoFecha}T${formatoHora}`);
             const horaFinTurno = DateTime.fromISO(turnoHora.toISO());
-            if (horaFinTurno.plus({ minutes: duracionDeTurno }) > finHorario) {
-                mostrarError(errorMessages.turnoFueraHorario);
+            if (horaFinTurno.plus({ minutes: rangoFeriados }) > finHorario) {
+                mostrarError(mensajesDeError.turnoFueraHorario);
                 return;
             }
         }
@@ -156,17 +153,16 @@ export const guardarMascotasYTurnos = async () => {
         document.getElementById("guardar-mascotas-turnos").style.display = "none";
         document.getElementById("recibir-correo").style.display = "inline-block";
     } catch (error) {
-        mostrarError(errorMessages.errorGuardarMascotasTurnos);
-        console.error(`${errorMessages.errorGuardarMascotasTurnos}: ${error}`);
+        mostrarError(mensajesDeError.errorGuardarMascotasTurnos);
+        console.error(`${mensajesDeError.errorGuardarMascotasTurnos}: ${error}`);
     }
 };
 
 export const recibirCorreo = () => {
-    // eslint-disable-next-line no-undef
     Swal.fire({
         icon: 'info',
         title: 'Correo Enviado',
-        text: errorMessages.correoEnviado,
+        text: mensajesDeError.correoEnviado,
         confirmButtonText: 'Aceptar'
     });
 };
