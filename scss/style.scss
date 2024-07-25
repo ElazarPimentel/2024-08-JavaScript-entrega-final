@@ -12,7 +12,7 @@ $border-color-light: #ccc;
 $border-color-dark: #444;
 
 $primary-color: #77797a;
-$error-color: tomato;
+
 
 // Mixins
 @mixin theme($font-color, $background-color, $border-color) {
@@ -54,7 +54,6 @@ body.dark {
     background-color: $border-color-light;
     transition: .4s;
 }
-
 
 .slider:before {
     position: absolute;
@@ -103,15 +102,6 @@ body {
             background-color: $background-color-light;
             color: $font-color-light;
             border: 1px solid $border-color-light;
-        }
-
-        input[type="submit"] {
-            background-color: $font-color-light;
-            color: $background-color-light;
-
-            &:hover {
-                background-color: darken($font-color-light, 25%);
-            }
         }
     }
 }
@@ -247,34 +237,13 @@ form {
         border: 1px solid $border-color-dark;
         padding: 0.15rem;
         margin-bottom: 0.5rem;
-
         box-sizing: border-box;
-    }
-
-    input[type="submit"] {
-        background-color: $font-color-dark;
-        color: $background-color-dark;
-        border: none;
-        padding: 0.5rem 0.5rem;
-        cursor: pointer;
-
-        &:hover {
-            background-color: darken($font-color-dark, 25%);
-        }
-    }
-
-    button {
-        display: inline-block;
     }
 }
 
 #botones-gardar-borrar {
     display: flex;
     justify-content: space-between;
-
-    button {
-        padding: 0.5rem 1rem;
-    }
 }
 
 input#cliente-nombre,
@@ -304,16 +273,15 @@ select[id^="servicio"] {
     max-width: 20ch;
 }
 
-button#agregar-mascota {
-    margin-top: 1rem;
-}
+// button#agregar-mascota {
+//     margin-top: 1rem;
+// }
 
 button#recibir-correo {
     display: none;
 }
 
 @media (max-width: 767px) {
-
     .contenedor-01,
     .contenedor-02,
     .contenedor {
@@ -324,7 +292,6 @@ button#recibir-correo {
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-
     .contenedor-01,
     .contenedor-02,
     .contenedor {
@@ -333,7 +300,6 @@ button#recibir-correo {
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
-
     .contenedor-01,
     .contenedor-02,
     .contenedor {
@@ -341,8 +307,7 @@ button#recibir-correo {
     }
 }
 
-@media (min-width: 1200px) and (max-width: 0px) {
-
+@media (min-width: 1200px) {
     .contenedor-01,
     .contenedor-02,
     .contenedor {
@@ -351,7 +316,6 @@ button#recibir-correo {
 }
 
 @media (min-width: 1440px) {
-
     .contenedor-01,
     .contenedor-02,
     .contenedor {

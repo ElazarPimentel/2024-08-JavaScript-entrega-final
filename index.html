@@ -56,7 +56,7 @@ Versión: 52 -->
                     <label for="cliente-telefono">Teléfono:</label>
                     <input type="tel" id="cliente-telefono" name="cliente-telefono" placeholder="Campo requerido" required aria-label="Teléfono del Cliente">
                     <label for="cliente-email">Correo electrónico:</label>
-                    <input type="email" id="cliente-email" name="cliente-email" aria-label="Correo electrónico del Cliente">
+                    <input type="email" id="cliente-email" name="cliente-email" placeholder="Campo opcional" aria-label="Correo electrónico del Cliente">
                     <button type="button" id="guardar-cliente">Siguiente</button>
                 </fieldset>
             </form>
@@ -75,11 +75,13 @@ Versión: 52 -->
             </div>
 
             <div id="botones-gardar-borrar">
-                <button id="agregar-mascota" style="display:none;" type="button">➕ Agregar Mascota</button>
+                <button id="agregar-mascota" style="display:none;">Agregar Mascota</button>
                 <button id="guardar-mascotas-turnos" style="display:none;">Pedir éste Turno</button>
                 <button id="recibir-correo" style="display:none;">Recibirlo por correo</button>
                 <button id="borrar-datos" style="display:none;">Borrar Turnos</button>
             </div>
+                <!-- <button id="agregar-mascota" style="display:none;" type="button">➕ Agregar Mascota</button> -->
+
             <div class="borde-01" id="seccion-salida-datos-dos" style="display:none;">
                 <!-- Detalles de cliente -->
                 <div id="cliente-detalles"></div>
