@@ -1,18 +1,18 @@
 <!-- Nombre del archivo: index.html
 Autor: Alessio Aguirre Pimentel
-Versión: 49 -->
+Versión: 52 -->
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Veterinaria Pata-Pata-Gonia</title>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
-    <script defer type="module" src="js/main.js"></script>
     <link rel="stylesheet" href="css/style.css">
+    <script defer type="module" src="js/main.js"></script>
 </head>
+
 <body data-theme="dark">
     <header class="contenedor">
         <div id="header-izquierda">
@@ -52,11 +52,11 @@ Versión: 49 -->
                 <fieldset>
                     <legend>Datos del Cliente</legend>
                     <label for="cliente-nombre">Tu nombre:</label>
-                    <input type="text" id="cliente-nombre" name="cliente-nombre" required aria-label="Nombre del Cliente">
+                    <input type="text" id="cliente-nombre" name="cliente-nombre" placeholder="Campo requerido" required aria-label="Nombre del Cliente">
                     <label for="cliente-telefono">Teléfono:</label>
-                    <input type="tel" id="cliente-telefono" name="cliente-telefono" required aria-label="Teléfono del Cliente">
+                    <input type="tel" id="cliente-telefono" name="cliente-telefono" placeholder="Campo requerido" required aria-label="Teléfono del Cliente">
                     <label for="cliente-email">Correo electrónico:</label>
-                    <input type="email" id="cliente-email" name="cliente-email" required aria-label="Correo electrónico del Cliente">
+                    <input type="email" id="cliente-email" name="cliente-email" aria-label="Correo electrónico del Cliente">
                     <button type="button" id="guardar-cliente">Siguiente</button>
                 </fieldset>
             </form>
@@ -73,7 +73,7 @@ Versión: 49 -->
             <div id="mascotas-formulario">
                 <!-- Vacío inicialmente, las mascotas se agregan dinámicamente -->
             </div>
-            
+
             <div id="botones-gardar-borrar">
                 <button id="agregar-mascota" style="display:none;" type="button">➕ Agregar Mascota</button>
                 <button id="guardar-mascotas-turnos" style="display:none;">Pedir éste Turno</button>
@@ -92,5 +92,9 @@ Versión: 49 -->
     <footer class="contenedor-02">
         <p>Derechos de Autor © 2024 - Alessio Aguirre Pimentel. Todos los derechos reservados. Obra protegida por el Convenio Internacional de Berna, legislación Argentina e Internacional sobre derechos de autor.</p>
     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
 </body>
+
 </html>

@@ -1,6 +1,7 @@
 /* Nombre del archivo: js/gestionFormularios.js
 Autor: Alessio Aguirre Pimentel
-Versión: 49 */
+Versión: 51 */
+
 import { ClienteClass, MascotaClass, TurnoClass } from './modelos.js';
 import { actualizarDOM } from './actualizacionesDom.js';
 import { mostrarError, limpiarError } from './manejoErrores.js';
@@ -20,6 +21,7 @@ let mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
 let turnos = gestionarAlmacenamientoLocal("cargar", "turnos") || [];
 
 export const mostrarFormulariosMascotas = async () => {
+    console.log("Mostrando formularios de mascotas con las siguientes mascotas:", mascotas);
     const mascotasForm = document.getElementById("mascotas-formulario");
     mascotasForm.innerHTML = '';
     mascotas.forEach((mascota, index) => {
@@ -37,7 +39,7 @@ const crearFormularioMascota = (index, mascota = {}) => {
         <fieldset>
             <legend>Mascota ${index + 1}</legend>
             <label for="mascota-nombre-${index}">Nombre:</label>
-            <input type="text" id="mascota-nombre-${index}" name="mascota-nombre-${index}" value="${mascota.mascotaNombre || ''}" required>
+            <input type="text" id="mascota-nombre-${index}" name="mascota-nombre-${index}" value="${mascota.mascotaNombre || ''}" placeholder="Campo requerido" required>
             <label for="mascota-edad-${index}">Edad:</label>
             <input type="number" id="mascota-edad-${index}" name="mascota-edad-${index}" value="${mascota.mascotaEdad || ''}" required size="1">
             <label for="servicio-${index}">Servicio:</label>
@@ -52,11 +54,24 @@ const crearFormularioMascota = (index, mascota = {}) => {
 };
 
 export const agregarMascotaFormulario = () => {
+    console.log("Agregando una nueva mascota. Estado actual de mascotas:", mascotas);
+
+    // Guardar el estado actual de los formularios de mascotas antes de agregar una nueva
+    for (let i = 0; i < mascotas.length; i++) {
+        const mascotaNombre = document.getElementById(`mascota-nombre-${i}`).value;
+        const mascotaEdad = parseInt(document.getElementById(`mascota-edad-${i}`).value);
+        const servicioId = parseInt(document.getElementById(`servicio-${i}`).value);
+        mascotas[i] = new MascotaClass(mascotas[i].mascotaId, cliente.clienteId, mascotaNombre, mascotaEdad);
+        mascotas[i].turnoForeignServicioId = servicioId;
+    }
+
     if (mascotas.length >= 3) {
         showError(errorMessages.limiteMascotas);
         return;
     }
+
     mascotas.push(new MascotaClass());
+    console.log("Nueva mascota agregada. Estado actualizado de mascotas:", mascotas);
     mostrarFormulariosMascotas();
 };
 
@@ -76,13 +91,16 @@ export const guardarCliente = () => {
         showError(errorMessages.telefonoInvalido);
         return;
     }
-    if (!validarEmail(email)) {
+    if (email && !validarEmail(email)) {
         showError(errorMessages.correoInvalido);
         return;
     }
     cliente = new ClienteClass(null, nombre, telefono, email);
     gestionarAlmacenamientoLocal("guardar", "cliente", cliente);
     document.getElementById("formulario-mascotas-info").style.display = "block";
+
+    // Mostrar botón "Recibirlo por correo" si se proporciona un correo válido
+    document.getElementById("recibir-correo").style.display = email ? "inline-block" : "none";
 };
 
 export const guardarMascotasYTurnos = async () => {
@@ -91,9 +109,9 @@ export const guardarMascotasYTurnos = async () => {
             mostrarError(errorMessages.clienteNoInicializado);
             return;
         }
-        //Debug turnofecha
-        console.log('turno-fecha:'+document.getElementById("turno-fecha").value)
-        console.log('turno-hora:'+document.getElementById("turno-hora").value)
+        // Debug turnofecha
+        console.log('turno-fecha:' + document.getElementById("turno-fecha").value)
+        console.log('turno-hora:' + document.getElementById("turno-hora").value)
 
         const fecha = document.getElementById("turno-fecha").value;
         const hora = document.getElementById("turno-hora").value;
@@ -138,12 +156,13 @@ export const guardarMascotasYTurnos = async () => {
                 return;
             }
         }
+        console.log("Guardando mascotas y turnos. Estado actual de mascotas:", mascotas);
         gestionarAlmacenamientoLocal("guardar", "mascotas", mascotas);
         gestionarAlmacenamientoLocal("guardar", "turnos", turnos);
         actualizarDOM(cliente, mascotas, turnos, servicios, horarios);
         document.getElementById("seccion-salida-datos-dos").style.display = "block";
-        document.getElementById("guardar-mascotas-turnos").style.display = "none"; 
-        document.getElementById("recibir-correo").style.display = "inline-block"; 
+        document.getElementById("guardar-mascotas-turnos").style.display = "none";
+        document.getElementById("recibir-correo").style.display = "inline-block";
     } catch (error) {
         mostrarError(errorMessages.errorGuardarMascotasTurnos);
         console.error(`${errorMessages.errorGuardarMascotasTurnos}: ${error}`);
@@ -155,7 +174,7 @@ export const recibirCorreo = () => {
     Swal.fire({
         icon: 'info',
         title: 'Correo Enviado',
-        text: errorMessages.correoEnviado, 
+        text: errorMessages.correoEnviado,
         confirmButtonText: 'Aceptar'
     });
 };
@@ -189,6 +208,7 @@ document.addEventListener('click', (event) => {
         if (button.classList.contains('editar-mascota')) {
             // Nueva lógica CRUD para edición de los detalles de la mascota ...
         } else if (button.classList.contains('eliminar-mascota')) {
+            console.log("Eliminando mascota en el índice:", index);
             mascotas.splice(index, 1);
             turnos.splice(index, 1);
             mostrarFormulariosMascotas();

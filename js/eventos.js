@@ -1,9 +1,13 @@
 /* Nombre del archivo: js/eventos.js
 Autor: Alessio Aguirre Pimentel
-Versión: 49 */
+Versión: 52 */
+
 import { guardarCliente, guardarMascotasYTurnos, comenzarDeNuevo, agregarMascotaFormulario, agregarPrimeraMascota, recibirCorreo } from './gestionFormularios.js';
 import { aplicarTema } from './tema.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
+import { validarFecha, validarHora } from './validaciones.js';
+import { errorMessages, horarios } from './constantes.js';
+import { mostrarError } from './manejoErrores.js';
 
 // Configuración de los oyentes de eventos del DOM
 export const configurarOyentesDeEventos = () => {
@@ -44,6 +48,18 @@ export const configurarOyentesDeEventos = () => {
 
     document.getElementById('siguiente').addEventListener('click', () => {
         console.log('Button "siguiente" clickeado');
+        const fecha = document.getElementById("turno-fecha").value;
+        const hora = document.getElementById("turno-hora").value;
+
+        if (!validarFecha(fecha)) {
+            mostrarError(errorMessages.fechaInvalida);
+            return;
+        }
+        if (!validarHora(fecha, hora, horarios)) {
+            mostrarError(errorMessages.horaInvalida);
+            return;
+        }
+
         document.getElementById('agregar-mascota').style.display = 'inline-block'; // Make the button visible
         agregarPrimeraMascota();
     });
@@ -57,4 +73,11 @@ export const configurarOyentesDeEventos = () => {
     const initialTheme = themeToggle.checked ? 'dark' : 'light';
     console.log(`Tema inicial: ${initialTheme}`);
     aplicarTema(initialTheme);
+    
+    // Detectar cambios en las mascotas
+    document.getElementById('mascotas-formulario').addEventListener('input', () => {
+        console.log('Formulario de mascotas modificado');
+        document.getElementById("guardar-mascotas-turnos").style.display = "inline-block";
+        document.getElementById("recibir-correo").style.display = "none";
+    });
 };

@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/almacenamientoLocal.js
 Autor: Alessio Aguirre Pimentel
-Versión: 49 */
+Versión: 51 */
 
 import { mostrarError } from './manejoErrores.js';
 import { errorMessages, rangoFeriados } from './constantes.js';

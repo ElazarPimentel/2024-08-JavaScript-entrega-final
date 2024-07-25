@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/actualizacionesDom.js
 Autor: Alessio Aguirre Pimentel
-Versión: 49 */
+Versión: 51 */
 
 // eslint-disable-next-line no-undef
 const { DateTime } = luxon; // Acceso a luxon desde el objeto global, evita errores varios. 
