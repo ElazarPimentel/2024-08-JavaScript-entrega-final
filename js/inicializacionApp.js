@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/inicializacionApp.js
 Autor: Alessio Aguirre Pimentel
-Versión: 55 */
+Versión: 74 */
 
 import { actualizarListaDeServicios } from './actualizacionesDom.js';
 import { actualizarListaDeHorarios } from './actualizacionesDom.js';
@@ -63,7 +63,7 @@ export async function inicializarDatosFeriados() {
     try {
         feriadosAnioSiguiente = await traerFeriados(anioActual + 1);
     } catch {
-        console.warn(mensajesDeError.noObtenerFeriados);
+        console.warn("Normal si antes de Oftubre, pero cambia cada año, estar pendiente: "+mensajesDeError.noObtenerFeriados);
     }
 
     const feriados = [...feriadosAnioActual, ...(feriadosAnioSiguiente || [])];
@@ -125,15 +125,15 @@ export const inicializarApp = async () => {
 };
 
 export const recuperarYPoblarDatos = () => {
-    const storedData = {
+    const guardaDatos = {
         cliente: gestionarAlmacenamientoLocal("cargar", "cliente"),
         mascotas: gestionarAlmacenamientoLocal("cargar", "mascotas"),
         turnos: gestionarAlmacenamientoLocal("cargar", "turnos")
     };
-    if (storedData.cliente && storedData.mascotas && storedData.turnos) {
-        cliente = storedData.cliente;
-        mascotas = storedData.mascotas;
-        turnos = storedData.turnos;
+    if (guardaDatos.cliente && guardaDatos.mascotas && guardaDatos.turnos) {
+        cliente = guardaDatos.cliente;
+        mascotas = guardaDatos.mascotas;
+        turnos = guardaDatos.turnos;
         actualizarDOM(cliente, mascotas, turnos, servicios, horarios);
 
         const formularioMascotasInfo = document.getElementById("formulario-mascotas-info");

@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/validaciones.js
 Autor: Alessio Aguirre Pimentel
-Versión: 70 */
+Versión: 74 */
 
 // eslint-disable-next-line no-undef
 const { DateTime } = luxon; // Acceso a luxon desde el objeto global

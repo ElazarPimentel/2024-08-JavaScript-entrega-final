@@ -1,10 +1,10 @@
 /* Nombre del archivo: js/gestionFormularios.js
 Autor: Alessio Aguirre Pimentel
-Versión: 54 */
+Versión: 74 */
 
 import { ClienteClass, MascotaClass, TurnoClass } from './modelos.js';
 import { actualizarDOM } from './actualizacionesDom.js';
-import { mostrarError, limpiarError } from './manejoErrores.js';
+import { mostrarError} from './manejoErrores.js';
 import { validarNombre, validarTelefono, validarEdadMascota, validarEmail, validarFecha, validarDiaAbierto, validarHora } from './validaciones.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { servicios, horarios, rangoFeriados, formatoFecha, formatoHora, mensajesDeError } from './constantes.js';
@@ -73,9 +73,7 @@ export const guardarCliente = () => {
     const nombre = document.getElementById("cliente-nombre").value;
     const telefono = document.getElementById("cliente-telefono").value;
     const email = document.getElementById("cliente-email").value;
-    limpiarError(document.getElementById("cliente-nombre"));
-    limpiarError(document.getElementById("cliente-telefono"));
-    limpiarError(document.getElementById("cliente-email"));
+   
 
     if (!validarNombre(nombre)) {
         showError(mensajesDeError.nombreInvalido);

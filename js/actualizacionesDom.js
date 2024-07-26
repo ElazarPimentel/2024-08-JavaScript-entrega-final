@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/actualizacionesDom.js
 Autor: Alessio Aguirre Pimentel
-Versión: 70 */
+Versión: 74 */
 
 const { DateTime } = luxon; // Acceso a luxon desde el objeto global, evita errores varios. 
 import { formatoFecha, formatoHora, rangoFeriados, mensajesDeError } from './constantes.js';

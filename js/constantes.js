@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/constantes.js
 Autor: Alessio Aguirre Pimentel
-Versión: 70 */
+Versión: 74 */
 
 export const servicios = {
     1: "Bañado y Peinado",
