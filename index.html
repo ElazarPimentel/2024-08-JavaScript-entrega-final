@@ -4,7 +4,6 @@ Versión: 77 -->
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +11,6 @@ Versión: 77 -->
     <link rel="stylesheet" href="css/style.css">
     <script defer type="module" src="js/main.js"></script>
 </head>
-
 <body data-theme="dark">
     <header class="contenedor">
         <div id="header-izquierda">
@@ -46,7 +44,7 @@ Versión: 77 -->
         </section>
 
         <section class="borde-01" id="seccion-turnos">
-            <button type="button" id="borrar-todo-temp"style="display:none;" >Borrar Datos Temp</button>
+            <button type="button" id="borrar-todo-temp" style="display:none;">Borrar Datos Temp</button>
             <h2>Turnos</h2>
             <form id="formulario-cliente" action="#" method="post">
                 <fieldset>
@@ -70,12 +68,11 @@ Versión: 77 -->
                     <button type="button" id="siguiente">Siguiente</button>
                 </fieldset>
             </form>
-            <div id="mascotas-formulario">
+            <div id="mascotas-formulario" style="display:none;">
                 <!-- Vacío inicialmente, las mascotas se agregan dinámicamente -->
             </div>
 
-            <div id="botones-gardar-borrar">
-                <button id="agregar-mascota" style="display:none;">Agregar Mascota</button>
+            <div id="botones-gardar-borrar" style="display:none;">
                 <button id="guardar-mascotas-turnos" style="display:none;">Pedir éste Turno</button>
                 <button id="recibir-correo" style="display:none;">Recibirlo por correo</button>
                 <button id="borrar-datos" style="display:none;">Borrar Turnos</button>
@@ -97,5 +94,4 @@ Versión: 77 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
 </body>
-
 </html>

@@ -7,8 +7,9 @@ import { actualizarDOM } from './actualizacionesDom.js';
 import { mostrarError } from './manejoErrores.js';
 import { validarNombre, validarTelefono, validarEdadMascota, validarEmail, validarFecha, validarDiaAbierto, validarHora } from './validaciones.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
-import { servicios, horarios, rangoFeriados, formatoFecha, formatoHora, mensajesDeError } from './constantes.js';
+import { servicios, horarios, formatoFecha, formatoHora, mensajesDeError } from './constantes.js';
 
+// eslint-disable-next-line no-undef
 const { DateTime } = luxon;
 
 const showError = (message) => {
@@ -19,7 +20,9 @@ let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null;
 let mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
 let turnos = gestionarAlmacenamientoLocal("cargar", "turnos") || [];
 
-export const mostrarFormulariosMascotas = async () => {
+export { cliente, mascotas, turnos }; // Exportar variables aquí
+
+export const mostrarFormulariosMascotas = () => {
     const mascotasForm = document.getElementById("mascotas-formulario");
     mascotasForm.innerHTML = '';
     mascotas.forEach((mascota, index) => {
@@ -27,6 +30,7 @@ export const mostrarFormulariosMascotas = async () => {
     });
     document.getElementById("guardar-mascotas-turnos").style.display = "inline-block";
     document.getElementById("borrar-datos").style.display = "inline-block";
+    document.getElementById("botones-gardar-borrar").style.display = 'flex';  // Mostrar el contenedor de los botones
 };
 
 const crearFormularioMascota = (index, mascota = {}) => {
@@ -46,6 +50,7 @@ const crearFormularioMascota = (index, mascota = {}) => {
             </select>
             <button type="button" class="editar-mascota" data-index="${index}">Editar</button>
             <button type="button" class="eliminar-mascota" data-index="${index}">Sacar</button>
+            ${index === mascotas.length - 1 ? '<button type="button" id="agregar-mascota">Agregar Mascota</button>' : ''}
         </fieldset>
     `;
     return petForm;
@@ -54,10 +59,10 @@ const crearFormularioMascota = (index, mascota = {}) => {
 export const agregarMascotaFormulario = () => {
     for (let i = 0; i < mascotas.length; i++) {
         const mascotaNombre = document.getElementById(`mascota-nombre-${i}`).value;
-        const mascotaEdad = parseInt(document.getElementById(`mascota-edad-${i}`).value);
-        const servicioId = parseInt(document.getElementById(`servicio-${i}`).value);
+        const mascotaEdad = parseInt(document.getElementById(`mascota-edad-${i}`).value, 10);
+        const servicioId = parseInt(document.getElementById(`servicio-${i}`).value, 10);
         mascotas[i] = new MascotaClass(mascotas[i].mascotaId, cliente.clienteId, mascotaNombre, mascotaEdad);
-        mascotas[i].turnoForeignServicioId = servicioId;
+        turnos[i] = new TurnoClass(turnos[i].turnoId, mascotas[i].mascotaId, turnos[i].turnoFecha, turnos[i].turnoHora, servicioId);
     }
 
     if (mascotas.length >= 3) {
@@ -65,7 +70,11 @@ export const agregarMascotaFormulario = () => {
         return;
     }
 
-    mascotas.push(new MascotaClass());
+    const nuevaMascota = new MascotaClass(null, cliente.clienteId, "", 0);
+    mascotas.push(nuevaMascota);
+    const nuevoTurno = new TurnoClass(null, nuevaMascota.mascotaId, "", "", 1);
+    turnos.push(nuevoTurno);
+
     mostrarFormulariosMascotas();
 };
 
@@ -89,9 +98,6 @@ export const guardarCliente = () => {
     cliente = new ClienteClass(null, nombre, telefono, email);
     gestionarAlmacenamientoLocal("guardar", "cliente", cliente);
     document.getElementById("formulario-mascotas-info").style.display = "block";
-
-    // Mostrar botón "Recibirlo por correo" si se proporciona un correo válido
-    document.getElementById("recibir-correo").style.display = email ? "inline-block" : "none";
 };
 
 export const guardarMascotasYTurnos = async () => {
@@ -120,8 +126,8 @@ export const guardarMascotasYTurnos = async () => {
         let turnoHora = DateTime.fromISO(`${fecha}T${hora}`);
         for (let i = 0; i < mascotas.length; i++) {
             const mascotaNombre = document.getElementById(`mascota-nombre-${i}`).value;
-            const mascotaEdad = parseInt(document.getElementById(`mascota-edad-${i}`).value);
-            const servicioId = parseInt(document.getElementById(`servicio-${i}`).value);
+            const mascotaEdad = parseInt(document.getElementById(`mascota-edad-${i}`).value, 10);
+            const servicioId = parseInt(document.getElementById(`servicio-${i}`).value, 10);
             if (!validarNombre(mascotaNombre)) {
                 showError(mensajesDeError.nombreMascotaInvalido);
                 return;
@@ -148,7 +154,12 @@ export const guardarMascotasYTurnos = async () => {
         actualizarDOM(cliente, mascotas, turnos, servicios, horarios);
         document.getElementById("seccion-salida-datos-dos").style.display = "block";
         document.getElementById("guardar-mascotas-turnos").style.display = "none";
-        document.getElementById("recibir-correo").style.display = "inline-block";
+
+        if (cliente.clienteEmail && validarEmail(cliente.clienteEmail)) {
+            document.getElementById("recibir-correo").style.display = "inline-block";
+        } else {
+            document.getElementById("recibir-correo").style.display = "none";
+        }
     } catch (error) {
         mostrarError(mensajesDeError.errorGuardarMascotasTurnos);
         console.error(`${mensajesDeError.errorGuardarMascotasTurnos}: ${error}`);
@@ -156,6 +167,7 @@ export const guardarMascotasYTurnos = async () => {
 };
 
 export const recibirCorreo = () => {
+    // eslint-disable-next-line no-undef
     Swal.fire({
         icon: 'info',
         title: 'Correo Enviado',
@@ -184,38 +196,5 @@ export const agregarPrimeraMascota = () => {
     if (mascotas.length === 0) {
         agregarMascotaFormulario();
     }
-    mostrarFormulariosMascotas();
-    // Mostrar botón "Agregar Mascota" después de presionar "Siguiente"
-    document.getElementById("agregar-mascota").style.display = "inline-block";
-};
-
-document.addEventListener('click', (event) => {
-    const button = event.target.closest('.editar-mascota, .eliminar-mascota');
-    if (button) {
-        const index = button.dataset.index;
-        if (button.classList.contains('editar-mascota')) {
-            editarMascotaFormulario(index);
-        } else if (button.classList.contains('eliminar-mascota')) {
-            eliminarMascotaFormulario(index);
-        }
-    }
-});
-
-const editarMascotaFormulario = (index) => {
-    const mascotaForm = document.getElementById(`mascota-form-${index}`);
-    const nombre = mascotaForm.querySelector(`#mascota-nombre-${index}`).value;
-    const edad = mascotaForm.querySelector(`#mascota-edad-${index}`).value;
-    const servicioId = mascotaForm.querySelector(`#servicio-${index}`).value;
-
-    mascotas[index].mascotaNombre = nombre;
-    mascotas[index].mascotaEdad = parseInt(edad);
-    turnos[index].turnoForeignServicioId = parseInt(servicioId);
-
-    mostrarFormulariosMascotas();
-};
-
-const eliminarMascotaFormulario = (index) => {
-    mascotas.splice(index, 1);
-    turnos.splice(index, 1);
     mostrarFormulariosMascotas();
 };

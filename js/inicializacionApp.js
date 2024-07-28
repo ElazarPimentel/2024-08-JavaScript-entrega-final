@@ -10,13 +10,10 @@ import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { mostrarError as mostrarErrorGlobal } from './manejoErrores.js';
 import { mostrarFormulariosMascotas } from './gestionFormularios.js'; // Correct import
 import { servicios, horarios, apiUrls, mensajesDeError } from './constantes.js';
+import { cliente, mascotas, turnos } from './gestionFormularios.js';
 
 // eslint-disable-next-line no-undef
 const { DateTime } = luxon;
-
-export let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null;
-export let mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
-export let turnos = gestionarAlmacenamientoLocal("cargar", "turnos") || [];
 
 export function datosDesactualizados(fechaString) {
     const fechaAlmacenada = DateTime.fromISO(fechaString);
@@ -109,15 +106,15 @@ export const inicializarApp = async () => {
         resaltarFeriadosEnCalendario(feriados);
     }
 
+    controlarBotonBorrarDatos();
+
     if (cliente || (mascotas && mascotas.length > 0) || (turnos && turnos.length > 0)) {
         const numeroMascotas = document.getElementById("numero-mascotas");
         const siguienteMascota = document.getElementById("siguiente-mascota");
-        const borrarDatos = document.getElementById("borrar-datos");
         const guardarMascotasTurnos = document.getElementById("guardar-mascotas-turnos");
 
         if (numeroMascotas) numeroMascotas.style.display = "none";
         if (siguienteMascota) siguienteMascota.style.display = "none";
-        if (borrarDatos) borrarDatos.style.display = "block";
         if (guardarMascotasTurnos) guardarMascotasTurnos.style.display = "none";
 
         mostrarFormulariosMascotas();
@@ -131,9 +128,10 @@ export const recuperarYPoblarDatos = () => {
         turnos: gestionarAlmacenamientoLocal("cargar", "turnos")
     };
     if (guardaDatos.cliente && guardaDatos.mascotas && guardaDatos.turnos) {
-        cliente = guardaDatos.cliente;
-        mascotas = guardaDatos.mascotas;
-        turnos = guardaDatos.turnos;
+        // Asignar valores a las variables dentro del objeto
+        Object.assign(cliente, guardaDatos.cliente);
+        Object.assign(mascotas, guardaDatos.mascotas);
+        Object.assign(turnos, guardaDatos.turnos);
         actualizarDOM(cliente, mascotas, turnos, servicios, horarios);
 
         const formularioMascotasInfo = document.getElementById("formulario-mascotas-info");
@@ -175,6 +173,19 @@ export const controlarBotonGuardar = () => {
     const guardarBtn = document.getElementById("guardar-mascotas-turnos");
     if (guardarBtn) {
         guardarBtn.style.display = 'none';
+    }
+};
+
+export const controlarBotonBorrarDatos = () => {
+    const borrarBtn = document.getElementById('borrar-datos');
+    const hayDatos = cliente || (mascotas && mascotas.length > 0) || (turnos && turnos.length > 0);
+
+    if (borrarBtn) {
+        if (hayDatos) {
+            borrarBtn.style.display = 'block';
+        } else {
+            borrarBtn.style.display = 'none';
+        }
     }
 };
 
