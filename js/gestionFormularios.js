@@ -142,10 +142,19 @@ export const guardarMascotasYTurnos = async () => {
             turnos[i] = turno;
             turnoHora = turnoHora.plus({ minutes: 45 });
 
-            const finHorario = DateTime.fromFormat(`${fecha}T17:00`, `${formatoFecha}T${formatoHora}`);
-            const horaFinTurno = DateTime.fromISO(turnoHora.toISO());
-            if (horaFinTurno.plus({ minutes: 45 }) > finHorario) {
-                showError(mensajesDeError.turnoFueraHorario);
+            const diaSemana = DateTime.fromISO(fecha).weekdayLong;
+            const horarioDia = horarios[diaSemana];
+
+            if (horarioDia && horarioDia !== 'Cerrado') {
+                const [inicioStr, finStr] = horarioDia.split(' - ');
+                const finHorario = DateTime.fromFormat(`${fecha}T${finStr}`, 'yyyy-LL-dd\'T\'H:mm');
+                const horaFinTurno = DateTime.fromISO(turnoHora.toISO());
+                if (horaFinTurno.plus({ minutes: 45 }) > finHorario) {
+                    showError(mensajesDeError.turnoFueraHorario);
+                    return;
+                }
+            } else {
+                showError(mensajesDeError.diaCerrado);
                 return;
             }
         }

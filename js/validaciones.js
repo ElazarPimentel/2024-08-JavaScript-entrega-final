@@ -49,8 +49,8 @@ export const validarHora = (fecha, hora, horarios) => {
     if (!horario || horario === 'Cerrado') return false;
 
     const [inicioStr, finStr] = horario.split(' - ');
-    const inicio = DateTime.fromFormat(`${fecha}T${inicioStr}`, 'yyyy-MM-dd\'T\'H:mm');
-    const fin = DateTime.fromFormat(`${fecha}T${finStr}`, 'yyyy-MM-dd\'T\'H:mm');
+    const inicio = DateTime.fromFormat(`${fecha}T${inicioStr}`, 'yyyy-LL-dd\'T\'H:mm');
+    const fin = DateTime.fromFormat(`${fecha}T${finStr}`, 'yyyy-LL-dd\'T\'H:mm');
     const horaTurno = DateTime.fromISO(`${fecha}T${hora}`);
     const now = DateTime.now();
     const isValid = horaTurno >= inicio && horaTurno <= fin && horaTurno >= now.plus({ hours: 1 });
