@@ -7,7 +7,7 @@ import { actualizarDOM } from './actualizacionesDom.js';
 import { mostrarError } from './manejoErrores.js';
 import { validarNombre, validarTelefono, validarEdadMascota, validarEmail, validarFecha, validarDiaAbierto, validarHora } from './validaciones.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
-import { servicios, horarios, formatoFecha, formatoHora, mensajesDeError } from './constantes.js';
+import { servicios, horarios, mensajesDeError } from './constantes.js';
 
 // eslint-disable-next-line no-undef
 const { DateTime } = luxon;
@@ -100,6 +100,16 @@ export const guardarCliente = () => {
     document.getElementById("formulario-mascotas-info").style.display = "block";
 };
 
+const diasSemana = {
+    Monday: "Lunes",
+    Tuesday: "Martes",
+    Wednesday: "Miércoles",
+    Thursday: "Jueves",
+    Friday: "Viernes",
+    Saturday: "Sábado",
+    Sunday: "Domingo"
+};
+
 export const guardarMascotasYTurnos = async () => {
     try {
         if (!cliente) {
@@ -109,6 +119,9 @@ export const guardarMascotasYTurnos = async () => {
 
         const fecha = document.getElementById("turno-fecha").value;
         const hora = document.getElementById("turno-hora").value;
+
+        console.log("Fecha seleccionada:", fecha);
+        console.log("Hora seleccionada:", hora);
 
         if (!validarFecha(fecha)) {
             showError(mensajesDeError.fechaInvalida);
@@ -128,6 +141,9 @@ export const guardarMascotasYTurnos = async () => {
             const mascotaNombre = document.getElementById(`mascota-nombre-${i}`).value;
             const mascotaEdad = parseInt(document.getElementById(`mascota-edad-${i}`).value, 10);
             const servicioId = parseInt(document.getElementById(`servicio-${i}`).value, 10);
+
+            console.log(`Mascota ${i + 1}: Nombre: ${mascotaNombre}, Edad: ${mascotaEdad}, Servicio ID: ${servicioId}`);
+
             if (!validarNombre(mascotaNombre)) {
                 showError(mensajesDeError.nombreMascotaInvalido);
                 return;
@@ -143,10 +159,13 @@ export const guardarMascotasYTurnos = async () => {
             turnoHora = turnoHora.plus({ minutes: 45 });
 
             const diaSemana = DateTime.fromISO(fecha).weekdayLong;
-            const horarioDia = horarios[diaSemana];
+            const nombreDia = diasSemana[diaSemana];
+            const horarioDia = horarios[nombreDia];
+
+            console.log(`Día de la semana: ${nombreDia}, Horario del día: ${horarioDia}`);
 
             if (horarioDia && horarioDia !== 'Cerrado') {
-                const [inicioStr, finStr] = horarioDia.split(' - ');
+                const [, finStr] = horarioDia.split(' - ');
                 const finHorario = DateTime.fromFormat(`${fecha}T${finStr}`, 'yyyy-LL-dd\'T\'H:mm');
                 const horaFinTurno = DateTime.fromISO(turnoHora.toISO());
                 if (horaFinTurno.plus({ minutes: 45 }) > finHorario) {
