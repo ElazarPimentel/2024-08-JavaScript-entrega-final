@@ -58,10 +58,6 @@ Este proyecto es la entrega final para el curso de JavaScript en CoderHouse. Es 
 - Eliminación del botón "sacar turno" cuando no se ha presionado "siguiente".
 - Mover constantes, arrays o elementos que no cambian durante la ejecución a nuevo archivo constantes.js para Separation of Concerns. 
 - Agregar ESlint y ver todos los errores que había y no dormir. 
-
-
-### Por Hacer
-
 - Mensajes de error descriptivos y agradables.
 - Avisar sobre turnos que no pueden exceder el horario de cierre.
 - Avisar sobre turnos en días feriados.
@@ -70,7 +66,10 @@ Este proyecto es la entrega final para el curso de JavaScript en CoderHouse. Es 
 - Editar mascota.
 - Agregar mascota.
 - Incluir feriados en el calendario si es posible.
-- Agregar menú desplegable para seleccionar mascotas y horarios.
+
+
+### Por Hacer
+
 
 ## Instalación y Uso
 
