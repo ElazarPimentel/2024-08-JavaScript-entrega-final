@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/manejoErrores.js
 Autor: Alessio Aguirre Pimentel
-Versión: 74 */
+Versión: 77 */
 
 export const mostrarError = (mensaje) => {
     Swal.fire({

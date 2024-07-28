@@ -1,10 +1,10 @@
 /* Nombre del archivo: js/gestionFormularios.js
 Autor: Alessio Aguirre Pimentel
-Versión: 74 */
+Versión: 78 */
 
 import { ClienteClass, MascotaClass, TurnoClass } from './modelos.js';
 import { actualizarDOM } from './actualizacionesDom.js';
-import { mostrarError} from './manejoErrores.js';
+import { mostrarError } from './manejoErrores.js';
 import { validarNombre, validarTelefono, validarEdadMascota, validarEmail, validarFecha, validarDiaAbierto, validarHora } from './validaciones.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { servicios, horarios, rangoFeriados, formatoFecha, formatoHora, mensajesDeError } from './constantes.js';
@@ -25,8 +25,8 @@ export const mostrarFormulariosMascotas = async () => {
     mascotas.forEach((mascota, index) => {
         mascotasForm.appendChild(crearFormularioMascota(index, mascota));
     });
-    document.getElementById("guardar-mascotas-turnos").style.display = "inline-block"; //ver
-    document.getElementById("borrar-datos").style.display = "inline-block"; //ver
+    document.getElementById("guardar-mascotas-turnos").style.display = "inline-block";
+    document.getElementById("borrar-datos").style.display = "inline-block";
 };
 
 const crearFormularioMascota = (index, mascota = {}) => {
@@ -73,7 +73,6 @@ export const guardarCliente = () => {
     const nombre = document.getElementById("cliente-nombre").value;
     const telefono = document.getElementById("cliente-telefono").value;
     const email = document.getElementById("cliente-email").value;
-   
 
     if (!validarNombre(nombre)) {
         showError(mensajesDeError.nombreInvalido);
@@ -135,12 +134,12 @@ export const guardarMascotasYTurnos = async () => {
             mascotas[i] = mascota;
             const turno = new TurnoClass(null, mascota.mascotaId, turnoHora.toISO(), turnoHora.toISO(), servicioId);
             turnos[i] = turno;
-            turnoHora = turnoHora.plus({ minutes: rangoFeriados });
+            turnoHora = turnoHora.plus({ minutes: 45 });
 
             const finHorario = DateTime.fromFormat(`${fecha}T17:00`, `${formatoFecha}T${formatoHora}`);
             const horaFinTurno = DateTime.fromISO(turnoHora.toISO());
-            if (horaFinTurno.plus({ minutes: rangoFeriados }) > finHorario) {
-                mostrarError(mensajesDeError.turnoFueraHorario);
+            if (horaFinTurno.plus({ minutes: 45 }) > finHorario) {
+                showError(mensajesDeError.turnoFueraHorario);
                 return;
             }
         }
@@ -186,6 +185,8 @@ export const agregarPrimeraMascota = () => {
         agregarMascotaFormulario();
     }
     mostrarFormulariosMascotas();
+    // Mostrar botón "Agregar Mascota" después de presionar "Siguiente"
+    document.getElementById("agregar-mascota").style.display = "inline-block";
 };
 
 document.addEventListener('click', (event) => {

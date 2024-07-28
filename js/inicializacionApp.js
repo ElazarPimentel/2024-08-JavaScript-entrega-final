@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/inicializacionApp.js
 Autor: Alessio Aguirre Pimentel
-Versión: 74 */
+Versión: 78 */
 
 import { actualizarListaDeServicios } from './actualizacionesDom.js';
 import { actualizarListaDeHorarios } from './actualizacionesDom.js';
@@ -63,7 +63,7 @@ export async function inicializarDatosFeriados() {
     try {
         feriadosAnioSiguiente = await traerFeriados(anioActual + 1);
     } catch {
-        console.warn("Normal si antes de Oftubre, pero cambia cada año, estar pendiente: "+mensajesDeError.noObtenerFeriados);
+        console.warn("Normal si antes de Octubre, pero cambia cada año, estar pendiente: " + mensajesDeError.noObtenerFeriados);
     }
 
     const feriados = [...feriadosAnioActual, ...(feriadosAnioSiguiente || [])];

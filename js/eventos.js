@@ -1,6 +1,6 @@
 /* Nombre del archivo: js/eventos.js
 Autor: Alessio Aguirre Pimentel
-Versión: 74 */
+Versión: 77 */
 
 import { guardarCliente, guardarMascotasYTurnos, comenzarDeNuevo, agregarMascotaFormulario, agregarPrimeraMascota, recibirCorreo, mostrarFormulariosMascotas } from './gestionFormularios.js';
 import { aplicarTema } from './tema.js';
@@ -74,7 +74,6 @@ export const configurarOyentesDeEventos = () => {
             }
 
             agregarPrimeraMascota();
-            document.getElementById('formulario-mascotas-info').style.display = 'none';
             document.getElementById('mascotas-formulario').style.display = 'block';
         });
     }
@@ -132,12 +131,7 @@ const editarMascotaFormulario = (index) => {
 };
 
 const eliminarMascotaFormulario = (index) => {
-    
-    
-    
     mascotas.splice(index, 1);
     turnos.splice(index, 1);
     mostrarFormulariosMascotas();
-
-
 };
