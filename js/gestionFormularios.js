@@ -119,8 +119,6 @@ export const guardarMascotasYTurnos = async () => {
         const fecha = document.getElementById("turno-fecha").value;
         const hora = document.getElementById("turno-hora").value;
 
-        console.log("Fecha seleccionada:", fecha);
-        console.log("Hora seleccionada:", hora);
 
         if (!validarFecha(fecha)) {
             showError(mensajesDeError.fechaInvalida);
@@ -141,8 +139,6 @@ export const guardarMascotasYTurnos = async () => {
             const mascotaEdad = parseInt(document.getElementById(`mascota-edad-${i}`).value, 10);
             const servicioId = parseInt(document.getElementById(`servicio-${i}`).value, 10);
 
-            console.log(`Mascota ${i + 1}: Nombre: ${mascotaNombre}, Edad: ${mascotaEdad}, Servicio ID: ${servicioId}`);
-
             if (!validarNombre(mascotaNombre)) {
                 showError(mensajesDeError.nombreMascotaInvalido);
                 return;
@@ -160,8 +156,6 @@ export const guardarMascotasYTurnos = async () => {
             const diaSemana = DateTime.fromISO(fecha).weekdayLong;
             const nombreDia = diasSemana[diaSemana];
             const horarioDia = horarios[nombreDia];
-
-            console.log(`Día de la semana: ${nombreDia}, Horario del día: ${horarioDia}`);
 
             if (horarioDia && horarioDia !== 'Cerrado') {
                 const [, finStr] = horarioDia.split(' - ');

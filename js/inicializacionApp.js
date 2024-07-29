@@ -59,7 +59,7 @@ export async function inicializarDatosFeriados() {
     try {
         feriadosAnioSiguiente = await traerFeriados(anioActual + 1);
     } catch {
-        console.warn("Normal si antes de Octubre, pero cambia cada año, estar pendiente: " + mensajesDeError.noObtenerFeriados);
+        console.war(`Normal hasta que se acerce el nuevo año: ${mensajesDeError.noObtenerFeriados}, sino contactar al programador`);
     }
 
     const feriados = [...feriadosAnioActual, ...(feriadosAnioSiguiente || [])];
@@ -71,7 +71,7 @@ export async function inicializarDatosFeriados() {
         localStorage.setItem('feriadosArgentina', JSON.stringify(datosParaAlmacenar));
         return feriados;
     } else {
-        console.warn(mensajesDeError.noObtenerFeriados);
+       console.warn(mensajesDeError.noObtenerFeriados);
         return null;
     }
 }

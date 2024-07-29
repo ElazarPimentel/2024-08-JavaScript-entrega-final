@@ -12,6 +12,6 @@ export const aplicarTema = (tema) => {
         gestionarAlmacenamientoLocal('guardar', 'theme', tema);
     } catch (error) {
         mostrarError(mensajesDeError.errorAplicarTema);
-        console.error(`${mensajesDeError.errorAplicarTema}: ${error}`);
+        console.warn(`${mensajesDeError.errorAplicarTema}: ${error}`);
     }
 };
