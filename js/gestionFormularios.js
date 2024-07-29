@@ -9,7 +9,6 @@ import { validarNombre, validarTelefono, validarEdadMascota, validarEmail, valid
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { servicios, horarios, mensajesDeError } from './constantes.js';
 
-// eslint-disable-next-line no-undef
 const { DateTime } = luxon;
 
 const showError = (message) => {
@@ -20,7 +19,7 @@ let cliente = gestionarAlmacenamientoLocal("cargar", "cliente") || null;
 let mascotas = gestionarAlmacenamientoLocal("cargar", "mascotas") || [];
 let turnos = gestionarAlmacenamientoLocal("cargar", "turnos") || [];
 
-export { cliente, mascotas, turnos }; // Exportar variables aquí
+export { cliente, mascotas, turnos }; 
 
 export const mostrarFormulariosMascotas = () => {
     const mascotasForm = document.getElementById("mascotas-formulario");
@@ -30,7 +29,7 @@ export const mostrarFormulariosMascotas = () => {
     });
     document.getElementById("guardar-mascotas-turnos").style.display = "inline-block";
     document.getElementById("borrar-datos").style.display = "inline-block";
-    document.getElementById("botones-gardar-borrar").style.display = 'flex';  // Mostrar el contenedor de los botones
+    document.getElementById("botones-gardar-borrar").style.display = 'flex';  
 };
 
 const crearFormularioMascota = (index, mascota = {}) => {
@@ -195,7 +194,6 @@ export const guardarMascotasYTurnos = async () => {
 };
 
 export const recibirCorreo = () => {
-    // eslint-disable-next-line no-undef
     Swal.fire({
         icon: 'info',
         title: 'Correo Enviado',

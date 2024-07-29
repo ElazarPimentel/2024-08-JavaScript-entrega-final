@@ -2,7 +2,6 @@
 Autor: Alessio Aguirre Pimentel
 Versión: 77 */
 
-// Variables
 $font-color-light: black;
 $background-color-light: rgb(145, 144, 144);
 $font-color-dark: rgba(255, 255, 255, 0.795);
@@ -14,14 +13,12 @@ $border-color-dark: #444;
 $primary-color: #77797a;
 
 
-// Mixins
 @mixin theme($font-color, $background-color, $border-color) {
     color: $font-color;
     background-color: $background-color;
     border-color: $border-color;
 }
 
-// Estilos del body para temas claro y oscuro
 body.light {
     @include theme($font-color-light, $background-color-light, $border-color-light);
 }
@@ -30,7 +27,6 @@ body.dark {
     @include theme($font-color-dark, $background-color-dark, $border-color-dark);
 }
 
-// cambio de theme
 .theme-switch {
     position: relative;
     display: inline-block;
@@ -272,10 +268,6 @@ input[id^="mascota-nombre"] {
 select[id^="servicio"] {
     max-width: 20ch;
 }
-
-// button#agregar-mascota {
-//     margin-top: 1rem;
-// }
 
 button#recibir-correo {
     display: none;

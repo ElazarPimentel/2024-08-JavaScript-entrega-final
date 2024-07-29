@@ -8,11 +8,10 @@ import { actualizarDOM } from './actualizacionesDom.js';
 import { mostrarFeriadosProximos } from './actualizacionesDom.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';
 import { mostrarError as mostrarErrorGlobal } from './manejoErrores.js';
-import { mostrarFormulariosMascotas } from './gestionFormularios.js'; // Correct import
+import { mostrarFormulariosMascotas } from './gestionFormularios.js'; 
 import { servicios, horarios, apiUrls, mensajesDeError } from './constantes.js';
 import { cliente, mascotas, turnos } from './gestionFormularios.js';
 
-// eslint-disable-next-line no-undef
 const { DateTime } = luxon;
 
 export function datosDesactualizados(fechaString) {
@@ -128,7 +127,6 @@ export const recuperarYPoblarDatos = () => {
         turnos: gestionarAlmacenamientoLocal("cargar", "turnos")
     };
     if (guardaDatos.cliente && guardaDatos.mascotas && guardaDatos.turnos) {
-        // Asignar valores a las variables dentro del objeto
         Object.assign(cliente, guardaDatos.cliente);
         Object.assign(mascotas, guardaDatos.mascotas);
         Object.assign(turnos, guardaDatos.turnos);

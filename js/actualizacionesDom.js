@@ -35,7 +35,6 @@ export const poblarDatosDeCita = (data) => {
     document.getElementById('cliente-email').value = clienteEmail;
     document.getElementById('turno-fecha').value = turnoFecha;
     document.getElementById('turno-hora').value = turnoHora;
-    // Más lógica para mostrar/ocultar elementos basados en los datos
 };
 
 const actualizarDetallesCliente = (cliente, turnos) => {

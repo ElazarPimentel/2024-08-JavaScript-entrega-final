@@ -19,8 +19,10 @@ Este proyecto es la entrega final para el curso de JavaScript en CoderHouse. Es 
 
 ## Autor
 
-- **Elazar (Alessio) Pimentel**
-- **Correo**: [Elazar.Pimentel@gmail.com](mailto:Elazar.Pimentel@gmail.com)
+- **Alessio (Elazar) Pimentel**
+- **Correo Primario**: [Elazar.Pimentel@gmail.com](mailto:Elazar.Pimentel@gmail.com)
+- **Correo Secundario**: [Elazar.Pimentel@sent.com](mailto:Elazar.Pimentel@sent.com)
+
 - **Comentarios**: *I love chocolate*
 
 ## Cambios Realizados
@@ -66,10 +68,6 @@ Este proyecto es la entrega final para el curso de JavaScript en CoderHouse. Es 
 - Editar mascota.
 - Agregar mascota.
 - Incluir feriados en el calendario si es posible.
-
-
-### Por Hacer
-
 
 ## Instalación y Uso
 

@@ -10,8 +10,8 @@ import {
     agregarPrimeraMascota,
     recibirCorreo,
     mostrarFormulariosMascotas,
-    mascotas,  // Importa mascotas aquí
-    turnos     // Importa turnos aquí
+    mascotas,  
+    turnos     
 } from './gestionFormularios.js';
 import { aplicarTema } from './tema.js';
 import { gestionarAlmacenamientoLocal } from './almacenamientoLocal.js';

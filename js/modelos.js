@@ -2,7 +2,6 @@
 Autor: Alessio Aguirre Pimentel
 Versión: 77 */
 
-// Clase para manejar los datos del cliente
 export class ClienteClass {
     constructor(clienteId, clienteNombre, clienteTelefono, clienteEmail) {
         this.clienteId = clienteId || ClienteClass.generarId('cliente');
@@ -17,7 +16,6 @@ export class ClienteClass {
     }
 }
 
-// Clase para manejar los datos de la mascota
 export class MascotaClass {
     constructor(mascotaId, mascotaForeignClienteId, mascotaNombre, mascotaEdad) {
         this.mascotaId = mascotaId || MascotaClass.generarId('mascota');
@@ -32,7 +30,6 @@ export class MascotaClass {
     }
 }
 
-// Clase para manejar los datos del turno
 export class TurnoClass {
     constructor(turnoId, turnoForeignMascotaId, turnoFecha, turnoHora, turnoForeignServicioId) {
         this.turnoId = turnoId || TurnoClass.generarId('turno');
